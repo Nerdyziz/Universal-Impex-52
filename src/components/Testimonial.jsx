@@ -69,7 +69,7 @@ const Testimonial = () => {
           start: "center center",
           end: () => `+=${getDistance()}`,
           pin: true,
-          scrub: 1,
+          scrub: 0.3,
           invalidateOnRefresh: true,
           refreshPriority: -1,
         },
@@ -78,9 +78,10 @@ const Testimonial = () => {
       tl.to(track, {
         x: () => `-${getDistance()}`,
         ease: "none",
+        force3d: true,
       });
 
-      // Animate each panel's inner content
+      // Animate each panel's inner content — plays once when panel enters, stays visible
       gsap.utils.toArray(".testi-panel").forEach((panel) => {
         const anims = panel.querySelectorAll(".testi-anim");
         gsap.set(anims, { y: 30, opacity: 0 });
@@ -92,9 +93,8 @@ const Testimonial = () => {
           duration: 0.8,
           scrollTrigger: {
             trigger: panel,
-            start: "left 80%",
-            end: "left 40%",
-            scrub: 1,
+            start: "left 85%",
+            toggleActions: "play none none none",
             containerAnimation: tl,
           },
         });

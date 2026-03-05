@@ -41,7 +41,7 @@ const Cards = () => {
         trigger: ".bigbox",
         start: "bottom bottom",
         end: "+=250%", 
-        scrub: 1,
+        scrub: 0.3,
         pin: true,
         pinSpacing: true,
         refreshPriority: -1,
@@ -54,6 +54,7 @@ const Cards = () => {
         yPercent: 100,
         ease: "none",
         duration: 1,
+        force3d: true,
       });
     });
   });
