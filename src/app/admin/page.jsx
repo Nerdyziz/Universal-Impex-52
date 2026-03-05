@@ -474,7 +474,7 @@ export default function AdminPage() {
             Sign in with an authorised Google account to access the dashboard.
           </p>
           <button
-            onClick={() => signIn("google", { callbackUrl: "/admin" })}
+            onClick={() => signIn("google", { callbackUrl: "/admin", prompt: "select_account" })}
             className="w-full flex items-center justify-center gap-3 bg-[#1a1a1a] text-white hover:bg-black px-6 py-3.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
