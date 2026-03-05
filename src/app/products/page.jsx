@@ -88,12 +88,12 @@ function CategoryFilterNode({ node, depth = 0, activeCategory, onSelect, prefix 
         )}
         <button
           onClick={() => onSelect(fullPath.toLowerCase())}
-          className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border backdrop-blur-xl shadow-sm flex-1 ${
+          className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm flex-1 ${
             isActive
               ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]"
               : isParentOfActive
-              ? "bg-amber-100/50 text-amber-700 border-amber-200/50"
-              : "bg-[rgba(20,20,20,0.05)] text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white/50"
+              ? "bg-amber-50 text-amber-700 border-amber-200"
+              : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
           }`}
         >
           {node.name}
@@ -522,11 +522,11 @@ const Products = () => {
         onClick={() => setFilterOpen(false)}
       />
       <div
-        className={`fixed bottom-0 left-0 right-0 z-[100001] bg-[rgba(255,255,255,0.85)] backdrop-blur-3xl border-t border-black/10 rounded-t-3xl shadow-[0_-20px_40px_rgba(0,0,0,0.1)] transition-transform duration-400 ease-in-out lg:hidden max-h-[85vh] overflow-y-auto ${
+        className={`fixed bottom-0 left-0 right-0 z-[100001] bg-white border-t border-black/10 rounded-t-3xl shadow-[0_-20px_40px_rgba(0,0,0,0.1)] transition-transform duration-400 ease-in-out lg:hidden max-h-[85vh] overflow-y-auto ${
           filterOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        <div className="sticky top-0 bg-[rgba(255,255,255,0.95)] backdrop-blur-xl pt-4 pb-3 px-6 rounded-t-3xl z-10 border-b border-black/5">
+        <div className="sticky top-0 bg-white pt-4 pb-3 px-6 rounded-t-3xl z-10 border-b border-black/5">
           <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4" />
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-lg font-black text-gray-900 tracking-tight">Filters</h3>
@@ -549,7 +549,7 @@ const Products = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search products..."
-              className="w-full pl-9 pr-8 py-3 text-sm bg-[rgba(20,20,20,0.05)] border border-black/10 text-gray-900 rounded-lg focus:outline-none focus:border-[#EEBA2B] focus:bg-white transition-all placeholder:text-gray-500 shadow-inner"
+              className="w-full pl-9 pr-8 py-3 text-sm bg-gray-50 border border-black/10 text-gray-900 rounded-lg focus:outline-none focus:border-[#EEBA2B] focus:bg-white transition-all placeholder:text-gray-500 shadow-inner"
             />
             {searchQuery && (
               <button
@@ -570,7 +570,7 @@ const Products = () => {
                 className={`text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm ${
                   !activeBrand
                     ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]"
-                    : "bg-[rgba(20,20,20,0.05)] text-gray-700 border-black/10 hover:border-[#EEBA2B]"
+                    : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
                 }`}
               >
                 All Brands
@@ -582,7 +582,7 @@ const Products = () => {
                   className={`text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm ${
                     activeBrand === b.name
                       ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]"
-                      : "bg-[rgba(20,20,20,0.05)] text-gray-700 border-black/10 hover:border-[#EEBA2B]"
+                      : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
                   }`}
                 >
                   {b.name}
@@ -601,7 +601,7 @@ const Products = () => {
                   className={`w-full text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
                     activeCategory === "all"
                       ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]"
-                      : "bg-[rgba(20,20,20,0.05)] text-gray-700 border-black/10 hover:border-[#EEBA2B]"
+                      : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
                   }`}
                 >
                   All Categories
@@ -665,7 +665,7 @@ const Products = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search products..."
-                  className="w-full pl-9 pr-8 py-2.5 text-xs bg-[rgba(20,20,20,0.05)] border border-black/10 text-gray-900 rounded-lg focus:outline-none focus:border-[#EEBA2B] focus:bg-white backdrop-blur-xl shadow-inner transition-all placeholder:text-gray-500"
+                  className="w-full pl-9 pr-8 py-2.5 text-xs bg-gray-50 border border-black/10 text-gray-900 rounded-lg focus:outline-none focus:border-[#EEBA2B] focus:bg-white shadow-inner transition-all placeholder:text-gray-500"
                 />
                 {searchQuery && (
                   <button
@@ -683,10 +683,10 @@ const Products = () => {
                 <div className="flex flex-col gap-1.5">
                   <button
                     onClick={() => { setActiveBrand(""); setActiveCategory("all"); }}
-                    className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border backdrop-blur-xl shadow-sm ${
+                    className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
                       !activeBrand
                         ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]"
-                        : "bg-[rgba(20,20,20,0.05)] text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white/50"
+                        : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
                     }`}
                   >
                     All Brands
@@ -695,10 +695,10 @@ const Products = () => {
                     <button
                       key={b._id}
                       onClick={() => { setActiveBrand(b.name); setActiveCategory("all"); }}
-                      className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border backdrop-blur-xl shadow-sm ${
+                      className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
                         activeBrand === b.name
                           ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]"
-                          : "bg-[rgba(20,20,20,0.05)] text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white/50"
+                          : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
                       }`}
                     >
                       {b.name}
@@ -717,10 +717,10 @@ const Products = () => {
                   <div className="flex flex-col gap-1">
                     <button
                       onClick={() => setActiveCategory("all")}
-                      className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border backdrop-blur-xl shadow-sm ${
+                      className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
                         activeCategory === "all"
                           ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]"
-                          : "bg-[rgba(20,20,20,0.05)] text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white/50"
+                          : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
                       }`}
                     >
                       All Categories
