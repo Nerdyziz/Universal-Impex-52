@@ -33,14 +33,16 @@ const isExternal = (src) => {
 };
 
 // Normalise a single node into { name, children } — returns null if invalid
+const INVALID_NAMES = new Set(["null", "undefined", "none", "n/a", ""]);
 const normaliseNode = (raw) => {
   if (!raw) return null;
   if (typeof raw === "string") {
     const t = raw.trim();
-    return t ? { name: t, children: [] } : null;
+    return (!t || INVALID_NAMES.has(t.toLowerCase())) ? null : { name: t, children: [] };
   }
+  if (typeof raw !== "object") return null;
   const name = String(raw.name ?? "").trim();
-  if (!name) return null;
+  if (!name || INVALID_NAMES.has(name.toLowerCase())) return null;
   const children = Array.isArray(raw.children)
     ? raw.children.map(normaliseNode).filter(Boolean)
     : [];
@@ -274,7 +276,7 @@ const Products = () => {
         insertNode(merged, cat);
       }
     }
-    return merged;
+    return cleanTree(merged);
   }, [brands]);
 
   const categoryTree = activeBrand ? brandCategoryTree : allCategoryTree;
@@ -347,12 +349,12 @@ const Products = () => {
       y: 0,
       opacity: 1,
       stagger: 0.15,
-      ease: "none",
+      duration: 0.8,
+      ease: "power2.out",
       scrollTrigger: {
         trigger: ".featured-section",
         start: "top 85%",
-        end: "top 25%",
-        scrub: 1,
+        once: true,
       },
     });
   }
@@ -363,12 +365,12 @@ const Products = () => {
       y: 0,
       opacity: 1,
       stagger: 0.1,
-      ease: "none",
+      duration: 0.6,
+      ease: "power2.out",
       scrollTrigger: {
         trigger: ".products-grid",
         start: "top 85%",
-        end: "top 25%",
-        scrub: 1,
+        once: true,
       },
     });
   }
@@ -378,12 +380,12 @@ const Products = () => {
     gsap.to(".products-cta", {
       y: 0,
       opacity: 1,
-      ease: "none",
+      duration: 0.8,
+      ease: "power2.out",
       scrollTrigger: {
         trigger: ".products-cta",
         start: "top 85%",
-        end: "top 25%",
-        scrub: 1,
+        once: true,
       },
     });
   }
