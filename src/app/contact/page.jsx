@@ -53,38 +53,44 @@ const Contact = () => {
   useGSAP(
     () => {
       // --- Hero entrance ---
-      const heroTl = gsap.timeline();
-      heroTl.from(".contact-hero-label", {
-        y: 30,
-        opacity: 0,
+      // Set hidden state first to prevent flash
+      gsap.set(".contact-hero-label", { y: 30, opacity: 0 });
+      gsap.set(".contact-hero-title span", { y: 80, opacity: 0 });
+      gsap.set(".contact-hero-line", { scaleX: 0 });
+      gsap.set(".contact-hero-desc", { y: 20, opacity: 0 });
+
+      const heroTl = gsap.timeline({ delay: 0.05 });
+      heroTl.to(".contact-hero-label", {
+        y: 0,
+        opacity: 1,
         duration: 0.6,
         ease: "power2.out",
       });
-      heroTl.from(
+      heroTl.to(
         ".contact-hero-title span",
         {
-          y: 80,
-          opacity: 0,
+          y: 0,
+          opacity: 1,
           duration: 0.8,
           stagger: 0.15,
           ease: "power3.out",
         },
         "-=0.3"
       );
-      heroTl.from(
+      heroTl.to(
         ".contact-hero-line",
         {
-          scaleX: 0,
+          scaleX: 1,
           duration: 0.8,
           ease: "power2.inOut",
         },
         "-=0.4"
       );
-      heroTl.from(
+      heroTl.to(
         ".contact-hero-desc",
         {
-          y: 20,
-          opacity: 0,
+          y: 0,
+          opacity: 1,
           duration: 0.6,
           ease: "power2.out",
         },

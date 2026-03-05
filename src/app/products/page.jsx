@@ -32,10 +32,34 @@ const isExternal = (src) => {
   }
 };
 
+// Normalise a single node into { name, children } — returns null if invalid
+const normaliseNode = (raw) => {
+  if (!raw) return null;
+  if (typeof raw === "string") {
+    const t = raw.trim();
+    return t ? { name: t, children: [] } : null;
+  }
+  const name = String(raw.name ?? "").trim();
+  if (!name) return null;
+  const children = Array.isArray(raw.children)
+    ? raw.children.map(normaliseNode).filter(Boolean)
+    : [];
+  return { name, children };
+};
+
+// Recursively clean an entire category array
+const cleanTree = (arr) =>
+  Array.isArray(arr) ? arr.map(normaliseNode).filter(Boolean) : [];
+
 // Category tree filter node — renders expandable/collapsible category tree with Glass UI
 function CategoryFilterNode({ node, depth = 0, activeCategory, onSelect, prefix = "" }) {
   const [expanded, setExpanded] = useState(false);
-  const hasChildren = node.children && node.children.length > 0;
+  // Normalise children once
+  const validChildren = React.useMemo(
+    () => (node.children ?? []).map(normaliseNode).filter(Boolean),
+    [node.children]
+  );
+  const hasChildren = validChildren.length > 0;
   const fullPath = prefix ? `${prefix} > ${node.name}` : node.name;
   const isActive = activeCategory.toLowerCase() === fullPath.toLowerCase();
   const isParentOfActive = activeCategory.toLowerCase().startsWith(fullPath.toLowerCase() + " > ");
@@ -43,6 +67,9 @@ function CategoryFilterNode({ node, depth = 0, activeCategory, onSelect, prefix 
   useEffect(() => {
     if (isParentOfActive || isActive) setExpanded(true);
   }, [isParentOfActive, isActive]);
+
+  // Skip rendering if this node has no valid name
+  if (!node.name || !String(node.name).trim()) return null;
 
   return (
     <div>
@@ -72,10 +99,10 @@ function CategoryFilterNode({ node, depth = 0, activeCategory, onSelect, prefix 
       </div>
       {expanded && hasChildren && (
         <div className="mt-1">
-          {node.children.map((child, ci) => (
+          {validChildren.map((child, ci) => (
             <CategoryFilterNode
               key={ci}
-              node={typeof child === "string" ? { name: child, children: [] } : child}
+              node={child}
               depth={depth + 1}
               activeCategory={activeCategory}
               onSelect={onSelect}
@@ -222,47 +249,33 @@ const Products = () => {
     if (brandFromUrl) setActiveBrand(brandFromUrl);
   }, [brandFromUrl]);
 
-  // Recursively clean a category tree — remove nodes with empty/null names
-  const cleanCategoryTree = useCallback((nodes) => {
-    if (!Array.isArray(nodes)) return [];
-    return nodes
-      .map((node) => {
-        if (typeof node === "string") {
-          return node.trim() ? { name: node.trim(), children: [] } : null;
-        }
-        if (!node || !node.name || !String(node.name).trim()) return null;
-        return { name: String(node.name).trim(), children: cleanCategoryTree(node.children || []) };
-      })
-      .filter(Boolean);
-  }, []);
-
   // Get categories for active brand (tree structure)
   const activeBrandData = brands.find((b) => b.name === activeBrand);
-  const brandCategoryTree = cleanCategoryTree(activeBrandData?.categories || []);
+  const brandCategoryTree = cleanTree(activeBrandData?.categories || []);
 
-  // All unique category trees across all brands (merged)
-  const allCategoryTree = (() => {
+  // All unique category trees across all brands (deep-merged & cleaned)
+  const allCategoryTree = React.useMemo(() => {
     const merged = [];
     const insertNode = (tree, node) => {
-      if (!node || !node.name || !String(node.name).trim()) return;
-      const nodeName = String(node.name).trim();
-      const existing = tree.find((n) => n.name.toLowerCase() === nodeName.toLowerCase());
+      const n = normaliseNode(node);
+      if (!n) return;
+      const existing = tree.find((t) => t.name.toLowerCase() === n.name.toLowerCase());
       if (existing) {
-        const children = node.children || [];
-        for (const child of children) {
-          insertNode(existing.children || (existing.children = []), child);
+        for (const child of n.children) {
+          insertNode(existing.children, child);
         }
       } else {
-        tree.push({ name: nodeName, children: [...(node.children || [])] });
+        // Deep-clone so we don't share references across brands
+        tree.push({ name: n.name, children: [...n.children.map((c) => ({ ...c, children: [...(c.children || [])] }))] });
       }
     };
     for (const brand of brands) {
-      for (const cat of cleanCategoryTree(brand.categories || [])) {
+      for (const cat of (brand.categories || [])) {
         insertNode(merged, cat);
       }
     }
     return merged;
-  })();
+  }, [brands]);
 
   const categoryTree = activeBrand ? brandCategoryTree : allCategoryTree;
 
@@ -273,48 +286,55 @@ const Products = () => {
 
   ScrollTrigger.getAll().forEach(st => st.kill());
 
-  const heroTl = gsap.timeline();
-  heroTl.from(".products-hero-label", {
-    y: 30,
-    opacity: 0,
+  // Set initial hidden state FIRST to prevent FOUC
+  gsap.set(".products-hero-label", { y: 30, opacity: 0 });
+  gsap.set(".products-hero-title span", { y: 80, opacity: 0 });
+  gsap.set(".products-hero-line", { scaleX: 0 });
+  gsap.set(".products-hero-desc", { y: 20, opacity: 0 });
+  gsap.set(".products-filters", { y: 20, opacity: 0 });
+
+  const heroTl = gsap.timeline({ delay: 0.05 });
+  heroTl.to(".products-hero-label", {
+    y: 0,
+    opacity: 1,
     duration: 0.6,
     ease: "power2.out",
   });
-  heroTl.from(
+  heroTl.to(
     ".products-hero-title span",
     {
-      y: 80,
-      opacity: 0,
+      y: 0,
+      opacity: 1,
       duration: 0.8,
       stagger: 0.15,
       ease: "power3.out",
     },
     "-=0.3"
   );
-  heroTl.from(
+  heroTl.to(
     ".products-hero-line",
     {
-      scaleX: 0,
+      scaleX: 1,
       duration: 0.8,
       ease: "power2.inOut",
     },
     "-=0.4"
   );
-  heroTl.from(
+  heroTl.to(
     ".products-hero-desc",
     {
-      y: 20,
-      opacity: 0,
+      y: 0,
+      opacity: 1,
       duration: 0.6,
       ease: "power2.out",
     },
     "-=0.3"
   );
-  heroTl.from(
+  heroTl.to(
     ".products-filters",
     {
-      y: 20,
-      opacity: 0,
+      y: 0,
+      opacity: 1,
       duration: 0.5,
       ease: "power2.out",
     },
