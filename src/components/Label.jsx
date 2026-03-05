@@ -19,7 +19,7 @@ const Label = () => {
       });
   }, { scope: containerRef });
   return (
-    <div className="flip-card w-full h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen py-10 sm:py-16 md:py-20 flex items-center justify-center px-4 sm:px-6 md:px-8">
+    <div className="flip-card w-full h-[30vh] sm:h-[50vh] xl:h-screen  flex items-center justify-center px-4 sm:px-6 md:px-8">
       <div
         ref={containerRef}
         // CRITICAL FIX: Events are on the static container, not the moving card

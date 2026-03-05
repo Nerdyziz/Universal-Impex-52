@@ -6,7 +6,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { ArrowRight, Search, SlidersHorizontal, Loader2, X, ChevronDown } from "lucide-react";
+import { ArrowRight, Search, SlidersHorizontal, Loader2, X, ChevronDown, ChevronUp } from "lucide-react";
 import { getProductTheme } from "@/lib/theme";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -138,6 +138,17 @@ const Products = () => {
   const PRODUCTS_PER_PAGE = 18;
   const sentinelRef = useRef(null);
   const animationsInitialized = useRef(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Derived: true when any filter / search is active
+  const hasActiveFilter = activeBrand || activeCategory !== "all" || debouncedSearch;
+
+  // Show / hide scroll-to-top button
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 500);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Debounce search query (400ms)
   useEffect(() => {
@@ -450,7 +461,7 @@ const Products = () => {
       {/* ============================================================
           HERO SECTION
          ============================================================ */}
-      <section className="relative w-full min-h-[70vh] flex flex-col justify-center px-6 sm:px-12 lg:px-24 pt-28 pb-12 overflow-hidden">
+      <section className="relative w-full xl:min-h-[70vh] flex flex-col justify-center px-6 sm:px-12 lg:px-24 pt-7 pb-3 overflow-hidden">
         {/* Decorative blurs for white background */}
         <div className="absolute top-20 right-10 w-[300px] h-[300px] bg-[#EEBA2B]/10 rounded-full blur-[100px]" />
         <div className="absolute bottom-10 left-10 w-[200px] h-[200px] bg-[#EEBA2B]/20 rounded-full blur-[80px]" />
@@ -764,8 +775,9 @@ const Products = () => {
           <div className="flex-1 min-w-0">
 
             {/* ============================================================
-                FEATURED PRODUCTS
+                FEATURED PRODUCTS (hidden when filters are active)
                ============================================================ */}
+            {!hasActiveFilter && featuredProducts.length > 0 && (
             <section className="featured-section w-full ">
               <div className="w-full">
                 {/* Section header */}
@@ -844,6 +856,7 @@ const Products = () => {
                 </div>
               </div>
             </section>
+            )}
 
             {/* ============================================================
                 ALL PRODUCTS GRID
@@ -1009,6 +1022,17 @@ const Products = () => {
           </div>{/* end right content */}
         </div>{/* end flex */}
       </div>{/* end main content area */}
+
+      {/* Scroll-to-top button */}
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-6 right-6 z-50 bg-gray-900 text-[#EEBA2B] w-11 h-11 rounded-full flex items-center justify-center shadow-lg hover:bg-[#EEBA2B] hover:text-gray-900 transition-all duration-300 hover:scale-110"
+          aria-label="Scroll to top"
+        >
+          <ChevronUp className="w-5 h-5" />
+        </button>
+      )}
     </div>
   );
 };

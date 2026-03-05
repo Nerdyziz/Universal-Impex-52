@@ -195,7 +195,7 @@ const Contact = () => {
       {/* ============================================================
           HERO SECTION
          ============================================================ */}
-      <section className="relative w-full min-h-[70vh] flex flex-col justify-center px-6 sm:px-12 lg:px-24 pt-24 pb-16 overflow-hidden">
+      <section className="relative w-full xl:min-h-[70vh] flex flex-col justify-center px-6 sm:px-12 lg:px-24 pt-7 pb-10 overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute top-20 right-10 w-75 h-75 bg-[#EEBA2B]/10 rounded-full blur-[100px]" />
         <div className="absolute bottom-20 left-10 w-50 h-50 bg-[#EEBA2B]/15 rounded-full blur-[80px]" />
@@ -322,7 +322,7 @@ const Contact = () => {
       {/* ============================================================
           FORM + SIDEBAR SECTION
          ============================================================ */}
-      <section className="form-section w-full py-16 sm:py-24 px-6 sm:px-12 lg:px-24 border-t border-black/5 bg-[rgba(20,20,20,0.02)]">
+      <section className="form-section w-full py-7 sm:py-24 px-6 sm:px-12 lg:px-24 border-t border-black/5 bg-[rgba(20,20,20,0.02)]">
         <div className="max-w-6xl mx-auto">
           {/* Section header */}
           <div className="mb-12 sm:mb-16">
@@ -486,7 +486,7 @@ const Contact = () => {
       {/* ============================================================
           FAQ SECTION
          ============================================================ */}
-      <section className="faq-section w-full py-16 sm:py-24 px-6 sm:px-12 lg:px-24">
+      <section className="faq-section w-full py-7 sm:py-24 px-6 sm:px-12 lg:px-24">
         <div className="max-w-4xl mx-auto">
           {/* Section header */}
           <div className="mb-12 sm:mb-16 text-center">
@@ -526,7 +526,7 @@ const Contact = () => {
       {/* ============================================================
           CTA SECTION
          ============================================================ */}
-      <section className="cta-section w-full py-16 sm:py-24 px-6 sm:px-12 lg:px-24">
+      <section className="cta-section w-full py-7 sm:py-24 px-6 sm:px-12 lg:px-24">
         <div className="max-w-4xl mx-auto">
           <div className="cta-content relative block">
             {/* Slope header */}

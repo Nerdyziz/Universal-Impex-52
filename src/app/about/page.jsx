@@ -167,7 +167,7 @@ const About = () => {
       {/* ============================================================
           HERO SECTION
          ============================================================ */}
-      <section className="relative w-full min-h-screen flex flex-col justify-center px-6 sm:px-12 lg:px-24 pt-24 pb-16 overflow-hidden">
+      <section className="relative w-full xl:min-h-screen flex flex-col justify-center px-6 sm:px-12 lg:px-24 pt-7 overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute top-20 right-10 w-[300px] h-[300px] bg-amber-400/5 rounded-full blur-[100px]" />
         <div className="absolute bottom-20 left-10 w-[200px] h-[200px] bg-amber-400/10 rounded-full blur-[80px]" />

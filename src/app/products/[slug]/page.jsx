@@ -295,7 +295,7 @@ const ProductPage = () => {
       {/* ============================================================
          PRODUCT HERO
          ============================================================ */}
-      <section className="relative w-full px-6 sm:px-12 lg:px-24 pt-28 pb-16">
+      <section className="relative w-full px-6 sm:px-12 lg:px-24 lg:pt-28 pt-7 pb-2">
         <div className="absolute top-20 right-10 w-[300px] h-[300px] bg-[#EEBA2B]/10 rounded-full blur-[100px]" />
 
         <div className="relative z-10 max-w-6xl mx-auto w-full">
@@ -542,7 +542,7 @@ const ProductPage = () => {
          SPECIFICATIONS TABLE
          ============================================================ */}
       {product.specs && product.specs.length > 0 && (
-        <section className="specs-section w-full py-16 sm:py-24 px-6 sm:px-12 lg:px-24">
+        <section className="specs-section w-full py-5 sm:py-24 px-6 sm:px-12 lg:px-24">
           <div className="max-w-6xl mx-auto">
             <div className="mb-10 sm:mb-14">
               <div className="flex items-center gap-3 mb-4">
@@ -583,7 +583,7 @@ const ProductPage = () => {
          RELATED PRODUCTS
          ============================================================ */}
       {related.length > 0 && (
-        <section className="related-section w-full py-16 sm:py-24 px-6 sm:px-12 lg:px-24 bg-[rgba(20,20,20,0.02)] border-t border-black/5">
+        <section className="related-section w-full py-7 sm:py-24 px-6 sm:px-12 lg:px-24 bg-[rgba(20,20,20,0.02)] border-t border-black/5">
           <div className="max-w-6xl mx-auto">
             <div className="mb-10 sm:mb-14">
               <div className="flex items-center gap-3 mb-4">
