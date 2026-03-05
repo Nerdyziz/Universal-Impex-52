@@ -82,22 +82,35 @@ const Testimonial = () => {
       });
 
       // Animate each panel's inner content — plays once when panel enters, stays visible
-      gsap.utils.toArray(".testi-panel").forEach((panel) => {
+      gsap.utils.toArray(".testi-panel").forEach((panel, i) => {
         const anims = panel.querySelectorAll(".testi-anim");
-        gsap.set(anims, { y: 30, opacity: 0 });
-        gsap.to(anims, {
-          y: 0,
-          opacity: 1,
-          stagger: 0.12,
-          ease: "power2.out",
-          duration: 0.8,
-          scrollTrigger: {
-            trigger: panel,
-            start: "left 85%",
-            toggleActions: "play none none none",
-            containerAnimation: tl,
-          },
-        });
+        if (i === 0) {
+          // First panel is already in view when pinned — animate immediately
+          gsap.set(anims, { y: 20, opacity: 0 });
+          gsap.to(anims, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.1,
+            ease: "power2.out",
+            duration: 0.6,
+            delay: 0.2,
+          });
+        } else {
+          gsap.set(anims, { y: 30, opacity: 0 });
+          gsap.to(anims, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.12,
+            ease: "power2.out",
+            duration: 0.8,
+            scrollTrigger: {
+              trigger: panel,
+              start: "left 85%",
+              toggleActions: "play none none none",
+              containerAnimation: tl,
+            },
+          });
+        }
       });
 
       return () => {
