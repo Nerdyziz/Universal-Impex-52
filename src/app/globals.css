@@ -87,18 +87,14 @@ html {
 
 /* Force GPU compositing for animated elements in Safari */
 @supports (-webkit-appearance: none) and (not (-moz-appearance: none)) {
-  /* Safari only */
+  /* Safari only — GPU hints for non-glass animated elements */
   .will-change-transform {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
   
-  /* Prevent Safari from breaking backdrop-filter in stacking contexts */
+  /* Keep backdrop-filter working — do NOT add transform here as it breaks blur */
   .liquid-glass {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
     isolation: isolate;
   }
 }

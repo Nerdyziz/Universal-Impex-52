@@ -107,9 +107,8 @@ const PillNav = ({
       const nav = navContainerRef.current;
       if (!nav) return;
 
-      // Use pointer-events:none instead of visibility:hidden to avoid layout thrashing
-      nav.style.pointerEvents = 'none';
-      nav.style.opacity = '0.001';
+      // Hide nav so elementFromPoint sees what's behind it
+      nav.style.visibility = 'hidden';
 
       // Use a single RAF for the read, then batch state updates
       scheduledRaf = requestAnimationFrame(() => {
@@ -154,8 +153,7 @@ const PillNav = ({
         }
 
         // Restore nav immediately
-        nav.style.pointerEvents = '';
-        nav.style.opacity = '';
+        nav.style.visibility = '';
 
         // Batch all state updates to reduce re-renders
         const prev = pillDarkBgRef.current;
@@ -454,12 +452,15 @@ const PillNav = ({
 
       if (Math.abs(delta) < SCROLL_THRESHOLD) return; 
 
+      // Animate children instead of container to avoid transform on parent
+      // which breaks backdrop-filter on child elements
+      const targets = Array.from(nav.children);
       if (delta > 0 && direction !== 'down') {
         direction = 'down';
-        gsap.to(nav, { y: -100, opacity: 0, duration: 0.3, ease: 'power2.out', overwrite: true });
+        gsap.to(targets, { y: -100, opacity: 0, duration: 0.3, ease: 'power2.out', overwrite: true });
       } else if (delta < 0 && direction !== 'up') {
         direction = 'up';
-        gsap.to(nav, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out', overwrite: true });
+        gsap.to(targets, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out', overwrite: true });
       }
       lastScrollY = currentScrollY;
     };
@@ -483,7 +484,7 @@ const PillNav = ({
     <div
       ref={navContainerRef}
       className="sticky top-2 z-[1000] w-full left-0 flex justify-center items-center"
-      style={{ ...cssVars, transform: 'translate3d(0,0,0)', opacity: 1, willChange: 'transform, opacity', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+      style={{ ...cssVars }}
     >
       <nav
         className={`hidden md:flex w-max items-center rounded-2xl ${className}`}
