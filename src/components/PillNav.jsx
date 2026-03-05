@@ -48,7 +48,6 @@ const PillNav = ({
   const navItemsRef = useRef(null);
   const cartRef = useRef(null);
   const navContainerRef = useRef(null); 
-  const rafIdRef = useRef(null);
   
   const [cartDarkBg, setCartDarkBg] = useState(false);
   const [mobileDarkBg, setMobileDarkBg] = useState(false);
@@ -62,11 +61,13 @@ const PillNav = ({
   useEffect(() => {
     if (!glassBase) return;
 
-    let pending = false;
+    let lastDetectTime = 0;
+    const DETECT_INTERVAL = 250; // Only run detection every 250ms (not every frame)
+    let scheduledRaf = null;
 
     const getBgLuminance = (x, y) => {
       const el = document.elementFromPoint(x, y);
-      if (!el) return 0.9; 
+      if (!el) return 0.9;
 
       let target = el;
       let rAcc = 255, gAcc = 255, bAcc = 255;
@@ -102,55 +103,44 @@ const PillNav = ({
       return lum;
     };
 
-    const detectBg = () => {
-      if (pending) return;
-      pending = true;
+    const runDetection = () => {
+      const nav = navContainerRef.current;
+      if (!nav) return;
 
-      rafIdRef.current = requestAnimationFrame(() => {
-        pending = false;
-        const nav = navContainerRef.current;
-        if (!nav) return;
+      // Use pointer-events:none instead of visibility:hidden to avoid layout thrashing
+      nav.style.pointerEvents = 'none';
+      nav.style.opacity = '0.001';
 
-        nav.style.visibility = 'hidden';
-
+      // Use a single RAF for the read, then batch state updates
+      scheduledRaf = requestAnimationFrame(() => {
         const newDarkStates = pillRefs.current.map(pillEl => {
           if (!pillEl) return false;
           const rect = pillEl.getBoundingClientRect();
           const cx = rect.left + rect.width / 2;
           const cy = rect.top + rect.height / 2;
-          const lum = getBgLuminance(cx, cy);
-          return lum < 0.45;
+          return getBgLuminance(cx, cy) < 0.45;
         });
 
         let newCartDark = false;
         const cartEl = cartRef.current;
         if (cartEl) {
           const cartRect = cartEl.getBoundingClientRect();
-          const cx = cartRect.left + cartRect.width / 2;
-          const cy = cartRect.top + cartRect.height / 2;
-          const lum = getBgLuminance(cx, cy);
-          newCartDark = lum < 0.45;
+          newCartDark = getBgLuminance(cartRect.left + cartRect.width / 2, cartRect.top + cartRect.height / 2) < 0.45;
         }
 
         let newMobileDark = false;
         const hamburgerEl = hamburgerRef.current;
         if (hamburgerEl) {
           const hRect = hamburgerEl.getBoundingClientRect();
-          const cx = hRect.left + hRect.width / 2;
-          const cy = hRect.top + hRect.height / 2;
-          const lum = getBgLuminance(cx, cy);
-          newMobileDark = lum < 0.45;
+          newMobileDark = getBgLuminance(hRect.left + hRect.width / 2, hRect.top + hRect.height / 2) < 0.45;
         }
 
         let newLogoDark = false;
         const desktopLogoEl = desktopLogoRef.current;
         if (desktopLogoEl) {
           const lRect = desktopLogoEl.getBoundingClientRect();
-          if (lRect.width > 0) { 
-            const cx = lRect.left + lRect.width / 2;
-            const cy = lRect.top + lRect.height / 2;
-            const lum = getBgLuminance(cx, cy);
-            newLogoDark = lum < 0.45;
+          if (lRect.width > 0) {
+            newLogoDark = getBgLuminance(lRect.left + lRect.width / 2, lRect.top + lRect.height / 2) < 0.45;
           }
         }
 
@@ -158,48 +148,55 @@ const PillNav = ({
         const mobileLogoEl = mobileLogoRef.current;
         if (mobileLogoEl) {
           const mlRect = mobileLogoEl.getBoundingClientRect();
-          if (mlRect.width > 0) { 
-            const cx = mlRect.left + mlRect.width / 2;
-            const cy = mlRect.top + mlRect.height / 2;
-            const lum = getBgLuminance(cx, cy);
-            newMobileLogoDark = lum < 0.45;
+          if (mlRect.width > 0) {
+            newMobileLogoDark = getBgLuminance(mlRect.left + mlRect.width / 2, mlRect.top + mlRect.height / 2) < 0.45;
           }
         }
 
-        nav.style.visibility = '';
+        // Restore nav immediately
+        nav.style.pointerEvents = '';
+        nav.style.opacity = '';
 
+        // Batch all state updates to reduce re-renders
         const prev = pillDarkBgRef.current;
-        const changed = newDarkStates.length !== prev.length ||
-          newDarkStates.some((v, i) => v !== prev[i]);
+        const pillChanged = newDarkStates.length !== prev.length || newDarkStates.some((v, i) => v !== prev[i]);
+        const cartChanged = newCartDark !== cartDarkBgRef.current;
+        const mobileChanged = newMobileDark !== mobileDarkBgRef.current;
+        const logoChanged = newLogoDark !== logoDarkBgRef.current;
+        const mobileLogoChanged = newMobileLogoDark !== mobileLogoDarkBgRef.current;
 
-        if (changed) {
-          pillDarkBgRef.current = newDarkStates;
-          setPillDarkBg([...newDarkStates]);
-        }
-        if (newCartDark !== cartDarkBgRef.current) {
-          cartDarkBgRef.current = newCartDark;
-          setCartDarkBg(newCartDark);
-        }
-        if (newMobileDark !== mobileDarkBgRef.current) {
-          mobileDarkBgRef.current = newMobileDark;
-          setMobileDarkBg(newMobileDark);
-        }
-        if (newLogoDark !== logoDarkBgRef.current) {
-          logoDarkBgRef.current = newLogoDark;
-          setLogoDarkBg(newLogoDark);
-        }
-        if (newMobileLogoDark !== mobileLogoDarkBgRef.current) {
-          mobileLogoDarkBgRef.current = newMobileLogoDark;
-          setMobileLogoDarkBg(newMobileLogoDark);
+        if (pillChanged || cartChanged || mobileChanged || logoChanged || mobileLogoChanged) {
+          // Update refs first (synchronous)
+          if (pillChanged) pillDarkBgRef.current = newDarkStates;
+          if (cartChanged) cartDarkBgRef.current = newCartDark;
+          if (mobileChanged) mobileDarkBgRef.current = newMobileDark;
+          if (logoChanged) logoDarkBgRef.current = newLogoDark;
+          if (mobileLogoChanged) mobileLogoDarkBgRef.current = newMobileLogoDark;
+
+          // Trigger a single batch of state updates — React will batch these
+          if (pillChanged) setPillDarkBg([...newDarkStates]);
+          if (cartChanged) setCartDarkBg(newCartDark);
+          if (mobileChanged) setMobileDarkBg(newMobileDark);
+          if (logoChanged) setLogoDarkBg(newLogoDark);
+          if (mobileLogoChanged) setMobileLogoDarkBg(newMobileLogoDark);
         }
       });
     };
 
-    detectBg();
+    const detectBg = () => {
+      const now = performance.now();
+      if (now - lastDetectTime < DETECT_INTERVAL) return;
+      lastDetectTime = now;
+      runDetection();
+    };
+
+    // Initial detection after a short delay for layout to settle
+    const initTimer = setTimeout(() => runDetection(), 100);
     window.addEventListener('scroll', detectBg, { passive: true });
     return () => {
+      clearTimeout(initTimer);
       window.removeEventListener('scroll', detectBg);
-      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      if (scheduledRaf) cancelAnimationFrame(scheduledRaf);
     };
   }, [glassBase]);
 
@@ -485,8 +482,8 @@ const PillNav = ({
   return (
     <div
       ref={navContainerRef}
-      className="sticky top-2 z-[1000] w-full left-0 flex justify-center items-center will-change-transform"
-      style={{ ...cssVars, transform: 'translateY(0)', opacity: 1 }}
+      className="sticky top-2 z-[1000] w-full left-0 flex justify-center items-center"
+      style={{ ...cssVars, transform: 'translate3d(0,0,0)', opacity: 1, willChange: 'transform, opacity', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
     >
       <nav
         className={`hidden md:flex w-max items-center rounded-2xl ${className}`}
@@ -547,6 +544,7 @@ const PillNav = ({
               const pillStyle = {
                 backgroundColor: glassBase ? 'rgba(255,255,255,0)' : 'var(--pill-bg, #fff)',
                 color: glassBase ? (pillDarkBg[i] ? '#ffffff' : '#000000') : 'var(--pill-text, var(--base, #000))',
+                transition: 'color 0.3s ease',
                 paddingLeft: 'var(--pill-pad-x)',
                 paddingRight: 'var(--pill-pad-x)'
               };
@@ -636,6 +634,7 @@ const PillNav = ({
             width: 'var(--nav-h)',
             height: 'var(--nav-h)',
             color: glassBase ? (cartDarkBg ? '#ffffff' : '#000000') : 'var(--pill-bg, #fff)',
+            transition: 'color 0.3s ease',
           }}
           aria-label="Cart"
         >
@@ -707,12 +706,12 @@ const PillNav = ({
           }}
         >
           <span
-            className="hamburger-line w-4 h-0.5 rounded origin-center transition-all duration-[10ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
-            style={{ background: glassBase ? (mobileDarkBg ? '#ffffff' : '#000000') : '#fff' }}
+            className="hamburger-line w-4 h-0.5 rounded origin-center"
+            style={{ background: glassBase ? (mobileDarkBg ? '#ffffff' : '#000000') : '#fff', transition: 'background 0.3s ease' }}
           />
           <span
-            className="hamburger-line w-4 h-0.5 rounded origin-center transition-all duration-[10ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
-            style={{ background: glassBase ? (mobileDarkBg ? '#ffffff' : '#000000') : '#fff' }}
+            className="hamburger-line w-4 h-0.5 rounded origin-center"
+            style={{ background: glassBase ? (mobileDarkBg ? '#ffffff' : '#000000') : '#fff', transition: 'background 0.3s ease' }}
           />
         </button>
 
@@ -724,6 +723,7 @@ const PillNav = ({
             width: 'var(--nav-h)',
             height: 'var(--nav-h)',
             color: glassBase ? (mobileDarkBg ? '#ffffff' : '#000000') : 'var(--pill-bg, #fff)',
+            transition: 'color 0.3s ease',
             ...(glassBase ? glassStyle : { background: 'var(--base, #000)' }),
           }}
           aria-label="Cart"

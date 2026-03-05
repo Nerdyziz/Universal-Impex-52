@@ -76,6 +76,33 @@
   box-sizing: border-box;
 }
 
+/* ============================================
+   Safari-specific performance & animation fixes
+   ============================================ */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Force GPU compositing for animated elements in Safari */
+@supports (-webkit-appearance: none) and (not (-moz-appearance: none)) {
+  /* Safari only */
+  .will-change-transform {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  /* Prevent Safari from breaking backdrop-filter in stacking contexts */
+  .liquid-glass {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    isolation: isolate;
+  }
+}
+
 body {
   z-index: -50  ;
   background:
