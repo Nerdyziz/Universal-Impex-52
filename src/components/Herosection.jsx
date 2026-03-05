@@ -14,8 +14,9 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import { Dice1 } from "lucide-react";
 import { div } from "three/src/nodes/math/OperatorNode";
 
+gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
 const Herosection = () => {
-  gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
   const containerRef = useRef(null);
 
@@ -189,7 +190,7 @@ const Herosection = () => {
 
         pinSpacing: true,
 
-        scrub: 2,
+        scrub: 1,
 
         
       },

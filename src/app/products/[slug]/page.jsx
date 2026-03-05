@@ -140,7 +140,7 @@ const ProductPage = () => {
               trigger: ".specs-section",
               start: "top 75%",
               end: "top 35%",
-              scrub: 2,
+              scrub: 1,
             },
           }
         );
@@ -160,7 +160,7 @@ const ProductPage = () => {
               trigger: ".related-section",
               start: "top 85%",
               end: "top 35%",
-              scrub: 2,
+              scrub: 1,
             },
           }
         );

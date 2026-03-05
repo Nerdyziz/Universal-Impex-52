@@ -92,71 +92,76 @@ const Contact = () => {
       );
 
       // --- Info cards ---
-      gsap.from(".info-card", {
-        y: 40,
-        opacity: 0,
+      gsap.set(".info-card", { y: 40, opacity: 0 });
+      gsap.to(".info-card", {
+        y: 0,
+        opacity: 1,
         stagger: 0.2,
         ease: "none",
         scrollTrigger: {
           trigger: ".info-section",
           start: "top 80%",
           end: "top 30%",
-          scrub: 2,
+          scrub: 1,
         },
       });
 
       // --- Form section ---
-      gsap.from(".form-block", {
-        y: 50,
-        opacity: 0,
+      gsap.set(".form-block", { y: 50, opacity: 0 });
+      gsap.to(".form-block", {
+        y: 0,
+        opacity: 1,
         duration: 1.5,
         ease: "none",
         scrollTrigger: {
           trigger: ".form-section",
           start: "top 80%",
           end: "top 30%",
-          scrub: 3,
+          scrub: 1,
         },
       });
 
-      gsap.from(".form-sidebar", {
-        x: 50,
-        opacity: 0,
+      gsap.set(".form-sidebar", { x: 50, opacity: 0 });
+      gsap.to(".form-sidebar", {
+        x: 0,
+        opacity: 1,
         duration: 1.5,
         ease: "none",
         scrollTrigger: {
           trigger: ".form-section",
           start: "top 80%",
           end: "top 25%",
-          scrub: 3,
+          scrub: 1,
         },
       });
 
       // --- FAQ section ---
-      gsap.from(".faq-item", {
-        y: 30,
-        opacity: 0,
+      gsap.set(".faq-item", { y: 30, opacity: 0 });
+      gsap.to(".faq-item", {
+        y: 0,
+        opacity: 1,
         stagger: 0.15,
         ease: "none",
         scrollTrigger: {
           trigger: ".faq-section",
           start: "top 80%",
           end: "center center",
-          scrub: 3,
+          scrub: 1,
         },
       });
 
       // --- CTA section ---
-      gsap.from(".cta-content", {
-        y: 30,
-        opacity: 0,
+      gsap.set(".cta-content", { y: 30, opacity: 0 });
+      gsap.to(".cta-content", {
+        y: 0,
+        opacity: 1,
         duration: 1.5,
         ease: "none",
         scrollTrigger: {
           trigger: ".cta-section",
           start: "top 90%",
           end: "top 30%",
-          scrub: 3,
+          scrub: 1,
         },
       });
     },

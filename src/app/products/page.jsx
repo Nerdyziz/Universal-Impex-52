@@ -222,29 +222,42 @@ const Products = () => {
     if (brandFromUrl) setActiveBrand(brandFromUrl);
   }, [brandFromUrl]);
 
+  // Recursively clean a category tree — remove nodes with empty/null names
+  const cleanCategoryTree = useCallback((nodes) => {
+    if (!Array.isArray(nodes)) return [];
+    return nodes
+      .map((node) => {
+        if (typeof node === "string") {
+          return node.trim() ? { name: node.trim(), children: [] } : null;
+        }
+        if (!node || !node.name || !String(node.name).trim()) return null;
+        return { name: String(node.name).trim(), children: cleanCategoryTree(node.children || []) };
+      })
+      .filter(Boolean);
+  }, []);
+
   // Get categories for active brand (tree structure)
   const activeBrandData = brands.find((b) => b.name === activeBrand);
-  const brandCategoryTree = (activeBrandData?.categories || []).map((c) =>
-    typeof c === "string" ? { name: c, children: [] } : c
-  );
+  const brandCategoryTree = cleanCategoryTree(activeBrandData?.categories || []);
 
   // All unique category trees across all brands (merged)
   const allCategoryTree = (() => {
     const merged = [];
     const insertNode = (tree, node) => {
-      const existing = tree.find((n) => n.name.toLowerCase() === (typeof node === "string" ? node : node.name).toLowerCase());
+      if (!node || !node.name || !String(node.name).trim()) return;
+      const nodeName = String(node.name).trim();
+      const existing = tree.find((n) => n.name.toLowerCase() === nodeName.toLowerCase());
       if (existing) {
-        const children = typeof node === "string" ? [] : node.children || [];
+        const children = node.children || [];
         for (const child of children) {
           insertNode(existing.children || (existing.children = []), child);
         }
       } else {
-        const n = typeof node === "string" ? { name: node, children: [] } : { name: node.name, children: [...(node.children || [])] };
-        tree.push(n);
+        tree.push({ name: nodeName, children: [...(node.children || [])] });
       }
     };
     for (const brand of brands) {
-      for (const cat of brand.categories || []) {
+      for (const cat of cleanCategoryTree(brand.categories || [])) {
         insertNode(merged, cat);
       }
     }
@@ -309,45 +322,48 @@ const Products = () => {
   );
 
   if (document.querySelectorAll(".featured-card").length) {
-    gsap.from(".featured-card", {
-      y: 50,
-      opacity: 0,
+    gsap.set(".featured-card", { y: 50, opacity: 0 });
+    gsap.to(".featured-card", {
+      y: 0,
+      opacity: 1,
       stagger: 0.15,
       ease: "none",
       scrollTrigger: {
         trigger: ".featured-section",
         start: "top 85%",
         end: "top 25%",
-        scrub: 3,
+        scrub: 1,
       },
     });
   }
 
   if (document.querySelectorAll(".product-card").length) {
-    gsap.from(".product-card", {
-      y: 40,
-      opacity: 0,
+    gsap.set(".product-card", { y: 40, opacity: 0 });
+    gsap.to(".product-card", {
+      y: 0,
+      opacity: 1,
       stagger: 0.1,
       ease: "none",
       scrollTrigger: {
         trigger: ".products-grid",
         start: "top 85%",
         end: "top 25%",
-        scrub: 3,
+        scrub: 1,
       },
     });
   }
 
   if (document.querySelector(".products-cta")) {
-    gsap.from(".products-cta", {
-      y: 50,
-      opacity: 0,
+    gsap.set(".products-cta", { y: 50, opacity: 0 });
+    gsap.to(".products-cta", {
+      y: 0,
+      opacity: 1,
       ease: "none",
       scrollTrigger: {
         trigger: ".products-cta",
-        start: "center center",
+        start: "top 85%",
         end: "top 25%",
-        scrub: 3,
+        scrub: 1,
       },
     });
   }

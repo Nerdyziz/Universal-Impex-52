@@ -81,70 +81,75 @@ const About = () => {
   
 
       // --- Story section ---
-      gsap.from(".story-image", {
-        x: -60,
-        opacity: 0,
+      gsap.set(".story-image", { x: -60, opacity: 0 });
+      gsap.to(".story-image", {
+        x: 0,
+        opacity: 1,
         duration: 2,
         ease: "none",
         scrollTrigger: {
           trigger: ".story-section",
           start: "top 90%",
           end: "top 20%",
-          scrub: 3,
+          scrub: 1,
         },
       });
-      gsap.from(".story-content", {
-        x: 60,
-        opacity: 0,
+      gsap.set(".story-content", { x: 60, opacity: 0 });
+      gsap.to(".story-content", {
+        x: 0,
+        opacity: 1,
         duration: 2,
         ease: "none",
         scrollTrigger: {
           trigger: ".story-section",
           start: "top 90%",
           end: "top 20%",
-          scrub: 3,
+          scrub: 1,
         },
       });
 
       // --- Values section ---
-      gsap.from(".value-card", {
-        y: 40,
-        opacity: 0,
+      gsap.set(".value-card", { y: 40, opacity: 0 });
+      gsap.to(".value-card", {
+        y: 0,
+        opacity: 1,
         stagger: 0.3,
         ease: "none",
         scrollTrigger: {
           trigger: ".values-section",
           start: "top 85%",
           end: "top 15%",
-          scrub: 3,
+          scrub: 1,
         },
       });
 
       // --- Timeline items ---
-      gsap.from(".timeline-item", {
-        x: -30,
-        opacity: 0,
+      gsap.set(".timeline-item", { x: -30, opacity: 0 });
+      gsap.to(".timeline-item", {
+        x: 0,
+        opacity: 1,
         stagger: 0.3,
         ease: "none",
         scrollTrigger: {
           trigger: ".timeline-section",
           start: "top 85%",
           end: "center center",
-          scrub: 3,
+          scrub: 1,
         },
       });
 
       // --- CTA section ---
-      gsap.from(".cta-content", {
-        y: 30,
-        opacity: 0,
+      gsap.set(".cta-content", { y: 30, opacity: 0 });
+      gsap.to(".cta-content", {
+        y: 0,
+        opacity: 1,
         duration: 1.5,
         ease: "none",
         scrollTrigger: {
           trigger: ".cta-section",
           start: "top 90%",
           end: "top 30%",
-          scrub: 3,
+          scrub: 1,
         },
       });
     },
