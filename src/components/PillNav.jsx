@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { gsap } from 'gsap';
 import { useCart } from '@/context/CartContext';
-import { useIntro } from '@/context/IntroContext';
+
 import { ShoppingCart } from 'lucide-react';
 
 const PillNav = ({
@@ -31,7 +31,6 @@ const PillNav = ({
   const [mobileLogoDarkBg, setMobileLogoDarkBg] = useState(false);
 
   const { cartCount } = useCart();
-  const { introComplete, introActive } = useIntro();
   const hasPlayedEntrance = useRef(false);
   
   const circleRefs = useRef([]);
@@ -300,51 +299,23 @@ const PillNav = ({
       const mLogo = mobileLogoRef.current;
       const navItems = navItemsRef.current;
 
-      if (introActive && !introComplete) {
-        if (dLogo) gsap.set(dLogo, { scale: 0 });
-        if (mLogo) gsap.set(mLogo, { scale: 0 });
-        if (navItems) gsap.set(navItems, { width: 0, overflow: 'hidden' });
-      } else {
-        if (dLogo) {
-          gsap.set(dLogo, { scale: 0 });
-          gsap.to(dLogo, { scale: 1, duration: 0.6, ease });
-        }
-        if (mLogo) {
-          gsap.set(mLogo, { scale: 0 });
-          gsap.to(mLogo, { scale: 1, duration: 0.6, ease });
-        }
-        if (navItems) {
-          gsap.set(navItems, { width: 0, overflow: 'hidden' });
-          gsap.to(navItems, { width: 'auto', duration: 0.6, ease });
-        }
-        hasPlayedEntrance.current = true;
+      if (dLogo) {
+        gsap.set(dLogo, { scale: 0 });
+        gsap.to(dLogo, { scale: 1, duration: 0.6, ease });
       }
+      if (mLogo) {
+        gsap.set(mLogo, { scale: 0 });
+        gsap.to(mLogo, { scale: 1, duration: 0.6, ease });
+      }
+      if (navItems) {
+        gsap.set(navItems, { width: 0, overflow: 'hidden' });
+        gsap.to(navItems, { width: 'auto', duration: 0.6, ease });
+      }
+      hasPlayedEntrance.current = true;
     }
 
     return () => window.removeEventListener('resize', onResize);
-  }, [items, ease, initialLoadAnimation, introActive, introComplete, glassBase, pillColor]);
-
-  useEffect(() => {
-    if (!initialLoadAnimation || hasPlayedEntrance.current || !introComplete || !introActive) return;
-
-    const dLogo = desktopLogoRef.current;
-    const mLogo = mobileLogoRef.current;
-    const navItems = navItemsRef.current;
-
-    if (dLogo) {
-      gsap.set(dLogo, { scale: 0 });
-      gsap.to(dLogo, { scale: 1, duration: 0.6, ease, delay: 0.1 });
-    }
-    if (mLogo) {
-      gsap.set(mLogo, { scale: 0 });
-      gsap.to(mLogo, { scale: 1, duration: 0.6, ease, delay: 0.1 });
-    }
-    if (navItems) {
-      gsap.set(navItems, { width: 0, overflow: 'hidden' });
-      gsap.to(navItems, { width: 'auto', duration: 0.6, ease, delay: 0.15 });
-    }
-    hasPlayedEntrance.current = true;
-  }, [introComplete, introActive, initialLoadAnimation, ease]);
+  }, [items, ease, initialLoadAnimation, glassBase, pillColor]);
 
   const handleEnter = i => {
     const tl = tlRefs.current[i];

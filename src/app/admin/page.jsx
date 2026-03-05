@@ -18,7 +18,6 @@ import {
   ImagePlus,
   LayoutDashboard,
   AlertTriangle,
-  Upload,
   Loader2,
   RefreshCw,
   FileUp,
@@ -1061,87 +1060,7 @@ function StatCard({ label, value, icon: Icon }) {
   );
 }
 
-// ─── IMAGE UPLOAD COMPONENT ─────────────────────────────────────
-function ImageUpload({ currentImage, onUpload }) {
-  const fileRef = useRef(null);
-  const [uploading, setUploading] = useState(false);
-  const [preview, setPreview] = useState(currentImage || "");
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (ev) => setPreview(ev.target.result);
-    reader.readAsDataURL(file);
-
-    setUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", "automobile-b2b/products");
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const json = await res.json();
-      if (json.success) {
-        onUpload(json.data.url);
-        setPreview(json.data.url);
-      } else {
-        alert("Upload failed: " + json.error);
-        setPreview(currentImage || "");
-      }
-    } catch (err) {
-      alert("Upload error: " + err.message);
-      setPreview(currentImage || "");
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  return (
-    <div className="space-y-2">
-      {preview && safeImage(preview) !== "/fp1.png" && (
-        <div className="relative w-full h-32 rounded-lg overflow-hidden bg-gray-100 border border-amber-900/10">
-          <Image
-            src={safeImage(preview)}
-            alt="Preview"
-            fill
-            className="object-contain"
-          />
-        </div>
-      )}
-      <button
-        type="button"
-        onClick={() => fileRef.current?.click()}
-        disabled={uploading}
-        className="flex items-center gap-2 w-full justify-center bg-white/60 border border-amber-900/15 rounded-lg px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-600 hover:bg-white/80 hover:text-amber-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {uploading ? (
-          <>
-            <Loader2 className="w-4 h-4 animate-spin" />
-            Uploading...
-          </>
-        ) : (
-          <>
-            <Upload className="w-4 h-4" />
-            {preview ? "Change Image" : "Upload Image"}
-          </>
-        )}
-      </button>
-      <input
-        ref={fileRef}
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        className="hidden"
-      />
-    </div>
-  );
-}
 
 // ─── PRODUCT MODAL ──────────────────────────────────────────────
 function ProductModal({ initial, onSave, onClose, brands = [] }) {
@@ -1253,18 +1172,24 @@ function ProductModal({ initial, onSave, onClose, brands = [] }) {
           </button>
         </div>
 
-        {/* Image Upload */}
+        {/* Image URL */}
         <Field label="Product Image">
-          <ImageUpload
-            currentImage={form.image}
-            onUpload={(url) => update("image", url)}
-          />
+          {form.image && safeImage(form.image) !== "/fp1.png" && (
+            <div className="relative w-full h-32 rounded-lg overflow-hidden bg-gray-100 border border-amber-900/10 mb-2">
+              <Image
+                src={safeImage(form.image)}
+                alt="Preview"
+                fill
+                className="object-contain"
+              />
+            </div>
+          )}
           <input
             type="text"
             value={form.image}
             onChange={(e) => update("image", e.target.value)}
-            placeholder="Or enter image URL / path"
-            className="input-field mt-2"
+            placeholder="Enter image URL / path"
+            className="input-field"
           />
         </Field>
 
