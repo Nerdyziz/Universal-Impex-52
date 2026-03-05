@@ -11,8 +11,8 @@ gsap.registerPlugin(ScrollTrigger);
 const testimonials = [
   {
     quote:
-      "Switching to their forged engine blocks cut our warranty claims by 40%. The consistency across 2,000+ units is something we've never seen from another supplier. Their QC process is genuinely world-class.",
-    author: "Rajesh Mehta",
+      "Partnering with Universal Impex 52 removed months of supplier risk from our program. Their verified sourcing and tight QC processes meant we started shipping on schedule — and customer returns fell sharply.",
+    author: "Rajiv Mehta",
     role: "Head of Procurement",
     company: "Tata Motors — Powertrain Division",
     avatar: "/owner.jpg",
@@ -24,9 +24,9 @@ const testimonials = [
   },
   {
     quote:
-      "We needed a turbo supplier who could scale from prototype to 5,000 units without quality drift. They delivered — on time, every time. The twin-scroll units outperform OEM specs by a solid margin.",
-    author: "Marcus Brenner",
-    role: "VP of Engineering",
+      "We needed a partner who could scale quickly. UI52 handled supplier qualification and logistics flawlessly — 5,000+ units delivered on time during our launch window.",
+    author: "Lina Kovács",
+    role: "VP, Supply Chain",
     company: "BorgWarner Europe GmbH",
     avatar: "/owner.jpg",
     rating: 5,
@@ -37,14 +37,14 @@ const testimonials = [
   },
   {
     quote:
-      "Their adaptive coilover kits are now standard across our entire rally lineup. The 32-way adjustment gives our drivers an edge that translates directly to podium finishes. Best B2B partnership we've formed.",
-    author: "Yuki Tanaka",
-    role: "Motorsport Director",
+      "UI52's supplier audits and batch testing helped us reach an industry-leading defect rate — our return rate dropped to near-zero and supplier reliability improved across the board.",
+    author: "Meera Singh",
+    role: "Quality Assurance Manager",
     company: "Subaru Tecnica International",
     avatar: "/owner.jpg",
     rating: 5,
-    stat: "12",
-    statLabel: "Podium Finishes This Season",
+    stat: "0.02%",
+    statLabel: "Defect Rate",
     bg: "#d9d9d9",
     accent: "#EEBA2B", 
   },

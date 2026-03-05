@@ -1,3 +1,5 @@
+import SessionWrapper from "@/components/SessionWrapper";
+
 export const metadata = {
   title: "Admin Dashboard",
   robots: {
@@ -7,5 +9,5 @@ export const metadata = {
 };
 
 export default function AdminLayout({ children }) {
-  return children;
+  return <SessionWrapper>{children}</SessionWrapper>;
 }

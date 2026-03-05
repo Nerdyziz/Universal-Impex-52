@@ -486,8 +486,7 @@ const Products = () => {
 
           {/* Description */}
           <p className="products-hero-desc text-gray-700 text-sm sm:text-base lg:text-lg max-w-2xl leading-relaxed mb-6 font-medium">
-            Precision-engineered components built for the world&apos;s most demanding machines.
-            Every part undergoes a 47-point quality inspection before it leaves our facility.
+            Explore our range of professional power tools, industrial hardware and construction equipment supplied through trusted partnerships with industry-leading brands.
           </p>
 
           {/* Active filter indicator (hero) */}

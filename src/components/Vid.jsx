@@ -20,12 +20,12 @@ const imageLogos = [
 ];
 
 const cardData = [
-  { id: 1, icon: Globe, title: "Global Reach", desc: "Serving 2,500+ B2B clients across 40+ countries with dedicated regional warehouses and localized support teams.", stat: "40+", statLabel: "Countries Served", badge: "Worldwide" },
-  { id: 2, icon: Award, title: "ISO 9001 Certified", desc: "Every component passes our 12-stage quality inspection. Industry-leading 0.02% defect rate backed by third-party audits.", stat: "0.02%", statLabel: "Defect Rate", badge: "Certified" },
-  { id: 3, icon: Truck, title: "Express Fulfillment", desc: "Same-day dispatch on 10,000+ SKUs. Bulk orders processed within 48 hours with real-time shipment tracking.", stat: "48 hrs", statLabel: "Bulk Turnaround", badge: "Logistics" },
-  { id: 4, icon: ShieldCheck, title: "5-Year Warranty", desc: "Every order backed by our industry-best 5-year warranty with hassle-free replacements and dedicated claim support.", stat: "5 Yrs", statLabel: "Full Coverage", badge: "Guarantee" },
-  { id: 5, icon: Users, title: "OEM Partnerships", desc: "Trusted supplier to 120+ OEM manufacturers. Custom white-label solutions with dedicated engineering consultation.", stat: "120+", statLabel: "OEM Partners", badge: "Enterprise" },
-  { id: 6, icon: Headphones, title: "24/7 Trade Support", desc: "Round-the-clock technical assistance, bulk pricing consultation & custom sourcing for specialized requirements.", stat: "24/7", statLabel: "Always Available", badge: "Support" }
+  { id: 1, icon: Globe, title: "Global Market Presence", desc: "With an expanding network of suppliers and clients across multiple regions, we help businesses access international markets while maintaining efficient supply chains and reliable partnerships.", stat: "40+", statLabel: "COUNTRIES CONNECTED", badge: "Worldwide" },
+  { id: 2, icon: Award, title: "ISO 9001 Certified", desc: "Every product sourced through our network is carefully evaluated to meet international standards. We prioritize reliability, transparency and consistency to ensure our partners receive dependable industrial solutions.", stat: "0.02%", statLabel: "Defect Rate", badge: "Certified" },
+  { id: 3, icon: Truck, title: "Express Fulfillment", desc: "Seamless coordination of shipments across international markets. From supplier dispatch to final delivery, we ensure reliable timelines and transparent movement of goods.", stat: "FAST", statLabel: "GLOBAL DELIVERY", badge: "Logistics" },
+  { id: 4, icon: ShieldCheck, title: "Warranty", desc: "Every order backed by our industry-best 5-year warranty with hassle-free replacements and dedicated claim support.", stat: "5 Yrs", statLabel: "Full Coverage", badge: "Guarantee" },
+  { id: 5, icon: Users, title: "OEM Partnerships", desc: "Strong partnerships with verified manufacturers and suppliers across multiple industries. We connect businesses with reliable sources, ensuring consistent quality, competitive pricing and dependable supply.", stat: "50+", statLabel: "GLOBAL PARTNERS", badge: "Enterprise" },
+  { id: 6, icon: Headphones, title: "Global Trade Support", desc: "Dedicated assistance for sourcing, pricing and trade coordination. Our team ensures smooth communication with suppliers and buyers while helping businesses secure the right products at the right value.", stat: "24/7", statLabel: "TRADE ASSISTANCE", badge: "Support" }
 ];
 
 const GlassContent = ({ icon: Icon, title, desc, stat, statLabel, badge }) => (
@@ -106,11 +106,11 @@ const Vid = () => {
 
             <div className="flex flex-col items-center justify-center text-center">
               <BlurText
-                text="PRECISION MEETS PROGRESS"
+                text="CONNECTING INDUSTRIES WORLDWIDE"
                 delay={500}
                 animateBy="words"
                 direction="top"
-                className="text-2xl sm:text-3xl lg:text-4xl xl:text-6xl flex flex-col justify-center items-center font-black text-white select-none text-center drop-shadow-2xl leading-tight gap-y-4"
+                className="text-2xl sm:text-3xl lg:text-3xl xl:text-5xl 2xl:text-7xl flex flex-col justify-center items-center font-black text-white select-none text-center drop-shadow-2xl leading-tight gap-y-4"
               />
             </div>
 
@@ -138,11 +138,11 @@ const Vid = () => {
           <div className="w-full lg:hidden flex flex-col items-center px-4 pb-15 sm:px-6 justify-between ">
             <div className="pointer-events-none shrink-0">
               <BlurText
-                text="PRECISION MEETS PROGRESS"
+                text="CONNECTING INDUSTRIES WORLDWIDE"
                 delay={300}
                 animateBy="words"
                 direction="top"
-                className="lg:text-9xl md:text-8xl text-6xl font-black text-white text-center drop-shadow-2xl leading-tight flex flex-wrap justify-center gap-x-2 gap-y-3"
+                className="md:text-8xl  text-5xl font-black text-white text-center drop-shadow-2xl leading-tight flex flex-wrap justify-center gap-x-2 gap-y-3"
               />
             </div>
 

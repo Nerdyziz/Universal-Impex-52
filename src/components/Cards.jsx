@@ -83,7 +83,7 @@ const Cards = () => {
           
           <TabHeader widthClass="w-[calc(35%+40px)] sm:w-[calc(20%+40px)] md:w-[calc(20%+60px)]" plClass="pl-6 sm:pl-16 lg:pl-12">
             <Link
-              href="/brands"
+              href="/products"
               className="uppercase text-xs md:text-sm lg:text-lg tracking-widest text-black md:mt-1 mt-0 group pointer-events-auto cursor-pointer flex items-center gap-2"
             >
               See all

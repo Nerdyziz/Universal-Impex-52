@@ -221,9 +221,7 @@ const Contact = () => {
 
           {/* Description */}
           <p className="contact-hero-desc text-gray-700 text-sm sm:text-base lg:text-lg max-w-2xl leading-relaxed font-medium">
-            Whether you need precision-engineered components, custom manufacturing
-            solutions, or want to explore a long-term supply partnership — our team
-            is ready to talk.
+            Whether you're looking for power tools, industrial hardware or construction equipment, our team is ready to help. Reach out to discuss product availability, authorized brand partnerships or long-term supply solutions for your industry.
           </p>
         </div>
       </section>
@@ -436,8 +434,8 @@ const Contact = () => {
                       <Building2 className="w-4 h-4 text-[#EEBA2B]" />
                     </div>
                     <div>
-                      <span className="text-gray-900 text-sm font-black block">3 Global Facilities</span>
-                      <span className="text-gray-600 text-xs font-medium">Nagpur, Maharashtra, India</span>
+                      <span className="text-gray-900 text-sm font-black block">50+ Trusted Suppliers</span>
+                      <span className="text-gray-600 text-xs font-medium">Reliable sourcing for power tools & hardware</span>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
@@ -445,8 +443,8 @@ const Contact = () => {
                       <Globe className="w-4 h-4 text-[#EEBA2B]" />
                     </div>
                     <div>
-                      <span className="text-gray-900 text-sm font-black block">500+ B2B Partners</span>
-                      <span className="text-gray-600 text-xs font-medium">OEMs & aftermarket worldwide</span>
+                      <span className="text-gray-900 text-sm font-black block">10+ Brand Partnerships</span>
+                      <span className="text-gray-600 text-xs font-medium">Authorized dealership for leading tool brands</span>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
@@ -454,8 +452,8 @@ const Contact = () => {
                       <Clock className="w-4 h-4 text-[#EEBA2B]" />
                     </div>
                     <div>
-                      <span className="text-gray-900 text-sm font-black block">24hr Response</span>
-                      <span className="text-gray-600 text-xs font-medium">Fast turnaround on all inquiries</span>
+                      <span className="text-gray-900 text-sm font-black block">24hr Response Time</span>
+                      <span className="text-gray-600 text-xs font-medium">Fast support for inquiries and orders</span>
                     </div>
                   </li>
                 </ul>
@@ -500,25 +498,46 @@ const Contact = () => {
 
           <div className="bg-[rgba(20,20,20,0.02)] backdrop-blur-xl border border-black/10 rounded-2xl px-6 sm:px-10 py-2 shadow-sm">
             <FAQItem
-              question="What is the minimum order quantity (MOQ)?"
-              answer="Our MOQs vary by product category. Engine components typically start at 500 units, while suspension systems start at 200 units. We're flexible for pilot orders — contact us to discuss your specific needs."
+              question="What products does Universal Impex 52 supply?"
+              answer="We primarily supply power tools, industrial hardware and construction equipment through authorized brand partnerships and trusted suppliers."
             />
             <FAQItem
-              question="Do you offer custom manufacturing?"
-              answer="Absolutely. Over 40% of our output is custom-engineered to client specifications. We work from your CAD files or collaborate on design-to-manufacture projects from scratch."
+              question="How can I place an order?"
+              answer="Orders are processed through direct inquiries. Simply contact us with your product requirements and our team will provide pricing, availability and further details."
             />
             <FAQItem
-              question="What certifications do you hold?"
-              answer="We are ISO 9001:2015 and IATF 16949 certified across all facilities. We also comply with REACH and RoHS standards for applicable components."
+              question="Do you sell products directly online?"
+              answer="No. Our website is designed for product inquiries and quotation requests. Once you submit your requirements, our team will assist you with pricing and supply details."
             />
             <FAQItem
-              question="What are your typical lead times?"
-              answer="Standard catalog items ship within 2–4 weeks. Custom orders typically require 6–10 weeks depending on complexity. We offer expedited manufacturing for urgent requirements."
+              question="Do you offer bulk supply for businesses or contractors?"
+              answer="Yes. UI52 specializes in B2B supply, supporting contractors, distributors and businesses with bulk orders and reliable sourcing."
             />
             <FAQItem
-              question="Do you ship internationally?"
-              answer="Yes. We ship to over 60 countries with full logistics support including customs documentation, freight forwarding, and door-to-door delivery through our network of certified partners."
+              question="Are the products genuine and authorized?"
+              answer="Yes. We work with authorized brand partnerships and verified suppliers to ensure that all products supplied meet industry standards."
             />
+            <FAQItem
+              question="Do you supply products internationally?"
+              answer="Yes. Through our supplier and logistics network, we can support businesses with international supply and sourcing solutions."
+            />
+            <FAQItem
+              question="How long does it take to receive a quotation?"
+              answer="Most inquiries are responded to within 24-48 hours, depending on product availability and order requirements."
+            />
+            <FAQItem
+              question="Can you source products not listed on the website?"
+              answer="Yes. If you are looking for specific tools, hardware or construction equipment, our sourcing team can help locate suitable options through our supplier network."
+            />
+            <FAQItem
+              question="What information should I include when requesting a quote?"
+              answer="To help us respond quickly, please include product name, quantity required, brand preference (if any) and delivery location in your inquiry."
+            />
+            <FAQItem
+              question="Do you assist with product recommendations?"
+              answer="Yes. If you are unsure about the right tools or equipment for your project, our team can help recommend suitable products based on your requirements."
+            />
+           
           </div>
         </div>
       </section>
@@ -551,8 +570,7 @@ const Contact = () => {
                   Ready to <span className="italic font-serif text-[#EEBA2B]">Scale?</span>
                 </h2>
                 <p className="text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
-                  Join 500+ manufacturers who trust us for precision-engineered
-                  automobile components delivered on time, every time.
+                  oin industries and contractors who trust UI52 for reliable supply of power tools, industrial hardware, and construction equipment, delivered through trusted brand partnerships and efficient sourcing.
                 </p>
               </div>
               <Link
