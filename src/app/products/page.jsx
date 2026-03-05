@@ -533,6 +533,7 @@ const Products = () => {
         onClick={() => setFilterOpen(false)}
       />
       <div
+        data-lenis-prevent
         className={`fixed bottom-0 left-0 right-0 z-[100001] bg-white border-t border-black/10 rounded-t-3xl shadow-[0_-20px_40px_rgba(0,0,0,0.1)] transition-transform duration-400 ease-in-out lg:hidden max-h-[85vh] overflow-y-auto ${
           filterOpen ? "translate-y-0" : "translate-y-full"
         }`}
@@ -657,7 +658,7 @@ const Products = () => {
           {/* ============================================================
               DESKTOP SIDEBAR
              ============================================================ */}
-          <aside className="hidden lg:block w-[260px] shrink-0 sticky top-24 self-start max-h-[calc(100vh-120px)] overflow-y-auto no-scrollbar">
+          <aside data-lenis-prevent className="hidden lg:block w-[260px] shrink-0 sticky top-24 self-start max-h-[calc(100vh-120px)] overflow-y-auto no-scrollbar ">
             <div className="space-y-6 pb-8 pr-2">
               {/* Sidebar header */}
               <div>

@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { CartProvider } from "@/context/CartContext";
 
 import PillNav from "@/components/PillNav";
+import SmoothScroll from "@/components/SmoothScroll";
 
 
 const geistSans = Geist({
@@ -152,17 +153,19 @@ export default function RootLayout({ children }) {
       >
      
         <CartProvider>
+          <SmoothScroll>
+
        <PillNav
 
-  logoAlt="Company Logo"
-  items={[
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Products', href: '/products' },
-    { label: 'Brands', href: '/brands' },
-    { label: 'Contact', href: '/contact' }
-  ]}
-  activeHref="/"
+logoAlt="Company Logo"
+items={[
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Products', href: '/products' },
+  { label: 'Brands', href: '/brands' },
+  { label: 'Contact', href: '/contact' }
+]}
+activeHref="/"
   className="custom-nav"
   ease="power2.easeOut"
   baseColor="#ffffff"
@@ -174,6 +177,7 @@ export default function RootLayout({ children }) {
 />
           <main>{children}</main>
           <Footer />
+          </SmoothScroll>
         </CartProvider>
     
       </body>

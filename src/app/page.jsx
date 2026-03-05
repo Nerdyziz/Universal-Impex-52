@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ReactLenis, useLenis } from "lenis/react";
+
 import Cards from "@/components/Cards";
 import Vid from "@/components/Vid";
 import Testimonial from "@/components/Testimonial";
@@ -13,14 +13,10 @@ import MobileCard from "@/components/MobileCard";
 export default function Home() {
   
 
-  useLenis((lenis) => {
-    // scroll listener
-   
-  });
 
   return (
     <>
-      <ReactLenis root />
+      
 
       
    
