@@ -1,4 +1,5 @@
 import GoogleProvider from "next-auth/providers/google";
+import { signIn } from "next-auth/react";
 
 /**
  * Only these Gmail addresses can access the admin panel.
@@ -39,4 +40,8 @@ export const authOptions = {
     error: "/admin",    // show errors on the admin page itself
   },
   secret: process.env.NEXTAUTH_SECRET,
+};
+
+const handleSignIn = () => {
+  signIn("google", { prompt: "select_account" });
 };
