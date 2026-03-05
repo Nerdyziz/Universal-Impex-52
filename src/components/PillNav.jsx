@@ -289,7 +289,7 @@ const PillNav = ({
       gsap.set(menu, { visibility: 'hidden', opacity: 0, scaleY: 1, y: 0 });
     }
 
-    if (initialLoadAnimation && !hasPlayedEntrance.current) {
+    if (!hasPlayedEntrance.current) {
       const dLogo = desktopLogoRef.current;
       const mLogo = mobileLogoRef.current;
       const navItems = navItemsRef.current;
@@ -334,21 +334,7 @@ const PillNav = ({
     });
   };
 
-  const handleDesktopLogoEnter = () => {
-    const img = desktopLogoImgRef.current;
-    if (!img) return;
-    gsap.killTweensOf(img);
-    gsap.set(img, { rotate: 0 });
-    gsap.to(img, { rotate: 360, duration: 0.2, ease, overwrite: 'auto' });
-  };
-
-  const handleMobileLogoEnter = () => {
-    const img = mobileLogoImgRef.current;
-    if (!img) return;
-    gsap.killTweensOf(img);
-    gsap.set(img, { rotate: 0 });
-    gsap.to(img, { rotate: 360, duration: 0.2, ease, overwrite: 'auto' });
-  };
+ 
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
@@ -498,7 +484,7 @@ const PillNav = ({
           <Link
             href={items[0].href}
             aria-label="Home"
-            onMouseEnter={handleDesktopLogoEnter}
+            
             role="menuitem"
             ref={desktopLogoRef}
             className="rounded-xl p-2 inline-flex items-center justify-center overflow-hidden shrink-0"
@@ -515,7 +501,6 @@ const PillNav = ({
           <a
             href={items?.[0]?.href || '#'}
             aria-label="Home"
-            onMouseEnter={handleDesktopLogoEnter}
             ref={desktopLogoRef}
             className="rounded-xl p-2 inline-flex items-center justify-center overflow-hidden shrink-0"
             style={{ width: 'var(--nav-h)', height: 'var(--nav-h)' }}
@@ -653,7 +638,7 @@ const PillNav = ({
           <Link
             href={items[0].href}
             aria-label="Home"
-            onMouseEnter={handleMobileLogoEnter}
+            
             role="menuitem"
             ref={mobileLogoRef}
             className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden shrink-0"
@@ -674,7 +659,7 @@ const PillNav = ({
           <a
             href={items?.[0]?.href || '#'}
             aria-label="Home"
-            onMouseEnter={handleMobileLogoEnter}
+           
             ref={mobileLogoRef}
             className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden shrink-0"
             style={{
