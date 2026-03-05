@@ -1,0 +1,352 @@
+"use client";
+
+import React from 'react'
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { ArrowRight, Star, CheckCircle2, Zap, ShieldCheck } from "lucide-react"; 
+import Link from "next/link";
+import Image from "next/image";
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Unified Tab Header component replacing the separated Tab + SlopeDown
+// This merges the entire shape into ONE element so the backdrop-blur has zero seams.
+const TabHeader = ({ 
+  widthClass = "w-[calc(40%+40px)] sm:w-[calc(20%+40px)] md:w-[calc(20%+60px)]",
+  plClass = "pl-6 sm:pl-16 lg:pl-24",
+  children 
+}) => (
+  <div className={`tab-shape relative bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-t border-l border-white/10 rounded-tl-lg flex items-center ${widthClass}`}>
+    
+    <svg className="absolute right-0 top-0 h-full w-[40px] md:w-[60px] pointer-events-none" preserveAspectRatio="none">
+      {/* 2.5px stroke perfectly hugs the clip-path edge to simulate a right border */}
+      <line x1="0" y1="0" x2="100%" y2="100%" stroke="rgba(255,255,255,0.1)" strokeWidth="2.5" />
+    </svg>
+
+    {/* Padding right matches the slope width so content never bleeds under the angle */}
+    <div className={`w-full h-full flex items-center pr-[40px] md:pr-[60px] ${plClass}`}>
+       {children}
+    </div>
+  </div>
+);
+
+const Cards = () => {
+  
+  useGSAP(() => {
+    const boxes = gsap.utils.toArray(".box");
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".bigbox",
+        start: "bottom bottom",
+        end: "+=250%", 
+        scrub: 1,
+        pin: true,
+        pinSpacing: true,
+        refreshPriority: -1,
+      },
+    });
+
+    boxes.forEach((box, index) => {
+      if (index === 0) return;
+      tl.from(box, {
+        yPercent: 100,
+        ease: "none",
+        duration: 1,
+      });
+    });
+  });
+
+  return (
+    <div className="bigbox relative w-full h-[90vh] my-10 overflow-hidden font-sans">
+      
+      {/* Dynamic clip-path logic to handle responsive slope widths natively */}
+      <style dangerouslySetInnerHTML={{__html: `
+        .tab-shape {
+          clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 100%, 0 100%);
+        }
+        @media (min-width: 768px) {
+          .tab-shape {
+            clip-path: polygon(0 0, calc(100% - 60px) 0, 100% 100%, 0 100%);
+          }
+        }
+      `}} />
+
+      {/* =========================================================
+          BASE LAYER: LINK TO ALL PRODUCTS
+         ========================================================= */}
+      <div className="absolute z-0 w-full h-full flex flex-col pointer-events-none">
+        <div className="md:h-[50px] h-[30px] flex w-full relative z-20">
+          <div className="md:grow-12 grow-15 border-b border-white/10"></div>
+          
+          <TabHeader widthClass="w-[calc(35%+40px)] sm:w-[calc(20%+40px)] md:w-[calc(20%+60px)]" plClass="pl-6 sm:pl-16 lg:pl-12">
+            <Link
+              href="/brands"
+              className="uppercase text-xs md:text-sm lg:text-lg tracking-widest text-black md:mt-1 mt-0 group pointer-events-auto cursor-pointer flex items-center gap-2"
+            >
+              See all
+              <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
+               <ArrowRight className="w-[14px] h-[14px] md:w-[16px] md:h-[16px]" />
+              </span>
+            </Link>
+          </TabHeader>
+
+          <div className="flex-grow border-b border-white/10 rounded-tr-lg"></div>
+        </div>
+        
+        {/* Uniform dark glass body - Note: replaced overlapping border-t with border-b and border-x */}
+        <div className="bg-[rgba(20,20,20,0.1)] border-b border-x border-white/10 backdrop-blur-xl flex-grow w-full flex flex-col md:flex-row items-center justify-between px-6 sm:px-16 lg:px-24 relative z-10 pointer-events-auto rounded-b-lg">
+           
+         </div>
+      </div>
+
+      {/* =========================================================
+          CARD 1: Premium Engine Kit
+         ========================================================= */}
+      <div className="box absolute z-10 w-full h-full flex flex-col pointer-events-none">
+        <div className="md:h-[50px] h-[30px] flex w-full relative z-20">
+          
+          <TabHeader>
+            <p className="uppercase text-[10px] sm:text-sm tracking-widest text-black/80 md:mt-1 mt-2 font-mono font-bold">
+              01 / ENGINE
+            </p>
+          </TabHeader>
+
+          <div className="flex-grow border-b border-white/10 rounded-tr-lg"></div>
+        </div>
+
+        <div className="bg-[rgba(20,20,20,0.1)] border-b border-x border-white/10 backdrop-blur-xl flex-grow w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-6 sm:px-12 lg:px-24 relative z-10 pointer-events-auto pb-8 md:pb-0 overflow-hidden rounded-b-lg">
+          
+          <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left relative z-10 mb-8 md:mb-0 pt-4 md:pt-0">
+            <div className="flex items-center gap-3 mb-4 md:mb-6">
+              <div className="h-[2px] w-8 bg-[#EEBA2B]" />
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[#EEBA2B] font-mono font-bold">Flagship Series</span>
+            </div>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white mb-2 leading-tight md:leading-[0.9] tracking-tight drop-shadow-sm">
+              Premium<br className="hidden md:block" /> Engine Kit
+            </h1>
+            <p className="text-sm text-gray-300 italic font-serif mb-4 md:mb-6">V6 / V8 Series — Forged 4340 Steel</p>
+
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4 my-4 md:my-6 text-xs sm:text-sm text-white font-mono border-t border-white/20 pt-4 w-full max-w-sm">
+              <div>
+                <span className="block text-gray-300 text-[10px] uppercase tracking-wider mb-0.5">Material</span>
+                <span className="font-bold">Forged 4340 Steel</span>
+              </div>
+              <div>
+                <span className="block text-gray-300 text-[10px] uppercase tracking-wider mb-0.5">Max RPM</span>
+                <span className="font-bold">9,500</span>
+              </div>
+              <div>
+                <span className="block text-gray-300 text-[10px] uppercase tracking-wider mb-0.5">Warranty</span>
+                <span className="font-bold">5 Year Global</span>
+              </div>
+              <div>
+                <span className="block text-gray-300 text-[10px] uppercase tracking-wider mb-0.5">Certification</span>
+                <span className="font-bold">ISO 9001</span>
+              </div>
+            </div>
+
+            <Link
+              href="/products/forged-steel-engine-block-v8"
+              className="group flex items-center gap-3 bg-[#EEBA2B] text-black px-6 py-3 text-xs sm:text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors mt-2 shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px]"
+            >
+              View Blueprint
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="w-full md:w-1/2 flex items-center justify-center relative">
+            <div className="absolute w-[200px] h-[200px] md:w-[350px] md:h-[350px] border border-white/10 rounded-xl rotate-6" />
+            <div className="relative bg-white/5 backdrop-blur-md border border-white/20 p-3 sm:p-5 rounded-xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 bg-black/80 text-[#EEBA2B] text-[9px] sm:text-[10px] px-2.5 py-1 uppercase font-black tracking-wider">
+                Flagship
+              </div>
+              <Image
+                src="/fp1.png"
+                alt="Premium Engine Kit"
+                width={500}
+                height={500}
+                className="w-40 h-40 sm:w-60 sm:h-60 lg:w-80 lg:h-80 object-contain rounded-lg drop-shadow-lg"
+              />
+              <div className="mt-3 flex justify-between items-center border-t border-white/20 pt-3">
+                <div>
+                  <p className="text-[9px] sm:text-[10px] text-gray-300 uppercase tracking-wider font-mono">Weight</p>
+                  <p className="text-sm sm:text-lg font-black text-white">86 kg</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[9px] sm:text-[10px] text-gray-300 uppercase tracking-wider font-mono">Bore</p>
+                  <p className="text-sm sm:text-lg font-black text-white">100mm</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================================
+          CARD 2: Advanced Suspension
+         ========================================================= */}
+      <div className="box absolute z-20 w-full h-full flex flex-col pointer-events-none">
+        <div className="md:h-[50px] h-[30px] flex w-full relative z-20">
+          <div className="grow-[0.45] hidden md:block border-b border-white/10 rounded-tl-lg"></div>
+          
+          <TabHeader>
+            <p className="uppercase text-[10px] sm:text-sm tracking-widest text-[#EEBA2B] font-black md:mt-1 mt-2">
+              02 // SUSPENSION
+            </p>
+          </TabHeader>
+
+          <div className="flex-grow border-b border-white/10 rounded-tr-lg"></div>
+        </div>
+
+        <div className="bg-[rgba(20,20,20,0.1)] border-b border-x border-white/10 backdrop-blur-xl flex-grow w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-6 sm:px-12 lg:px-24 relative z-10 pointer-events-auto pb-8 md:pb-0 overflow-hidden rounded-b-lg">
+          <div className="absolute inset-0 opacity-[0.04]" style={{backgroundImage:'repeating-linear-gradient(45deg,#fff 0px,#fff 1px,transparent 1px,transparent 14px)'}} />
+
+          <div className="w-full md:w-1/2 flex items-center justify-center relative mb-8 md:mb-0 mt-6 md:mt-0">
+            <div className="absolute w-[180px] h-[180px] md:w-[320px] md:h-[320px] border-2 border-white/20 rounded-full" />
+            <div className="absolute w-[160px] h-[160px] md:w-[290px] md:h-[290px] border border-white/10 border-dashed rounded-full" />
+
+            <div className="relative z-10">
+              <Image
+                src="/fp2.jpg"
+                alt="Adaptive Coilover Suspension"
+                width={500}
+                height={500}
+                className="w-44 h-44 sm:w-60 sm:h-60 lg:w-80 lg:h-80 object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute -bottom-2 -right-2 sm:-bottom-4 sm:-right-4 bg-black/90 backdrop-blur-md text-[#EEBA2B] px-3 py-2 sm:px-4 sm:py-3 shadow-xl">
+                <p className="text-[9px] uppercase tracking-wider font-mono opacity-80">Adjustment</p>
+                <p className="text-lg sm:text-2xl font-black leading-none">32-Way</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left md:ml-10 lg:ml-16">
+            <div className="inline-flex items-center gap-2 bg-black/50 backdrop-blur-sm text-[#EEBA2B] border border-white/10 px-3 py-1.5 w-fit mb-4 text-[10px] sm:text-xs font-black uppercase tracking-wider">
+              <Star className="w-3 h-3 fill-current" />
+              Top Rated · Pro-Track
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white mb-3 sm:mb-4 leading-[0.9] tracking-tighter drop-shadow-sm">
+              ADAPTIVE<br />COILOVERS
+            </h1>
+            <p className="text-gray-300 text-xs sm:text-sm max-w-sm mb-6 leading-relaxed font-mono font-medium">
+              32-way damping · Monotube construction · 6061-T6 aluminum body — track-proven, street-legal.
+            </p>
+
+            <div className="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-3 mb-6 sm:mb-8">
+              <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold border border-white/20 px-3 py-2 uppercase tracking-wider text-white">
+                <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" /> TÜV Approved
+              </div>
+              <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold border border-white/20 px-3 py-2 uppercase tracking-wider text-white">
+                <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#EEBA2B]" /> 8 kg/mm
+              </div>
+              <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold border border-white/20 px-3 py-2 uppercase tracking-wider text-white">
+                <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" /> 3yr Warranty
+              </div>
+            </div>
+
+            <Link
+              href="/products/adaptive-coilover-suspension"
+              className="bg-[#EEBA2B] text-black px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-black uppercase tracking-widest hover:bg-white transition-colors border-2 border-transparent w-fit shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+            >
+              Configure Now
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================================
+          CARD 3: Best Seller 
+         ========================================================= */}
+      <div className="box absolute z-30 w-full h-full flex flex-col pointer-events-none">
+        <div className="md:h-[50px] h-[30px] flex w-full relative z-20">
+          <div className="grow-[1.6] hidden md:block border-b border-white/10 rounded-tl-lg"></div>
+          
+          <TabHeader>
+            <p className="uppercase text-[10px] sm:text-sm tracking-widest text-[#EEBA2B] font-black md:mt-1 mt-2">
+              03 • BEST SELLER
+            </p>
+          </TabHeader>
+
+          <div className="flex-grow border-b border-white/10 rounded-tr-lg"></div>
+        </div>
+
+        <div className="bg-[rgba(20,20,20,0.1)] border-b border-x border-white/10 backdrop-blur-xl flex-grow w-full flex flex-col items-center justify-center px-6 sm:px-12 lg:px-24 relative z-10 pointer-events-auto pb-8 md:pb-0 overflow-hidden rounded-b-lg">
+          <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-[#EEBA2B]/10 rounded-full blur-[120px]" />
+
+          <div className="flex flex-col md:flex-row items-center w-full max-w-6xl justify-between gap-8 md:gap-12 relative z-10">
+
+            <div className="w-full md:w-1/2 text-center md:text-left mt-6 md:mt-0">
+              <div className="inline-flex items-center gap-2 bg-[#EEBA2B] text-black px-3 py-1.5 w-fit mb-5 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg">
+                <Zap className="w-3 h-3" />
+                Best Seller · 500+ Orders
+              </div>
+
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white mb-3 sm:mb-4 leading-[0.9] tracking-tight drop-shadow-md">
+                TWIN-SCROLL<br /><span className="text-[#EEBA2B]">TURBO</span>
+              </h1>
+              <p className="text-gray-300 text-xs sm:text-sm max-w-md mx-auto md:mx-0 mb-6 sm:mb-8 leading-relaxed font-mono">
+                Inconel turbine · Dual ceramic ball bearing · 28 PSI boost — engineered for 450-750 WHP applications.
+              </p>
+
+              <div className="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-3 mb-6 sm:mb-8">
+                <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold border border-white/20 text-white/90 px-3 py-2 uppercase tracking-wider">
+                  <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#EEBA2B]" /> ISO 9001
+                </div>
+                <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold border border-white/20 text-white/90 px-3 py-2 uppercase tracking-wider">
+                  <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-green-400" /> In Stock
+                </div>
+              </div>
+
+              <Link
+                href="/products/twin-scroll-turbocharger"
+                className="group inline-flex items-center gap-3 bg-white text-black px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-black uppercase tracking-widest hover:bg-[#EEBA2B] transition-colors shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+              >
+                View Details
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+
+            <div className="w-full md:w-1/2 flex justify-center relative">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-[#EEBA2B]/15 rounded-full blur-[80px]" />
+
+              <div className="relative bg-white/5 backdrop-blur-md border border-white/20 p-4 sm:p-6 w-full max-w-xs sm:max-w-sm shadow-2xl">
+                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-[#EEBA2B] text-black px-2.5 py-1 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md">
+                  GTX-3076R
+                </div>
+                <div className="flex justify-center">
+                  <Image
+                    src="/bestseller.jpg"
+                    alt="Twin-Scroll Turbocharger GTX-3076R"
+                    width={400}
+                    height={400}
+                    className="w-44 h-44 sm:w-64 sm:h-64 object-contain drop-shadow-2xl"
+                  />
+                </div>
+                <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/10 pt-4">
+                  <div>
+                    <p className="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider font-mono">Power</p>
+                    <p className="text-sm sm:text-lg font-black text-white">750 WHP</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider font-mono">Boost</p>
+                    <p className="text-sm sm:text-lg font-black text-[#EEBA2B]">28 PSI</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider font-mono">Turbine</p>
+                    <p className="text-sm sm:text-lg font-black text-white">Inconel</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  )
+}
+
+export default Cards
