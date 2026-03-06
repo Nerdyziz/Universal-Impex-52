@@ -110,7 +110,7 @@ const Vid = () => {
                 delay={500}
                 animateBy="words"
                 direction="top"
-                className="text-2xl sm:text-3xl lg:text-3xl xl:text-[60px] 2xl:text-7xl flex flex-col justify-center items-center font-black text-white select-none text-center drop-shadow-2xl leading-tight gap-y-4"
+                className="text-2xl sm:text-3xl lg:text-3xl xl:text-5xl 2xl:text-7xl flex flex-col justify-center items-center font-black text-white select-none text-center drop-shadow-2xl leading-tight gap-y-4"
               />
             </div>
 
@@ -142,7 +142,7 @@ const Vid = () => {
                 delay={300}
                 animateBy="words"
                 direction="top"
-                className="md:text-[500px]  text-[500px] font-black text-white text-center drop-shadow-2xl leading-tight flex flex-wrap justify-center gap-x-2 gap-y-3"
+                className="md:text-8xl  text-5xl font-black text-white text-center drop-shadow-2xl leading-tight flex flex-wrap justify-center gap-x-2 gap-y-3"
               />
             </div>
 
