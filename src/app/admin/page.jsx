@@ -187,7 +187,7 @@ function CategoryFilterDropdown({ categories, selectedCategory, onSelect }) {
         <ChevronDown className={`absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="absolute z-50 mt-1 left-0 min-w-[220px] max-h-[320px] overflow-y-auto bg-white border border-amber-900/15 rounded-xl shadow-xl py-1 animate-in fade-in slide-in-from-top-1">
+        <div data-lenis-prevent className="absolute z-50 mt-1 left-0 min-w-[220px] max-h-[320px] overflow-y-auto bg-white border border-amber-900/15 rounded-xl shadow-xl py-1 animate-in fade-in slide-in-from-top-1">
           {/* All Categories option */}
           <div
             className={`flex items-center gap-1 px-3 py-1.5 cursor-pointer rounded-md text-xs font-semibold transition-all hover:bg-amber-100/60 ${
@@ -1207,7 +1207,7 @@ function ProductModal({ initial, onSave, onClose, brands = [] }) {
 
   return (
     <ModalOverlay onClose={onClose}>
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5 " data-lenis-prevent>
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-lg font-black text-[#1a1a1a]">
             {initial ? "Edit Product" : "Add Product"}
@@ -1457,7 +1457,7 @@ function CategoryTreeNode({ node, path, onAdd, onRemove, onRename, depth = 0 }) 
   };
 
   return (
-    <div style={{ marginLeft: indent }}>
+    <div data-lenis-prevent style={{ marginLeft: indent }}>
       <div className="flex items-center gap-1 group py-1">
         {/* Expand toggle */}
         <button
@@ -1659,7 +1659,7 @@ function BrandModal({ initial, onSave, onClose }) {
   return (
     <ModalOverlay onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-2" data-lenis-prevent>
           <h3 className="text-lg font-black text-[#1a1a1a]">
             {initial ? "Edit Brand" : "Add Brand"}
           </h3>
@@ -1717,7 +1717,7 @@ function BrandModal({ initial, onSave, onClose }) {
 
             {/* Category tree */}
             {form.categories.length > 0 ? (
-              <div className="bg-white/40 border border-amber-900/10 rounded-lg p-3 max-h-60 overflow-y-auto">
+              <div data-lenis-prevent className="bg-white/40 border border-amber-900/10 rounded-lg p-3 max-h-60 overflow-y-auto">
                 {form.categories.map((cat, ci) => (
                   <CategoryTreeNode
                     key={ci}
@@ -1832,7 +1832,7 @@ function ModalOverlay({ children, onClose }) {
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative bg-[#F1E6D2] border border-amber-900/10 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 sm:p-8">
+      <div data-lenis-prevent className="relative bg-[#F1E6D2] border border-amber-900/10 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 sm:p-8">
         {children}
       </div>
     </div>
@@ -2189,7 +2189,7 @@ function CSVUploadModal({ brands, onClose, onDone }) {
               <span className="text-amber-600">{parsedRows.length} products</span>{" "}
               found
             </p>
-            <div className="max-h-48 overflow-y-auto bg-white/40 border border-amber-900/10 rounded-lg divide-y divide-amber-900/5">
+            <div data-lenis-prevent className="max-h-48 overflow-y-auto bg-white/40 border border-amber-900/10 rounded-lg divide-y divide-amber-900/5">
               {parsedRows.map((row, i) => (
                 <div key={i} className="px-3 py-2 flex items-center gap-3">
                   <span className="text-[9px] text-gray-400 font-mono w-5">
@@ -2253,7 +2253,7 @@ function CSVUploadModal({ brands, onClose, onDone }) {
                     {results.errors.length > 1 ? "s" : ""}
                   </p>
                 </div>
-                <div className="max-h-32 overflow-y-auto space-y-1">
+                <div data-lenis-prevent className="max-h-32 overflow-y-auto space-y-1">
                   {results.errors.map((err, i) => (
                     <p key={i} className="text-[10px] text-red-600 font-mono">
                       Row {err.index}: {err.name} — {err.error}

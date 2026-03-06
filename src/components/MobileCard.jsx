@@ -31,14 +31,14 @@ const GlassContent = ({ icon: Icon, title, desc, stat, statLabel, badge }) => (
           </span>
         )}
       </div>
-      <p className="text-black text-[10px] md:text-xs font-mono leading-relaxed line-clamp-3 md:line-clamp-none">
+      <p className="text-white text-[10px] md:text-xs font-mono leading-relaxed line-clamp-3 md:line-clamp-none">
         {desc}
       </p>
     </div>
     {stat && (
       <div className="relative z-10 mt-2 md:mt-4 pt-2 md:pt-3 border-t border-white/10 flex items-end justify-between">
         <div>
-          <span className="text-xl md:text-3xl font-black text-black leading-none">{stat}</span>
+          <span className="text-xl md:text-3xl font-black text-white leading-none">{stat}</span>
           <span className="block text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-[#EEBA2B]/70 font-mono mt-0.5 md:mt-1">{statLabel}</span>
         </div>
         <span className="text-[9px] md:text-[10px] text-gray-900 font-mono uppercase tracking-wider hidden sm:block">B2B Only</span>
