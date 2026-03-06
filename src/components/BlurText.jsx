@@ -148,7 +148,7 @@ const BlurText = ({
 
         const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
 
-
+        
 
         const spanTransition = {
 

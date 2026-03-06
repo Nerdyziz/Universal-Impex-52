@@ -110,7 +110,7 @@ const Cards = () => {
           
           <TabHeader>
             <p className="uppercase text-[10px] sm:text-sm tracking-widest text-black/80 md:mt-1 mt-2 font-mono font-bold">
-              01 / ENGINE
+              01 // WRENCH KIT
             </p>
           </TabHeader>
 
@@ -122,37 +122,36 @@ const Cards = () => {
           <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left relative z-10 mb-8 md:mb-0 pt-4 md:pt-0">
             <div className="flex items-center gap-3 mb-4 md:mb-6">
               <div className="h-[2px] w-8 bg-[#EEBA2B]" />
-              <span className="text-[10px] uppercase tracking-[0.3em] text-[#EEBA2B] font-mono font-bold">Flagship Series</span>
+              <span className="text-[10px] uppercase tracking-[0.3em] text-black  font-mono font-bold">Flagship Series</span>
             </div>
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white mb-2 leading-tight md:leading-[0.9] tracking-tight drop-shadow-sm">
-              Premium<br className="hidden md:block" /> Engine Kit
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white mb-2 leading-tight md:leading-[0.9] tracking-tight drop-shadow-sm">
+              20V MAX XR High Torque<br className="hidden md:block" /> 3/4 in. Impact Wrench Kit
             </h1>
-            <p className="text-sm text-gray-300 italic font-serif mb-4 md:mb-6">V6 / V8 Series — Forged 4340 Steel</p>
-
+            
             <div className="grid grid-cols-2 gap-x-6 gap-y-4 my-4 md:my-6 text-xs sm:text-sm text-white font-mono border-t border-white/20 pt-4 w-full max-w-sm">
               <div>
-                <span className="block text-gray-300 text-[10px] uppercase tracking-wider mb-0.5">Material</span>
-                <span className="font-bold">Forged 4340 Steel</span>
+                <span className="block text-black text-[10px] uppercase tracking-wider mb-0.5">Material</span>
+                <span className="font-bold">High-Strength Industrial Composite</span>
               </div>
               <div>
-                <span className="block text-gray-300 text-[10px] uppercase tracking-wider mb-0.5">Max RPM</span>
-                <span className="font-bold">9,500</span>
+                <span className="block text-black text-[10px] uppercase tracking-wider mb-0.5">MAX TORQUE</span>
+                <span className="font-bold">1,200 Nm</span>
               </div>
               <div>
-                <span className="block text-gray-300 text-[10px] uppercase tracking-wider mb-0.5">Warranty</span>
-                <span className="font-bold">5 Year Global</span>
+                <span className="block text-black text-[10px] uppercase tracking-wider mb-0.5">Warranty</span>
+                <span className="font-bold">3 Year Limited</span>
               </div>
               <div>
-                <span className="block text-gray-300 text-[10px] uppercase tracking-wider mb-0.5">Certification</span>
+                <span className="block text-black text-[10px] uppercase tracking-wider mb-0.5">Certification</span>
                 <span className="font-bold">ISO 9001</span>
               </div>
             </div>
 
             <Link
-              href="/products/forged-steel-engine-block-v8"
+              href="/products/20v-max-xr-high-torque-3-4-in-impact-wrench-w-hog-ring-anvil-5-0ah"
               className="group flex items-center gap-3 bg-[#EEBA2B] text-black px-6 py-3 text-xs sm:text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors mt-2 shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px]"
             >
-              View Blueprint
+              View Specifications
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -164,20 +163,20 @@ const Cards = () => {
                 Flagship
               </div>
               <Image
-                src="/fp1.png"
-                alt="Premium Engine Kit"
+                src="https://www.dewalt.com/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-DCF897P2_LF2.jpg?resize=530x530"
+                alt="20V MAX XR High Torque 3/4 in. Impact Wrench Kit"
                 width={500}
                 height={500}
                 className="w-40 h-40 sm:w-60 sm:h-60 lg:w-80 lg:h-80 object-contain rounded-lg drop-shadow-lg"
               />
               <div className="mt-3 flex justify-between items-center border-t border-white/20 pt-3">
                 <div>
-                  <p className="text-[9px] sm:text-[10px] text-gray-300 uppercase tracking-wider font-mono">Weight</p>
-                  <p className="text-sm sm:text-lg font-black text-white">86 kg</p>
+                  <p className="text-[9px] sm:text-[10px] text-black uppercase tracking-wider font-mono">Weight</p>
+                  <p className="text-sm sm:text-lg font-black text-white">3.5 kg</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[9px] sm:text-[10px] text-gray-300 uppercase tracking-wider font-mono">Bore</p>
-                  <p className="text-sm sm:text-lg font-black text-white">100mm</p>
+                  <p className="text-[9px] sm:text-[10px] text-black uppercase tracking-wider font-mono">Drive Size</p>
+                  <p className="text-sm sm:text-lg font-black text-white">3/4 in.</p>
                 </div>
               </div>
             </div>
@@ -193,8 +192,8 @@ const Cards = () => {
           <div className="grow-[0.45] hidden md:block border-b border-white/10 rounded-tl-lg"></div>
           
           <TabHeader>
-            <p className="uppercase text-[10px] sm:text-sm tracking-widest text-[#EEBA2B] font-black md:mt-1 mt-2">
-              02 // SUSPENSION
+            <p className="uppercase text-[10px] sm:text-sm tracking-widest text-black font-black md:mt-1 mt-2">
+              02 // HAMMER KIT
             </p>
           </TabHeader>
 
@@ -217,8 +216,8 @@ const Cards = () => {
                 className="w-44 h-44 sm:w-60 sm:h-60 lg:w-80 lg:h-80 object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute -bottom-2 -right-2 sm:-bottom-4 sm:-right-4 bg-black/90 backdrop-blur-md text-[#EEBA2B] px-3 py-2 sm:px-4 sm:py-3 shadow-xl">
-                <p className="text-[9px] uppercase tracking-wider font-mono opacity-80">Adjustment</p>
-                <p className="text-lg sm:text-2xl font-black leading-none">32-Way</p>
+                <p className="text-[9px] uppercase tracking-wider font-mono opacity-80">Impact Energy</p>
+                <p className="text-lg sm:text-2xl font-black leading-none">41 joules</p>
               </div>
             </div>
           </div>
@@ -226,33 +225,32 @@ const Cards = () => {
           <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left md:ml-10 lg:ml-16">
             <div className="inline-flex items-center gap-2 bg-black/50 backdrop-blur-sm text-[#EEBA2B] border border-white/10 px-3 py-1.5 w-fit mb-4 text-[10px] sm:text-xs font-black uppercase tracking-wider">
               <Star className="w-3 h-3 fill-current" />
-              Top Rated · Pro-Track
+              Top Rated · HEAVY DUTY
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white mb-3 sm:mb-4 leading-[0.9] tracking-tighter drop-shadow-sm">
-              ADAPTIVE<br />COILOVERS
+              INDUSTRIAL<br />DEMOLITION HAMMER
             </h1>
-            <p className="text-gray-300 text-xs sm:text-sm max-w-sm mb-6 leading-relaxed font-mono font-medium">
-              32-way damping · Monotube construction · 6061-T6 aluminum body — track-proven, street-legal.
-            </p>
+            <p className="text-black text-xs sm:text-sm max-w-sm mb-6 leading-relaxed font-mono font-medium">
+              High-performance 40 lb demolition hammer engineered for demanding concrete and masonry demolition. The powerful motor and durable in-line design deliver maximum impact energy while maintaining balance and control for extended professional use. </p>
 
             <div className="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-3 mb-6 sm:mb-8">
               <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold border border-white/20 px-3 py-2 uppercase tracking-wider text-white">
-                <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" /> TÜV Approved
+                <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />  Industrial Grade Build
               </div>
               <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold border border-white/20 px-3 py-2 uppercase tracking-wider text-white">
-                <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#EEBA2B]" /> 8 kg/mm
+                <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#EEBA2B]" /> Impact Energy 41J
               </div>
               <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold border border-white/20 px-3 py-2 uppercase tracking-wider text-white">
-                <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" /> 3yr Warranty
+                <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" /> 3 Year Warranty
               </div>
             </div>
 
             <Link
-              href="/products/adaptive-coilover-suspension"
+              href="/products/40-lb-1-1-8-in-hex-in-line-demolition-hammer-kit"
               className="bg-[#EEBA2B] text-black px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-black uppercase tracking-widest hover:bg-white transition-colors border-2 border-transparent w-fit shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
             >
-              Configure Now
+              GET QUOTE
             </Link>
           </div>
         </div>
@@ -266,7 +264,7 @@ const Cards = () => {
           <div className="grow-[1.6] hidden md:block border-b border-white/10 rounded-tl-lg"></div>
           
           <TabHeader>
-            <p className="uppercase text-[10px] sm:text-sm tracking-widest text-[#EEBA2B] font-black md:mt-1 mt-2">
+            <p className="uppercase text-[10px] sm:text-sm tracking-widest text-black font-black md:mt-1 mt-2">
               03 • BEST SELLER
             </p>
           </TabHeader>
@@ -282,27 +280,27 @@ const Cards = () => {
             <div className="w-full md:w-1/2 text-center md:text-left mt-6 md:mt-0">
               <div className="inline-flex items-center gap-2 bg-[#EEBA2B] text-black px-3 py-1.5 w-fit mb-5 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg">
                 <Zap className="w-3 h-3" />
-                Best Seller · 500+ Orders
+                Best Seller · PROFESSIONAL GRADE
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white mb-3 sm:mb-4 leading-[0.9] tracking-tight drop-shadow-md">
-                TWIN-SCROLL<br /><span className="text-[#EEBA2B]">TURBO</span>
+              <h1 className="text-2xl sm:text-4xl lg:text-6xl font-black text-white mb-3 sm:mb-4 leading-[0.9] tracking-tight drop-shadow-md">
+                INDUSTRIAL<br /><span className="text-[#EEBA2B]">METAL CUTTING</span><br /><span>CHOP SAW</span>
               </h1>
-              <p className="text-gray-300 text-xs sm:text-sm max-w-md mx-auto md:mx-0 mb-6 sm:mb-8 leading-relaxed font-mono">
-                Inconel turbine · Dual ceramic ball bearing · 28 PSI boost — engineered for 450-750 WHP applications.
+              <p className="text-white text-xs sm:text-sm max-w-md mx-auto md:mx-0 mb-6 sm:mb-8 leading-relaxed font-mono">
+                Heavy-duty 14-inch chop saw engineered for precision metal cutting in fabrication workshops and industrial environments. The integrated QUIK-CHANGE™ keyless blade system allows fast blade replacement while the powerful motor delivers consistent cutting performance for steel, pipe, and structural materials.
               </p>
 
               <div className="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-3 mb-6 sm:mb-8">
                 <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold border border-white/20 text-white/90 px-3 py-2 uppercase tracking-wider">
-                  <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#EEBA2B]" /> ISO 9001
+                  <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#EEBA2B]" /> ISO 9001 Certified
                 </div>
                 <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold border border-white/20 text-white/90 px-3 py-2 uppercase tracking-wider">
-                  <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-green-400" /> In Stock
+                  <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-green-400" /> Ready for Industrial Supply
                 </div>
               </div>
 
               <Link
-                href="/products/twin-scroll-turbocharger"
+                href="/products/14-in-chop-saw-with-quik-change-keyless-blade-change-system"
                 className="group inline-flex items-center gap-3 bg-white text-black px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-black uppercase tracking-widest hover:bg-[#EEBA2B] transition-colors shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
               >
                 View Details
@@ -314,12 +312,12 @@ const Cards = () => {
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-[#EEBA2B]/15 rounded-full blur-[80px]" />
 
               <div className="relative bg-white/5 backdrop-blur-md border border-white/20 p-4 sm:p-6 w-full max-w-xs sm:max-w-sm shadow-2xl">
-                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-[#EEBA2B] text-black px-2.5 py-1 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md">
+                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-[#EEBA2B] text-black px-2.5 py-1 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md z-10">
                   GTX-3076R
                 </div>
                 <div className="flex justify-center">
                   <Image
-                    src="/bestseller.jpg"
+                    src="https://www.dewalt.com/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-D28715_F1.jpg?resize=530x530"
                     alt="Twin-Scroll Turbocharger GTX-3076R"
                     width={400}
                     height={400}
@@ -328,16 +326,16 @@ const Cards = () => {
                 </div>
                 <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/10 pt-4">
                   <div>
-                    <p className="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider font-mono">Power</p>
-                    <p className="text-sm sm:text-lg font-black text-white">750 WHP</p>
+                    <p className="text-[9px] sm:text-[10px] text-black uppercase tracking-wider font-mono">Power</p>
+                    <p className="text-sm sm:text-lg font-black text-white">2,200 W</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider font-mono">Boost</p>
-                    <p className="text-sm sm:text-lg font-black text-[#EEBA2B]">28 PSI</p>
+                    <p className="text-[9px] sm:text-[10px] text-black uppercase tracking-wider font-mono">BLADE SIZE</p>
+                    <p className="text-sm sm:text-lg font-black text-[#EEBA2B]">14 in.</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider font-mono">Turbine</p>
-                    <p className="text-sm sm:text-lg font-black text-white">Inconel</p>
+                    <p className="text-[9px] sm:text-[10px] text-black uppercase tracking-wider font-mono">CUTTING SPEED</p>
+                    <p className="text-sm sm:text-lg font-black text-white">3,800 RPM</p>
                   </div>
                 </div>
               </div>
