@@ -241,9 +241,30 @@ const Products = () => {
 
   return (
     <div ref={container} className="w-full min-h-screen">
-      <div className="title flex w-full h-[20vh] justify-start items-center">
-        <h1 className="text-4xl pl-8 font-bold font-serif">BRANDS</h1>
-      </div>
+     <section className="relative w-full  flex flex-col justify-center px-6 sm:px-12 lg:px-24 pt-7 pb-3 overflow-hidden">
+        {/* Decorative blurs for white background */}
+        <div className="absolute top-20 right-10 w-[300px] h-[300px] bg-[#EEBA2B]/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-10 left-10 w-[200px] h-[200px] bg-[#EEBA2B]/20 rounded-full blur-[80px]" />
+
+        <div className="relative z-10 max-w-6xl mx-auto w-full">
+          {/* Label */}
+          <div className="products-hero-label flex items-center gap-3 mb-8">
+            <div className="h-[2px] w-12 bg-[#EEBA2B]" />
+            <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gray-800 font-mono font-bold">
+              Trusted
+            </span>
+          </div>
+
+          {/* Title */}
+          <h1 className="products-hero-title text-4xl sm:text-6xl lg:text-8xl font-black leading-[0.95] tracking-tighter mb-8">
+            
+            <span className="block text-[#EEBA2B] italic font-serif">Brands</span>
+          </h1>
+
+          {/* Divider */}
+          <div className="products-hero-line h-[2px] w-full max-w-md bg-gradient-to-r from-[#EEBA2B] to-transparent mb-8 origin-left" />
+        </div>
+        </section>
       
       {loading ? (
         <div className="flex items-center justify-center h-[60vh]">

@@ -158,9 +158,9 @@ const Testimonial = () => {
       {/* Horizontal Scroll Container */}
       <div
         ref={sectionRef}
-        className="w-full h-[580px] sm:h-[550px] md:h-[500px] overflow-hidden bg-transparent relative"
+        className="w-full min-h-[580px] sm:min-h-[550px] md:min-h-[500px] overflow-x-hidden bg-transparent relative"
       >
-        <div ref={trackRef} className="flex flex-nowrap h-full">
+        <div ref={trackRef} className="flex flex-nowrap h-full min-h-full">
           {testimonials.map((t, idx) => {
             const textMain = "text-gray-900";
             const textSub = "text-gray-600";
@@ -170,7 +170,7 @@ const Testimonial = () => {
             return (
               <div
                 key={idx}
-                className={`test testi-panel w-screen shrink-0 h-full flex relative bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border-y border-black/10 ${hasSlope ? 'testi-slope pr-[30px] sm:pr-[40px] md:pr-[60px]' : ''}`}
+                className={`test testi-panel w-screen shrink-0 min-h-full flex flex-wrap relative bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border-y border-black/10 ${hasSlope ? 'testi-slope pr-[30px] sm:pr-[40px] md:pr-[60px]' : ''}`}
               >
                 {/* Simulated right border for the sloped edge using dark stroke */}
                 {hasSlope && (
@@ -196,14 +196,14 @@ const Testimonial = () => {
                 </div>
 
                 {/* Main Content - Removed overflow-y-auto and tightened padding (py-6) */}
-                <div className="flex-1 flex flex-col lg:flex-row lg:items-center px-5 sm:px-10 md:px-16 lg:px-20 py-6 sm:py-10 gap-4 sm:gap-6 lg:gap-16 overflow-hidden h-full">
+                <div className="flex-1 flex flex-col lg:flex-row lg:items-center px-4 sm:px-10 md:px-16 lg:px-20 py-4 sm:py-10 gap-2 sm:gap-6 lg:gap-16 overflow-visible min-h-full">
                   
                   {/* Left: Quote + Content */}
                   <div className="flex-1 flex flex-col justify-center max-w-2xl relative z-10 mt-auto lg:mt-0">
                     {/* Quote Icon */}
-                    <div className="testi-anim mb-3 sm:mb-6">
+                    <div className="testi-anim mb-1.5 sm:mb-6">
                       <Quote
-                        className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10"
+                        className="w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10"
                         style={{ color: t.accent }}
                         strokeWidth={1.5}
                       />
@@ -211,14 +211,14 @@ const Testimonial = () => {
 
                     {/* Quote Text - Reduced text size on mobile to fit without scrolling */}
                     <blockquote
-                      className={`testi-anim text-sm sm:text-lg md:text-2xl font-medium leading-relaxed ${textMain} mb-4 sm:mb-8`}
+                      className={`testi-anim text-xs sm:text-lg md:text-2xl font-medium leading-relaxed ${textMain} mb-2 sm:mb-8`}
                       style={{ fontStyle: "italic", fontFamily: "serif" }}
                     >
                       &ldquo;{t.quote}&rdquo;
                     </blockquote>
 
                     {/* Stars */}
-                    <div className="testi-anim flex gap-1 mb-3 sm:mb-6">
+                    <div className="testi-anim flex gap-1 mb-2 sm:mb-6">
                       {Array.from({ length: t.rating }).map((_, i) => (
                         <Star
                           key={i}
@@ -231,9 +231,9 @@ const Testimonial = () => {
 
                     {/* Author */}
                     <div
-                      className={`testi-anim flex items-center gap-3 sm:gap-4 border-t pt-3 sm:pt-6 ${borderCol}`}
+                      className={`testi-anim flex items-center gap-2 sm:gap-4 border-t pt-2 sm:pt-6 ${borderCol}`}
                     >
-                      <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 shadow-sm shrink-0"
+                      <div className="relative w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 shadow-sm shrink-0"
                         style={{ borderColor: t.accent }}
                       >
                         <Image
@@ -260,9 +260,9 @@ const Testimonial = () => {
                   </div>
 
                   {/* Right: Stat Card applied with Light Glass */}
-                  <div className="testi-anim w-full lg:w-auto flex-shrink-0 relative z-10 mb-auto lg:mb-0 pb-4 sm:pb-0">
+                    <div className="testi-anim w-full lg:w-auto flex-shrink-0 relative z-10 mb-auto lg:mb-0 pb-2 sm:pb-0">
                     <div
-                      className="relative w-full lg:w-[220px] xl:w-[260px] p-4 sm:p-6 md:p-8 rounded-xl overflow-hidden bg-[rgba(255,255,255,0.4)] backdrop-blur-xl border border-black/10 shadow-[0_15px_40px_rgba(0,0,0,0.08)]"
+                      className="relative w-full lg:w-[220px] xl:w-[260px] p-3 sm:p-6 md:p-8 rounded-xl overflow-hidden bg-[rgba(255,255,255,0.4)] backdrop-blur-xl border border-black/10 shadow-[0_15px_40px_rgba(0,0,0,0.08)]"
                     >
                       {/* Diagonal Accent */}
                       <div
@@ -279,7 +279,7 @@ const Testimonial = () => {
                             Impact
                           </p>
                           <p
-                            className={`text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none ${textMain}`}
+                            className={`text-2xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none ${textMain}`}
                           >
                             {t.stat}
                           </p>

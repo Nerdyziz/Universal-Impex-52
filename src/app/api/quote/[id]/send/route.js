@@ -319,9 +319,9 @@ async function generateQuotePDF({ items, customerName, customerEmail, notes, quo
   y -= 14;
   page.drawText("Mohammed F Lodhger", { x: tableX, y, size: 9, font: fontBold, color: black });
   y -= 14;
-  page.drawText("Cell: 9869113692", { x: tableX, y, size: 8, font: fontRegular, color: black });
+  page.drawText("Cell: 9890153052", { x: tableX, y, size: 8, font: fontRegular, color: black });
   y -= 12;
-  page.drawText("Email: ui52jnpt@gmail.com / mohammedlodhger@gmail.com", { x: tableX, y, size: 8, font: fontRegular, color: hexToRgb("#0000FF") });
+  page.drawText("Email: info@universalimpex52.com", { x: tableX, y, size: 8, font: fontRegular, color: hexToRgb("#0000FF") });
 
   const pdfBytes = await pdfDoc.save();
   return Buffer.from(pdfBytes);
@@ -463,7 +463,7 @@ export async function POST(req, { params }) {
           </div>
           <div style="background: #1a1a1a; padding: 20px 40px; text-align: center;">
             <p style="color: #888; font-size: 12px; margin: 0 0 4px 0;">Universal Impex 52 | Supplier. Importer. Exporter</p>
-            <p style="color: #EEBA2B; font-size: 12px; margin: 0;">ui52jnpt@gmail.com | +91 98691 13692</p>
+            <p style="color: #EEBA2B; font-size: 12px; margin: 0;">info@universalimpex52.com | +91 98901 53052</p>
           </div>
         </div>
       `,

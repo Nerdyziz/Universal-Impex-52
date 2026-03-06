@@ -100,9 +100,9 @@ const organizationJsonLd = {
   description: SITE_DESCRIPTION,
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+91-9869113692",
+    telephone: "+91-9890153052",
     contactType: "sales",
-    email: "ui52jnpt@gmail.com",
+    email: "info@universalimpex52.com",
   },
   address: {
     "@type": "PostalAddress",

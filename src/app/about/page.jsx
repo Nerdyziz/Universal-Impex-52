@@ -272,6 +272,31 @@ Today, Universal Impex 52 works with partners across multiple regions, helping b
         </div>
       </section>
 
+      <section className="vision-section w-full ">
+        <div className="max-w-6xl mx-auto h-full ">
+
+          <div className="flex items-center gap-3 mb-4 px-6 sm:px-12 lg:px-24">
+              <div className="h-[2px] w-8 bg-amber-400 " />
+              <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-amber-600 font-mono">
+                Vision
+              </span>
+            </div>
+            <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full rounded-2xl overflow-hidden">
+              <Image
+                src="/footerbg.svg"
+                alt="Vision"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white text-center tracking-tight leading-tight px-4">
+                  FALL <span className="italic font-serif text-amber-400">2030</span>
+                </h2>
+              </div>
+            </div>
+        </div>
+        </section>
+
       {/* ============================================================
           CORE VALUES SECTION (with Slope Dividers)
          ============================================================ */}

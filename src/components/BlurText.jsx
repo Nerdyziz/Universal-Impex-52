@@ -149,7 +149,7 @@ const BlurText = ({
         const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
 
         
-
+        const isLast = animateBy === 'words' && index === elements.length - 1;
         const spanTransition = {
 
           duration: totalDuration,
@@ -167,25 +167,18 @@ const BlurText = ({
         return (
 
           <motion.span
-
-            className="inline-block will-change-[transform,filter,opacity]"
-
+            className={
+              `inline-block will-change-[transform,filter,opacity]` +
+              (isLast ? ' block text-[#EEBA2B] italic font-serif font-black leading-[0.95] tracking-tighter mb-8' : '')
+            }
             key={index}
-
             initial={fromSnapshot}
-
             animate={inView ? animateKeyframes : fromSnapshot}
-
             transition={spanTransition}
-
             onAnimationComplete={index === elements.length - 1 ? onAnimationComplete : undefined}
-
           >
-
             {segment === ' ' ? '\u00A0' : segment}
-
             {animateBy === 'words' && index < elements.length - 1 && '\u00A0'}
-
           </motion.span>
 
         );

@@ -57,8 +57,8 @@ const Footer = () => {
                 <div>
                   <h4 className="text-base sm:text-lg font-black mb-3 text-gray-900 tracking-wide">Contact Info</h4>
                   <ul className="space-y-2 text-gray-600 text-xs sm:text-sm font-medium">
-                    <li className="hover:text-amber-600 transition-colors cursor-pointer">Email: ui52jnpt@gmail.com</li>
-                    <li className="hover:text-amber-600 transition-colors cursor-pointer">Phone: +91 98691 13692</li>
+                    <li className="hover:text-amber-600 transition-colors cursor-pointer">Email: info@universalimpex52.com</li>
+                    <li className="hover:text-amber-600 transition-colors cursor-pointer">Phone: +91 98901 53052</li>
                     <li className="hover:text-amber-600 transition-colors cursor-pointer">510, Loharpura, Behind Arya Samaj Bhavan, CA Road, Nagpur - 440018</li>
                   </ul>
                 </div>

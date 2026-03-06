@@ -178,12 +178,12 @@ export async function POST(req) {
               <strong>Reference:</strong> ${quoteNumber}
             </p>
             <p style="color: #666; font-size: 13px; line-height: 1.6;">
-              If you have any urgent questions, feel free to reach out to us at ui52jnpt@gmail.com or +91 98691 13692.
+              If you have any urgent questions, feel free to reach out to us at info@universalimpex52.com or +91 98901 53052.
             </p>
           </div>
           <div style="background: #1a1a1a; padding: 20px 40px; text-align: center;">
             <p style="color: #888; font-size: 12px; margin: 0 0 4px 0;">Universal Impex 52 | Supplier. Importer. Exporter</p>
-            <p style="color: #EEBA2B; font-size: 12px; margin: 0;">ui52jnpt@gmail.com | +91 98691 13692</p>
+            <p style="color: #EEBA2B; font-size: 12px; margin: 0;">info@universalimpex52.com | +91 98901 53052</p>
           </div>
         </div>
       `,

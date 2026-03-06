@@ -248,7 +248,7 @@ const Contact = () => {
               </div>
               <div className="bg-[rgba(20,20,20,0.05)] backdrop-blur-xl border-b border-x border-black/10 p-6 -mt-px min-h-[160px] flex flex-col group-hover:bg-[rgba(20,20,20,0.1)] transition-colors duration-300 rounded-b-xl shadow-sm">
                 <Phone className="w-7 h-7 text-[#EEBA2B] mb-4 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm" />
-                <span className="text-gray-900 font-black text-base mb-1">+91 98691 13692</span>
+                <span className="text-gray-900 font-black text-base mb-1">+91 98901 53052</span>
                 <span className="text-gray-600 font-medium text-xs">Mon — Sat, 10AM to 7PM IST</span>
               </div>
             </div>
@@ -268,7 +268,7 @@ const Contact = () => {
               </div>
               <div className="bg-[#EEBA2B] border-b border-x border-[#EEBA2B] p-6 -mt-px min-h-[160px] flex flex-col group-hover:bg-[#EEBA2B]/90 transition-colors duration-300 rounded-b-xl shadow-md">
                 <Mail className="w-7 h-7 text-black mb-4 group-hover:scale-110 transition-transform duration-300" />
-                <span className="text-black font-black text-base mb-1">ui52jnpt@gmail.com</span>
+                <span className="text-black font-black text-base mb-1">info@universalimpex52.com</span>
                 <span className="text-black/70 font-bold text-xs">We reply within 24 hours</span>
               </div>
             </div>
@@ -313,6 +313,21 @@ const Contact = () => {
               </div>
             </div>
 
+          </div>
+
+          {/* Google Map */}
+          <div className="mt-10 rounded-2xl overflow-hidden border border-black/10 shadow-sm">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.268!2d79.0940388!3d21.1519826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4c14aef4bbfc7%3A0x2a4a19608f7dc2ff!2sUniversal%20Impex%2052!5e0!3m2!1sen!2sin!4v1709000000000!5m2!1sen!2sin"
+              width="100%"
+              height="350"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Universal Impex 52 Location"
+              className="w-full"
+            />
           </div>
         </div>
       </section>
@@ -469,11 +484,11 @@ const Contact = () => {
                   For urgent orders or technical queries, reach our direct line.
                 </p>
                 <a
-                  href="tel:+919869113692"
+                  href="tel:+919890153052"
                   className="relative z-10 flex items-center gap-3 bg-gray-900 text-[#EEBA2B] px-5 py-3 rounded-lg text-sm font-black hover:bg-black transition-colors w-fit shadow-md"
                 >
                   <Phone className="w-4 h-4" />
-                  +91 98691 13692
+                  +91 98901 53052
                 </a>
               </div>
             </div>

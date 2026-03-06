@@ -477,7 +477,7 @@ const Products = () => {
 
           {/* Title */}
           <h1 className="products-hero-title text-4xl sm:text-6xl lg:text-8xl font-black leading-[0.95] tracking-tighter mb-8">
-            <span className="block text-gray-900 drop-shadow-sm">Our</span>
+            
             <span className="block text-[#EEBA2B] italic font-serif">Products</span>
           </h1>
 

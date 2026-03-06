@@ -113,7 +113,7 @@ const Cards = () => {
         {/* Removed overflow-y-auto and tightened padding (py-4) for mobile */}
         <div className="bg-[rgba(20,20,20,0.1)] border-b border-x border-white/10 backdrop-blur-xl flex-grow w-full flex flex-col md:flex-row items-center justify-start md:justify-between px-4 sm:px-12 lg:px-24 relative z-10 pointer-events-auto py-4 md:py-0 overflow-hidden rounded-b-lg">
           
-          <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left relative z-10 mb-4 md:mb-0">
+          <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left relative z-10 mb-4 md:mb-0 sm:gap-5 gap-0">
             <div className="flex items-center gap-2 sm:gap-3 mb-2 md:mb-6">
               <div className="h-[2px] w-6 sm:w-8 bg-[#EEBA2B]" />
               <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-black font-mono font-bold">Flagship Series</span>
@@ -164,7 +164,7 @@ const Cards = () => {
                 alt="20V MAX XR High Torque 3/4 in. Impact Wrench Kit"
                 width={500}
                 height={500}
-                className="w-28 h-28 sm:w-40 sm:h-40 lg:w-80 lg:h-80 object-contain rounded-lg drop-shadow-lg"
+                className="w-50 h-35 sm:w-40 sm:h-40 lg:w-80 lg:h-80 object-contain rounded-lg drop-shadow-lg"
               />
               <div className="mt-2 sm:mt-3 flex justify-between items-center border-t border-white/20 pt-2 sm:pt-3">
                 <div>
@@ -198,20 +198,20 @@ const Cards = () => {
         </div>
 
         <div className="bg-[rgba(20,20,20,0.1)] border-b border-x border-white/10 backdrop-blur-xl flex-grow w-full flex flex-col md:flex-row items-center justify-start md:justify-between px-4 sm:px-12 lg:px-24 relative z-10 pointer-events-auto py-4 md:py-0 overflow-hidden rounded-b-lg">
-          <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{backgroundImage:'repeating-linear-gradient(45deg,#fff 0px,#fff 1px,transparent 1px,transparent 14px)'}} />
+          <div className="absolute inset-0 opacity-[0.04] pointer-events-none " style={{backgroundImage:'repeating-linear-gradient(45deg,#fff 0px,#fff 1px,transparent 1px,transparent 14px)'}} />
 
           {/* Scaled decorative shapes & images */}
-          <div className="w-full md:w-1/2 flex items-center justify-center relative mb-4 md:mb-0 pointer-events-none mt-2 md:mt-0">
+          <div className="w-full md:w-1/2 flex items-center justify-center relative mb-4 md:mb-0 pointer-events-none mt-2 md:mt-0 ">
             <div className="absolute w-[140px] h-[140px] sm:w-[220px] sm:h-[220px] md:w-[320px] md:h-[320px] border-2 border-white/20 rounded-full pointer-events-none" />
             <div className="absolute w-[120px] h-[120px] sm:w-[190px] sm:h-[190px] md:w-[290px] md:h-[290px] border border-white/10 border-dashed rounded-full pointer-events-none" />
 
             <div className="relative z-10 pointer-events-auto">
               <Image
-                src="/fp2.jpg"
+                src="https://www.dewalt.com/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-D25960K_1.jpg?resize=530x530"
                 alt="Adaptive Coilover Suspension"
                 width={500}
                 height={500}
-                className="w-28 h-28 sm:w-48 sm:h-48 lg:w-80 lg:h-80 object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                className="w-35 h-35 sm:w-48 sm:h-48 lg:w-80 lg:h-80 object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute -bottom-2 -right-2 bg-black/90 backdrop-blur-md text-[#EEBA2B] px-2 py-1.5 sm:px-4 sm:py-3 shadow-xl">
                 <p className="text-[7px] sm:text-[9px] uppercase tracking-wider font-mono opacity-80">Impact Energy</p>
@@ -220,7 +220,7 @@ const Cards = () => {
             </div>
           </div>
 
-          <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left md:ml-10 lg:ml-16 relative z-10">
+          <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left md:ml-10 lg:ml-16 relative z-10 sm:gap-0 gap-5">
             <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-black/50 backdrop-blur-sm text-[#EEBA2B] border border-white/10 px-2 sm:px-3 py-1 sm:py-1.5 w-fit mb-2 sm:mb-4 text-[9px] sm:text-xs font-black uppercase tracking-wider">
               <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
               Top Rated · HEAVY DUTY
@@ -272,7 +272,7 @@ const Cards = () => {
           
           <div className="absolute top-0 right-0 w-[150px] h-[150px] sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[500px] bg-[#EEBA2B]/10 rounded-full blur-[80px] md:blur-[120px] pointer-events-none" />
 
-          <div className="flex flex-col md:flex-row items-center w-full max-w-6xl justify-between gap-4 sm:gap-8 md:gap-12 relative z-10 mt-2 md:mt-0">
+          <div className="flex flex-col md:flex-row items-center w-full max-w-6xl justify-between gap-5 sm:gap-8 md:gap-12 relative z-10 mt-2 md:mt-0">
 
             <div className="w-full md:w-1/2 text-center md:text-left relative z-10">
               <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#EEBA2B] text-black px-2.5 sm:px-3 py-1 sm:py-1.5 w-fit mb-2 sm:mb-5 text-[9px] sm:text-xs font-black uppercase tracking-wider shadow-lg">
