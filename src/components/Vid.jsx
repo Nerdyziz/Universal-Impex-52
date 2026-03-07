@@ -74,18 +74,18 @@ const Vid = () => {
         controls={false}
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
-        title="Premium automotive components and industrial parts showcase"
       />
 
-      {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/45 z-10" />
 
       <div className="relative z-20 flex flex-col justify-between min-h-screen">
-        <div className="flex-1 flex items-center justify-center pt-0 lg:pt-20">
-          {/* Desktop: text centered with stacks flanking */}
-          <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center gap-0 w-full max-w-none mx-auto px-0 pointer-events-none">
-            {/* Left stack — fans left */}
-            <div className="relative h-[280px] xl:h-[400px] mt-4 xl:mt-8 pointer-events-auto">
+        <div className="flex-1 flex items-center justify-center pt-0 lg:pt-16">
+          
+          {/* Desktop Layout */}
+          <div className="hidden xl:grid grid-cols-1 grid-rows-1 items-center w-full max-w-[1800px] mx-auto px-4 pointer-events-none min-h-[550px] 2xl:min-h-[650px]">
+            
+            {/* Left stack */}
+            <div className="col-start-1 row-start-1 justify-self-start pointer-events-auto z-20">
               <CardSwap2
                 width={460}
                 height={340}
@@ -94,7 +94,7 @@ const Vid = () => {
                 delay={3000}
                 skewAmount={-6}
                 pauseOnHover
-                containerClassName="absolute top-1/2 left-0 -translate-y-1/2 origin-center-left perspective-[900px] overflow-visible xl:scale-100 lg:scale-[0.8] scale-75"
+                containerClassName="perspective-[900px] overflow-visible origin-left xl:scale-[0.75] 2xl:scale-100 transition-transform duration-300"
               >
                 {cardData.slice(3, 6).map((data) => (
                   <Card2 key={`desktop-left-${data.id}`}>
@@ -104,18 +104,20 @@ const Vid = () => {
               </CardSwap2>
             </div>
 
-            <div className="flex flex-col items-center justify-center text-center">
+            {/* Center Text */}
+            <div className="col-start-1 row-start-1 justify-self-center relative z-10 flex flex-col items-center justify-center w-full max-w-[900px] px-4 text-center">
               <BlurText
-                text="CONNECTING INDUSTRIES WORLDWIDE"
+                text="CONNECTING INDUSTRIES Worldwide"
                 delay={500}
                 animateBy="words"
                 direction="top"
-                className="text-2xl sm:text-3xl lg:text-3xl xl:text-5xl 2xl:text-7xl flex flex-col justify-center items-center font-black text-white select-none text-center drop-shadow-2xl leading-tight gap-y-4"
+                lastWordClassName="text-[#EEBA2B] italic font-serif"
+                className="xl:text-6xl 2xl:text-7xl flex flex-col justify-center items-center font-black text-white select-none text-center drop-shadow-2xl leading-[1.1] gap-x-4 gap-y-2 w-full"
               />
             </div>
 
-            {/* Right stack — fans right */}
-            <div className="relative h-[280px] xl:h-[400px] mt-4 xl:mt-8 pointer-events-auto">
+            {/* Right stack */}
+            <div className="col-start-1 row-start-1 justify-self-end pointer-events-auto z-20">
               <CardSwap
                 width={460}
                 height={340}
@@ -123,7 +125,7 @@ const Vid = () => {
                 verticalDistance={70}
                 delay={3000}
                 pauseOnHover
-                containerClassName="absolute top-1/2 right-0 -translate-y-1/2 origin-center-right perspective-[1000px] overflow-visible lg:scale-[0.8] scale-75 xl:scale-100"
+                containerClassName="perspective-[1000px] overflow-visible origin-right xl:scale-[0.75] 2xl:scale-100 transition-transform duration-300"
               >
                 {cardData.slice(0, 3).map((data) => (
                   <Card key={`desktop-right-${data.id}`}>
@@ -134,35 +136,23 @@ const Vid = () => {
             </div>
           </div>
 
-          {/* Tablet / mobile: headline above single stack — flex-col to prevent overlap */}
-          <div className="w-full lg:hidden flex flex-col items-center px-4 pb-15 sm:px-6 justify-between ">
-            <div className="pointer-events-none shrink-0">
+          {/* Tablet / Mobile Layout */}
+          <div className="w-full xl:hidden flex flex-col items-center px-2 sm:px-6 pb-8 justify-between">
+            <div className="pointer-events-none shrink-0 w-full flex justify-center">
               <BlurText
-                text="CONNECTING INDUSTRIES WORLDWIDE"
+                text="CONNECTING INDUSTRIES Worldwide"
                 delay={300}
                 animateBy="words"
                 direction="top"
-                className="md:text-8xl  text-5xl font-black text-white text-center drop-shadow-2xl leading-tight flex flex-wrap justify-center gap-x-2 gap-y-3"
+                lastWordClassName="text-[#EEBA2B] italic font-serif"
+                className="text-[12.5vw] sm:text-[10vw] md:text-[9vw] font-black text-white text-center drop-shadow-2xl leading-[1] sm:leading-[1.05] flex flex-wrap justify-center gap-x-2 gap-y-1 w-full"
               />
             </div>
-
-           
           </div>
         </div>
 
         <div className="relative z-30 w-full overflow-hidden pb-4">
-          <LogoLoop
-            logos={imageLogos}
-            speed={50}
-            direction="left"
-            logoHeight={20}
-            gap={40}
-            hoverSpeed={0}
-            scaleOnHover
-            fadeOut
-            fadeOutColor="rgba(0,0,0,0)"
-            ariaLabel="Technology partners"
-          />
+          <LogoLoop logos={imageLogos} speed={50} direction="left" logoHeight={20} gap={40} hoverSpeed={0} scaleOnHover fadeOut fadeOutColor="rgba(0,0,0,0)" />
         </div>
       </div>
     </section>
