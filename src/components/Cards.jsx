@@ -117,28 +117,28 @@ const Cards = () => {
           <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left relative z-10 h-full">
             <div className="flex items-center gap-2 sm:gap-3 mb-2 md:mb-4 mt-auto md:mt-0">
               <div className="h-[2px] w-4 sm:w-6 lg:w-8 bg-[#EEBA2B]" />
-              <span className="text-[8px] sm:text-[9px] lg:text-[10px] uppercase tracking-[0.3em] text-black font-mono font-bold">Flagship Series</span>
+              <span className="text-[12px] sm:text-[14px] lg:text-[16px] uppercase tracking-[0.3em] text-black font-mono font-bold">Flagship Series</span>
             </div>
             
-            <h1 className="text-[1.35rem] sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-3 leading-tight md:leading-[1.1] tracking-tight drop-shadow-sm">
+            <h1 className="text-[1.4rem] sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-3 leading-tight md:leading-[1.1] tracking-tight drop-shadow-sm">
               20V MAX XR High Torque<br className="hidden md:block" /> 3/4 in. Impact Wrench Kit
             </h1>
             
-            <div className="grid grid-cols-2 gap-x-3 gap-y-2 sm:gap-y-3 my-2 md:my-4 text-[9px] sm:text-[11px] lg:text-sm text-white font-mono border-t border-white/20 pt-3 md:pt-4 w-full max-w-[280px] sm:max-w-sm">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-2 sm:gap-y-3 my-2 md:my-4 text-[12px] sm:text-[14px] lg:text-sm text-white font-mono border-t border-white/20 pt-3 md:pt-4 w-full max-w-[280px] sm:max-w-sm">
               <div>
-                <span className="block text-black text-[8px] sm:text-[9px] uppercase tracking-wider mb-0.5">Material</span>
+                <span className="block text-black text-[10px] sm:text-[12px] uppercase tracking-wider mb-0.5">Material</span>
                 <span className="font-bold">Industrial Composite</span>
               </div>
               <div>
-                <span className="block text-black text-[8px] sm:text-[9px] uppercase tracking-wider mb-0.5">MAX TORQUE</span>
+                <span className="block text-black text-[10px] sm:text-[12px] uppercase tracking-wider mb-0.5">MAX TORQUE</span>
                 <span className="font-bold">1,200 Nm</span>
               </div>
               <div>
-                <span className="block text-black text-[8px] sm:text-[9px] uppercase tracking-wider mb-0.5">Warranty</span>
+                <span className="block text-black text-[10px] sm:text-[12px] uppercase tracking-wider mb-0.5">Warranty</span>
                 <span className="font-bold">3 Year Limited</span>
               </div>
               <div>
-                <span className="block text-black text-[8px] sm:text-[9px] uppercase tracking-wider mb-0.5">Certification</span>
+                <span className="block text-black text-[10px] sm:text-[12px] uppercase tracking-wider mb-0.5">Certification</span>
                 <span className="font-bold">ISO 9001</span>
               </div>
             </div>
@@ -221,23 +221,23 @@ const Cards = () => {
           </div>
 
           <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left relative z-10 h-full order-1 md:order-2">
-            <div className="inline-flex items-center gap-1 sm:gap-2 bg-black/50 backdrop-blur-sm text-[#EEBA2B] border border-white/10 px-2 sm:px-3 py-1 sm:py-1.5 w-fit mb-2 sm:mb-4 text-[8px] sm:text-[10px] md:text-xs font-black uppercase tracking-wider mt-auto md:mt-0">
+            <div className="inline-flex items-center gap-1 sm:gap-2 bg-black/50 backdrop-blur-sm text-[#EEBA2B] border border-white/10 px-2 sm:px-3 py-1 sm:py-1.5 w-fit mb-2 sm:mb-4 text-[10px] sm:text-[12px] md:text-xs font-black uppercase tracking-wider mt-auto md:mt-0">
               <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
               Top Rated · HEAVY DUTY
             </div>
 
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-2 sm:mb-4 leading-[1] md:leading-[1.1] tracking-tighter drop-shadow-sm pointer-events-none">
+            <h1 className="text-[26px] sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-2 sm:mb-4 leading-[1] md:leading-[1.1] tracking-tighter drop-shadow-sm pointer-events-none">
               INDUSTRIAL<br />DEMOLITION HAMMER
             </h1>
-            <p className="text-black text-[10px] sm:text-xs md:text-sm max-w-[280px] sm:max-w-sm mx-auto md:mx-0 mb-3 sm:mb-6 leading-relaxed font-mono font-medium pointer-events-none">
+            <p className="text-black text-[14px] sm:text-xs md:text-sm max-w-[280px] sm:max-w-sm mx-auto md:mx-0 mb-3 sm:mb-6 leading-relaxed font-mono font-medium pointer-events-none">
               High-performance 40 lb demolition hammer built for heavy concrete and masonry work. Its powerful motor delivers maximum impact energy. 
             </p>
 
             <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 mb-4 sm:mb-8 pointer-events-none">
-              <div className="flex items-center gap-1 sm:gap-1.5 text-[7px] sm:text-[9px] md:text-xs font-bold border border-white/20 px-2 sm:px-3 py-1.5 sm:py-2 uppercase tracking-wider text-white">
+              <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[12px] md:text-xs font-bold border border-white/20 px-2 sm:px-3 py-1.5 sm:py-2 uppercase tracking-wider text-white">
                 <ShieldCheck className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-white" /> Industrial Grade Build
               </div>
-              <div className="flex items-center gap-1 sm:gap-1.5 text-[7px] sm:text-[9px] md:text-xs font-bold border border-white/20 px-2 sm:px-3 py-1.5 sm:py-2 uppercase tracking-wider text-white">
+              <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[12px] md:text-xs font-bold border border-white/20 px-2 sm:px-3 py-1.5 sm:py-2 uppercase tracking-wider text-white">
                 <CheckCircle2 className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-white" /> 3 Year Warranty
               </div>
             </div>
@@ -268,30 +268,30 @@ const Cards = () => {
           <div className="flex-grow border-b border-white/10 rounded-tr-lg pointer-events-none"></div>
         </div>
 
-        <div className="bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-b border-x border-white/10 flex-grow w-full flex flex-col items-center justify-center px-4 sm:px-10 md:px-16 lg:px-24 py-8 sm:py-10 md:py-12 relative z-10 pointer-events-auto rounded-b-lg overflow-hidden min-h-[60vh] md:min-h-[70vh]">
+        <div className="bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-b border-x border-white/10 flex-grow w-full flex flex-col items-center justify-center px-1 sm:px-10 md:px-16 lg:px-24 py-8 sm:py-10 md:py-12 relative z-10 pointer-events-auto rounded-b-lg overflow-hidden shrink-0 min-h-[60vh] md:min-h-[70vh]">
           
           <div className="absolute top-0 right-0 w-[150px] h-[150px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px] bg-[#EEBA2B]/10 rounded-full blur-[60px] md:blur-[100px] pointer-events-none" />
 
           <div className="flex flex-col md:flex-row items-center justify-center md:justify-between w-full max-w-6xl gap-6 sm:gap-10 relative z-10 h-full">
 
             <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left relative z-10 h-full">
-              <div className="inline-flex items-center gap-1 sm:gap-2 bg-[#EEBA2B] text-black px-2 sm:px-3 py-1 sm:py-1.5 w-fit mb-2 sm:mb-4 text-[8px] sm:text-[10px] md:text-xs font-black uppercase tracking-wider shadow-lg mt-auto md:mt-0">
+              <div className="inline-flex items-center gap-1 sm:gap-2 bg-[#EEBA2B] text-black px-2 sm:px-3 py-1 sm:py-1.5 w-fit mb-2 sm:mb-4 text-[10px] sm:text-[12px] md:text-xs font-black uppercase tracking-wider shadow-lg mt-auto md:mt-0">
                 <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                 Best Seller · PROFESSIONAL
               </div>
 
-              <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-2 sm:mb-4 leading-tight md:leading-[1.1] tracking-tight drop-shadow-md pointer-events-none">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-2 sm:mb-4 leading-tight md:leading-[1.1] tracking-tight drop-shadow-md pointer-events-none">
                 INDUSTRIAL<br /><span className="text-[#EEBA2B]">METAL CUTTING</span><br /><span>CHOP SAW</span>
               </h1>
-              <p className="text-black text-[10px] sm:text-xs md:text-sm max-w-[280px] sm:max-w-sm mx-auto md:mx-0 mb-4 sm:mb-6 leading-relaxed font-mono pointer-events-none">
+              <p className="text-black text-[14px] sm:text-xs md:text-sm max-w-[280px] sm:max-w-sm mx-auto md:mx-0 mb-4 sm:mb-6 leading-relaxed font-mono pointer-events-none">
                 Heavy-duty 14-inch chop saw designed for precise metal cutting in workshops. Features a QUIK-CHANGE™ keyless system and a powerful motor.
               </p>
 
               <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 mb-4 sm:mb-8 pointer-events-none">
-                <div className="flex items-center gap-1 sm:gap-1.5 text-[7px] sm:text-[9px] md:text-xs font-bold border border-white/20 text-white/90 px-2 sm:px-3 py-1.5 sm:py-2 uppercase tracking-wider">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[12px] md:text-xs font-bold border border-white/20 text-white/90 px-2 sm:px-3 py-1.5 sm:py-2 uppercase tracking-wider">
                   <ShieldCheck className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-[#EEBA2B]" /> ISO 9001
                 </div>
-                <div className="flex items-center gap-1 sm:gap-1.5 text-[7px] sm:text-[9px] md:text-xs font-bold border border-white/20 text-white/90 px-2 sm:px-3 py-1.5 sm:py-2 uppercase tracking-wider">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[12px] md:text-xs font-bold border border-white/20 text-white/90 px-2 sm:px-3 py-1.5 sm:py-2 uppercase tracking-wider">
                   <CheckCircle2 className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-green-400" /> Ready to Ship
                 </div>
               </div>

@@ -5,6 +5,12 @@ import CardSwap2, { Card2 } from './CardSwap2'
 import BlurText from "./BlurText";
 import LogoLoop from './LogoLoop';
 import { Globe, Award, Truck, ShieldCheck, Users, Headphones } from 'lucide-react';
+import { Hammersmith_One } from 'next/font/google';
+
+const hammersmith = Hammersmith_One({ 
+  weight: '400', 
+  subsets: ['latin'] 
+});
 
 const imageLogos = [
   { src: "/b1.svg", alt: "Company 1"},
@@ -35,7 +41,7 @@ const GlassContent = ({ icon: Icon, title, desc, stat, statLabel, badge }) => (
       <div className="flex items-center justify-between mb-2 md:mb-4">
         <div className="flex items-center gap-2 md:gap-3">
           {Icon && <Icon className="w-4 h-4 md:w-5 md:h-5 text-[#EEBA2B]" strokeWidth={2.5} />}
-          <h3 className="text-white text-sm md:text-xl font-black tracking-tight drop-shadow-md">
+          <h3 className="text-white text-[16px] md:text-xl font-black tracking-tight drop-shadow-md">
             {title}
           </h3>
         </div>
@@ -111,8 +117,8 @@ const Vid = () => {
                 delay={500}
                 animateBy="words"
                 direction="top"
-                lastWordClassName="text-[#EEBA2B] italic font-serif"
-                className="xl:text-6xl 2xl:text-7xl flex flex-col justify-center items-center font-black text-white select-none text-center drop-shadow-2xl leading-[1.1] gap-x-4 gap-y-2 w-full"
+                lastWordClassName="text-[#EEBA2B]"
+                className={`xl:text-6xl 2xl:text-7xl flex flex-col justify-center items-center ${hammersmith.className}  text-white select-none text-center drop-shadow-2xl leading-[1.1] gap-x-4 gap-y-2 w-full`}
               />
             </div>
 
@@ -144,8 +150,8 @@ const Vid = () => {
                 delay={300}
                 animateBy="words"
                 direction="top"
-                lastWordClassName="text-[#EEBA2B] italic font-serif"
-                className="text-[12.5vw] sm:text-[10vw] md:text-[9vw] font-black text-white text-center drop-shadow-2xl leading-[1] sm:leading-[1.05] flex flex-wrap justify-center gap-x-2 gap-y-1 w-full"
+                lastWordClassName="text-[#EEBA2B] "
+                className={`text-[12.5vw] sm:text-[10vw] md:text-[9vw] ${hammersmith.className} text-white text-center drop-shadow-2xl leading-[1] sm:leading-[1.05] flex flex-wrap justify-center gap-x-2 gap-y-1 w-full`}
               />
             </div>
           </div>
