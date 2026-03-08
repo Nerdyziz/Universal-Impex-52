@@ -266,9 +266,9 @@ const Contact = () => {
                   </svg>
                 </div>
               </div>
-              <div className="bg-[#EEBA2B] border-b border-x border-[#EEBA2B] p-6 -mt-px min-h-[160px] flex flex-col group-hover:bg-[#EEBA2B]/90 transition-colors duration-300 rounded-b-xl shadow-md">
+              <div className="bg-[#EEBA2B] border-b border-x border-[#EEBA2B] p-6 -mt-px min-h-[160px] flex flex-col flex-wrap group-hover:bg-[#EEBA2B]/90 transition-colors duration-300 rounded-b-xl shadow-md">
                 <Mail className="w-7 h-7 text-black mb-4 group-hover:scale-110 transition-transform duration-300" />
-                <span className="text-black font-black text-base mb-1">info@universalimpex52.com</span>
+                <span className="text-black font-black lg:text-[10px] text-base mb-1">info@universalimpex52.com</span>
                 <span className="text-black/70 font-bold text-xs">We reply within 24 hours</span>
               </div>
             </div>

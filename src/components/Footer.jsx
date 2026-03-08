@@ -68,10 +68,12 @@ const Footer = () => {
               <div>
                 <h4 className="text-base sm:text-lg font-black mb-3 text-gray-900 tracking-wide">Follow Us</h4>
                 <div className="flex gap-4 flex-wrap">
-                  <Link href="#" className="px-4 py-2 bg-black/5 border border-black/10 hover:bg-[#EEBA2B] hover:border-[#EEBA2B] hover:text-black transition-all duration-300 rounded-lg text-gray-800 text-xs sm:text-sm font-bold tracking-wider uppercase shadow-sm hover:shadow-none hover:translate-y-px">
+                  <Link href="https://www.instagram.com/ui52tijarat?igsh=MXRrbmgzMDdycWdjeA==" className="px-4 py-2 bg-black/5 border border-black/10 hover:bg-[#EEBA2B] hover:border-[#EEBA2B] hover:text-black transition-all duration-300 rounded-lg text-gray-800 text-xs sm:text-sm font-bold tracking-wider uppercase shadow-sm hover:shadow-none hover:translate-y-px">
                     Instagram
                   </Link>
-                 
+                 <Link href="#" className="px-4 py-2 bg-black/5 border border-black/10 hover:bg-[#EEBA2B] hover:border-[#EEBA2B] hover:text-black transition-all duration-300 rounded-lg text-gray-800 text-xs sm:text-sm font-bold tracking-wider uppercase shadow-sm hover:shadow-none hover:translate-y-px">
+                    LinkedIn
+                  </Link>
                 </div>
               </div>
             </div>
