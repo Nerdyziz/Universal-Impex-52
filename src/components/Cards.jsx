@@ -325,15 +325,15 @@ const Cards = () => {
                 
                 <div className="mt-3 sm:mt-5 grid grid-cols-3 gap-1 sm:gap-2 border-t border-white/10 pt-2 sm:pt-3 pointer-events-none">
                   <div>
-                    <p className="text-[6px] sm:text-[8px] md:text-[9px] text-gray-400 uppercase tracking-wider font-mono">Power</p>
+                    <p className="text-[6px] sm:text-[8px] md:text-[9px] text-black uppercase tracking-wider font-mono">Power</p>
                     <p className="text-[10px] sm:text-xs lg:text-base font-black text-white">2,200 W</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-[6px] sm:text-[8px] md:text-[9px] text-gray-400 uppercase tracking-wider font-mono">BLADE</p>
+                    <p className="text-[6px] sm:text-[8px] md:text-[9px] text-black uppercase tracking-wider font-mono">BLADE</p>
                     <p className="text-[10px] sm:text-xs lg:text-base font-black text-[#EEBA2B]">14 in.</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-[6px] sm:text-[8px] md:text-[9px] text-gray-400 uppercase tracking-wider font-mono">SPEED</p>
+                    <p className="text-[6px] sm:text-[8px] md:text-[9px] text-black uppercase tracking-wider font-mono">SPEED</p>
                     <p className="text-[10px] sm:text-xs lg:text-base font-black text-white">3,800 RPM</p>
                   </div>
                 </div>
