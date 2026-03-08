@@ -18,10 +18,10 @@ const Footer = () => {
               {/* Brand Section */}
               <div>
                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
-                  <Image src={'/logo2.svg'} width={200} height={200} alt="Universal Impex 52 Logo" className="drop-shadow-sm"/>
+                  <Image src={'/logo2.svg'} width={500} height={500} alt="Universal Impex 52 Logo" className="drop-shadow-sm"/>
                 </h3>
                 <p className="text-gray-700 text-sm sm:text-base mb-6 font-mono leading-relaxed">
-                  Premium automotive solutions for your business needs. Connect with us to explore endless possibilities.
+                  Empowering industries with high-quality tools, equipment and dependable supply solutions built for performance and long-term reliability.
                 </p>
               </div>
 
@@ -69,14 +69,9 @@ const Footer = () => {
                 <h4 className="text-base sm:text-lg font-black mb-3 text-gray-900 tracking-wide">Follow Us</h4>
                 <div className="flex gap-4 flex-wrap">
                   <Link href="#" className="px-4 py-2 bg-black/5 border border-black/10 hover:bg-[#EEBA2B] hover:border-[#EEBA2B] hover:text-black transition-all duration-300 rounded-lg text-gray-800 text-xs sm:text-sm font-bold tracking-wider uppercase shadow-sm hover:shadow-none hover:translate-y-px">
-                    Facebook
+                    Instagram
                   </Link>
-                  <Link href="#" className="px-4 py-2 bg-black/5 border border-black/10 hover:bg-[#EEBA2B] hover:border-[#EEBA2B] hover:text-black transition-all duration-300 rounded-lg text-gray-800 text-xs sm:text-sm font-bold tracking-wider uppercase shadow-sm hover:shadow-none hover:translate-y-px">
-                    LinkedIn
-                  </Link>
-                  <Link href="#" className="px-4 py-2 bg-black/5 border border-black/10 hover:bg-[#EEBA2B] hover:border-[#EEBA2B] hover:text-black transition-all duration-300 rounded-lg text-gray-800 text-xs sm:text-sm font-bold tracking-wider uppercase shadow-sm hover:shadow-none hover:translate-y-px">
-                    Twitter
-                  </Link>
+                 
                 </div>
               </div>
             </div>
