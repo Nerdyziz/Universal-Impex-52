@@ -449,7 +449,7 @@ const Contact = () => {
                       <Building2 className="w-4 h-4 text-[#EEBA2B]" />
                     </div>
                     <div>
-                      <span className="text-gray-900 text-sm font-black block">50+ Trusted Suppliers</span>
+                      <span className="text-gray-900 text-sm font-black block">100+ Trusted Suppliers</span>
                       <span className="text-gray-600 text-xs font-medium">Reliable sourcing for power tools & hardware</span>
                     </div>
                   </li>
@@ -458,7 +458,7 @@ const Contact = () => {
                       <Globe className="w-4 h-4 text-[#EEBA2B]" />
                     </div>
                     <div>
-                      <span className="text-gray-900 text-sm font-black block">10+ Brand Partnerships</span>
+                      <span className="text-gray-900 text-sm font-black block">50+ Brand Partnerships</span>
                       <span className="text-gray-600 text-xs font-medium">Authorized dealership for leading tool brands</span>
                     </div>
                   </li>

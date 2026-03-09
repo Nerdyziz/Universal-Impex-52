@@ -49,28 +49,25 @@ const GlassContent = ({ icon: Icon, title, desc, stat, statLabel, badge }) => (
 const MobileCard = () => {
   return (
     <div>
-       <div className="flex xl:hidden justify-center items-center w-full  pt-15  h-[350px] sm:h-[400px] shrink-0 pointer-events-auto">
-                    <CardSwapMob
-                      width={"90%"}
-                      height={"100%"}
-                      cardDistance={18}
-                      verticalDistance={15}
-                      skewAmount={0}
-                      delay={3000}
-                      pauseOnHover
-                      containerClassName="flex items-center justify-center perspective-[1000px] overflow-visible "
-                    >
-                      {cardData.map((data) => (
-                        
-                          <Card3 key={`mobile-${data.id}`}>
-                            <GlassContent {...data} />
-                          </Card3>
-                        
-                      ))}
-                    </CardSwapMob>
-                  </div>
+      <div className="flex xl:hidden justify-center items-center w-full pt-15 h-[350px] sm:h-[400px] shrink-0 pointer-events-auto">
+        <CardSwapMob
+          width={"90%"}
+          height={"100%"}
+          cardDistance={18}
+          verticalDistance={15}
+          skewAmount={0}
+          /* Added touch-none and cursor utilities to your custom class */
+          containerClassName="flex items-center justify-center perspective-[1000px] overflow-visible touch-none cursor-grab active:cursor-grabbing"
+        >
+          {cardData.map((data) => (
+            <Card3 key={`mobile-${data.id}`}>
+              <GlassContent {...data} />
+            </Card3>
+          ))}
+        </CardSwapMob>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default MobileCard
+export default MobileCard;
