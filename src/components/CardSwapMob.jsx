@@ -48,11 +48,10 @@ const CardSwapMob = ({
   verticalDistance = 70,
   onCardClick,
   skewAmount = 6,
-  easing = "fast", // Changed default to 'fast'
+  easing = "fast", 
   containerClassName,
   children,
 }) => {
-  // 1. MASSIVELY REDUCED ANIMATION TIMES FOR SNAPPY FEEL
   const config =
     easing === "elastic"
       ? {
@@ -64,11 +63,11 @@ const CardSwapMob = ({
           returnDelay: 0.05,
         }
       : {
-          ease: "power3.out", // Snappier ease than power1.inOut
-          durDrop: 0.1,       // Drop down almost instantly
-          durMove: 0.1,      // Background cards slide up immediately
-          durReturn: 0.1,    // Dropped card snaps to back
-          promoteOverlap: 0.5,// Start moving back cards while front is still dropping
+          ease: "power3.out", 
+          durDrop: 0.1,       
+          durMove: 0.1,      
+          durReturn: 0.1,    
+          promoteOverlap: 0.5,
           returnDelay: 0.0,
         };
 
@@ -95,7 +94,8 @@ const CardSwapMob = ({
       ),
     );
 
-    const swap = () => {
+    // Added a direction parameter (1 = down, -1 = up)
+    const swap = (direction = 1) => {
       if (order.current.length < 2) return;
 
       const [front, ...rest] = order.current;
@@ -104,9 +104,9 @@ const CardSwapMob = ({
 
       tlRef.current = tl;
 
-      // Drop the current card down
+      // Drop or fly the current card based on direction
       tl.to(elFront, {
-        y: "+=500",
+        y: direction > 0 ? "+=500" : "-=500", // Throws up or down
         duration: config.durDrop,
         ease: config.ease,
       });
@@ -129,7 +129,7 @@ const CardSwapMob = ({
             duration: config.durMove,
             ease: config.ease,
           },
-          `promote+=${i * 0.05}`, // Reduced stagger from 0.15 to 0.05 for speed
+          `promote+=${i * 0.05}`, 
         );
       });
 
@@ -168,10 +168,10 @@ const CardSwapMob = ({
       });
     };
 
-    // --- NEW VELOCITY-BASED DRAG LOGIC ---
+    // --- BI-DIRECTIONAL VELOCITY DRAG LOGIC ---
     let isDragging = false;
     let startY = 0;
-    let startTime = 0; // Added to track swipe speed
+    let startTime = 0; 
     let elFront = null;
     let originalY = 0;
 
@@ -180,7 +180,7 @@ const CardSwapMob = ({
       
       isDragging = true;
       startY = e.clientY;
-      startTime = Date.now(); // Record when the touch started
+      startTime = Date.now(); 
       const frontIdx = order.current[0];
       elFront = refs[frontIdx].current;
       
@@ -192,10 +192,8 @@ const CardSwapMob = ({
       
       const deltaY = e.clientY - startY;
 
-      // Only allow dragging downwards
-      if (deltaY > 0) {
-        gsap.set(elFront, { y: originalY + deltaY });
-      }
+      // Allow dragging in BOTH directions now
+      gsap.set(elFront, { y: originalY + deltaY });
     };
 
     const handlePointerUp = (e) => {
@@ -205,15 +203,18 @@ const CardSwapMob = ({
       const deltaY = e.clientY - startY;
       const timeElapsed = Date.now() - startTime;
       
-      // Calculate how fast the user swiped (pixels per millisecond)
-      const velocity = deltaY / timeElapsed;
+      // Calculate absolute speed and distance
+      const absDeltaY = Math.abs(deltaY);
+      const velocity = absDeltaY / timeElapsed;
+      
+      // Determine direction (1 for swipe down, -1 for swipe up)
+      const direction = deltaY > 0 ? 1 : -1;
 
-      // 2. TRIGGER SWAP ON DISTANCE *OR* FAST FLICK
-      // If dragged 80px down, OR if dragged at least 30px but very quickly (velocity > 0.4)
-      if (deltaY > 80 || (deltaY > 30 && velocity > 0.4)) {
-        swap();
+      // Trigger swap if dragged 80px, OR dragged 30px very quickly
+      if (absDeltaY > 80 || (absDeltaY > 30 && velocity > 0.4)) {
+        swap(direction);
       } else {
-        // Snap back much faster
+        // Snap back if threshold not met
         gsap.to(elFront, { 
           y: originalY, 
           duration: 0.25, 
