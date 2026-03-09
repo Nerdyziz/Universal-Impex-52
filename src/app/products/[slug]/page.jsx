@@ -7,6 +7,8 @@ import { useGSAP } from "@gsap/react";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import {
   ArrowLeft,
   ArrowRight,
@@ -54,6 +56,130 @@ const isExternal = (src) => {
   }
 };
 
+/* ============================================================
+   SKELETON COMPONENTS
+   ============================================================ */
+const RelatedCardSkeleton = () => (
+  <div className="relative block z-0">
+    <div className="h-[40px] flex w-full relative z-20">
+      <div className="absolute top-0 right-0 w-[50%] h-full border-b border-black/5" />
+      <div className="tab-shape-related relative w-[calc(50%+40px)] sm:w-[calc(50%+60px)] border-t border-l border-black/5 rounded-tl-2xl bg-gray-50 overflow-hidden">
+        <Skeleton height="100%" borderRadius={0} style={{ display: "block" }} />
+      </div>
+    </div>
+    <div className="bg-[rgba(20,20,20,0.02)] border-b border-x border-black/5 rounded-b-2xl p-6 sm:p-8 min-h-[220px] flex flex-col justify-between">
+      <div className="absolute top-4 right-4 w-[100px] h-[100px]">
+        <Skeleton height="100%" borderRadius={8} />
+      </div>
+      <div className="relative z-10 w-2/3">
+        <Skeleton width="40%" height={10} className="mb-2" />
+        <Skeleton width="80%" height={24} className="mb-4" />
+      </div>
+      <div className="relative z-10">
+        <Skeleton width={90} height={14} />
+      </div>
+    </div>
+  </div>
+);
+
+const ProductPageSkeleton = () => (
+  <div className="w-full min-h-screen overflow-hidden relative">
+    <style dangerouslySetInnerHTML={{__html: `
+      .tab-shape-related { clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 100%, 0 100%); }
+      @media (min-width: 640px) { .tab-shape-related { clip-path: polygon(0 0, calc(100% - 60px) 0, 100% 100%, 0 100%); } }
+    `}} />
+    
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+      {/* Hero Section Skeleton */}
+      <section className="relative w-full px-6 sm:px-12 lg:px-24 lg:pt-28 pt-7 pb-2">
+        <div className="absolute top-20 right-10 w-[300px] h-[300px] bg-gray-200/40 rounded-full blur-[100px]" />
+        
+        <div className="relative z-10 max-w-6xl mx-auto w-full">
+          {/* Back link */}
+          <div className="mb-10">
+            <Skeleton width={120} height={16} />
+          </div>
+
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
+            {/* Left: Image Box */}
+            <div className="w-full lg:w-1/2">
+              <div className="relative aspect-square rounded-2xl border border-black/5 bg-gray-50 overflow-hidden">
+                <Skeleton height="100%" borderRadius={0} />
+              </div>
+            </div>
+
+            {/* Right: Product Info */}
+            <div className="w-full lg:w-1/2 flex flex-col">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-[2px] w-8 bg-gray-200" />
+                <Skeleton width={100} height={12} />
+              </div>
+              <Skeleton width="85%" height={48} className="mb-4 max-w-md block" />
+              <Skeleton count={3} className="mb-8 max-w-lg" />
+
+              <div className="flex flex-wrap gap-4 mb-8">
+                <Skeleton width={90} height={20} />
+                <Skeleton width={110} height={20} />
+                <Skeleton width={100} height={20} />
+              </div>
+
+              {/* Quote Form Skeleton */}
+              <div className="mt-auto border-t border-black/10 pt-8">
+                <Skeleton width={100} height={16} className="mb-5" />
+                <div className="space-y-5">
+                  <div>
+                    <Skeleton width={180} height={12} className="mb-2" />
+                    <Skeleton width={140} height={48} borderRadius={8} />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Skeleton width={80} height={12} className="mb-2" />
+                      <Skeleton height={48} borderRadius={8} />
+                    </div>
+                    <div>
+                      <Skeleton width={50} height={12} className="mb-2" />
+                      <Skeleton height={48} borderRadius={8} />
+                    </div>
+                  </div>
+                  <div>
+                    <Skeleton width={120} height={12} className="mb-2" />
+                    <Skeleton height={80} borderRadius={8} />
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                    <Skeleton height={48} className="w-full sm:w-48" borderRadius={8} />
+                    <Skeleton height={48} className="w-full sm:w-48" borderRadius={8} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Related Products Skeleton */}
+      <section className="w-full py-7 sm:py-24 px-6 sm:px-12 lg:px-24 bg-[rgba(20,20,20,0.02)] border-t border-black/5 mt-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-10 sm:mb-14">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-[2px] w-8 bg-gray-200" />
+              <Skeleton width={100} height={12} />
+            </div>
+            <Skeleton width={250} height={40} />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <RelatedCardSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </SkeletonTheme>
+  </div>
+);
+
+/* ============================================================
+   MAIN COMPONENT
+   ============================================================ */
 const ProductPage = () => {
   const { slug } = useParams();
   const containerRef = useRef(null);
@@ -210,16 +336,7 @@ const ProductPage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="w-full min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4 bg-[rgba(20,20,20,0.05)] backdrop-blur-2xl border border-black/10 rounded-2xl p-12 shadow-[0_15px_40px_rgba(0,0,0,0.08)]">
-          <Loader2 className="w-10 h-10 text-[#EEBA2B] animate-spin mx-auto" />
-          <p className="text-sm font-bold uppercase tracking-widest text-gray-800">
-            Loading product...
-          </p>
-        </div>
-      </div>
-    );
+    return <ProductPageSkeleton />;
   }
 
   if (!product) {

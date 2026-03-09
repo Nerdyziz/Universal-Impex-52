@@ -65,10 +65,10 @@ const CardSwapMob = ({
         }
       : {
           ease: "power3.out", // Snappier ease than power1.inOut
-          durDrop: 0.2,       // Drop down almost instantly
-          durMove: 0.25,      // Background cards slide up immediately
-          durReturn: 0.25,    // Dropped card snaps to back
-          promoteOverlap: 0.7,// Start moving back cards while front is still dropping
+          durDrop: 0.1,       // Drop down almost instantly
+          durMove: 0.1,      // Background cards slide up immediately
+          durReturn: 0.1,    // Dropped card snaps to back
+          promoteOverlap: 0.5,// Start moving back cards while front is still dropping
           returnDelay: 0.0,
         };
 

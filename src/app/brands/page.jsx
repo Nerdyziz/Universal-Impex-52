@@ -3,12 +3,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { getBrandTheme } from '@/lib/theme';
 
 // --- UPDATED COMPONENT ---
-// Now accepts className and style to allow dynamic Tailwind switching
+// Accepts className and style to allow dynamic Tailwind switching
 const SlopeDown = ({ className, style }) => (
   <div 
     className={`h-full w-[70px] relative z-20 slope-ref ${className}`} 
@@ -25,6 +26,83 @@ const SlopeDown = ({ className, style }) => (
   </div>
 );
 
+/* ============================================================
+   SKELETON COMPONENT
+   ============================================================ */
+const BrandsSkeleton = ({ isMobileView }) => (
+  <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+    <div className="w-full h-auto lg:h-[80vh] pb-8 lg:pb-0">
+      {isMobileView ? (
+        /* ===== MOBILE SKELETON ===== */
+        [0, 1, 2, 3].map((cardIndex) => (
+          <div
+            key={cardIndex}
+            className={`relative block ${cardIndex === 0 ? '' : '-mt-12'}`}
+            style={{ zIndex: cardIndex * 10 }}
+          >
+            <div className="w-full flex flex-col h-[140px] relative">
+              {/* Folder Top Tab */}
+              <div className="h-[30px] md:h-[50px] flex w-full relative z-10">
+                <div className="w-[30%] -mr-px rounded-tl-xl bg-slate-200 flex items-center pl-8 shadow-top-right">
+                  <Skeleton width={20} height={16} />
+                </div>
+                <SlopeDown className="text-slate-200" />
+                <div className="grow opacity-0"></div>
+              </div>
+              
+              {/* Folder Body */}
+              <div className="grow w-full pl-8 md:pl-16 flex items-start -mt-px relative z-10 bg-slate-200 shadow-top-right pt-4">
+                <div className="w-1/2">
+                  <Skeleton height={24} />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        /* ===== DESKTOP SKELETON ===== */
+        [0, 1].map((rowIndex) => (
+          <div 
+            key={rowIndex} 
+            className={`flex flex-row h-[40%] relative ${
+              rowIndex === 0 ? '' : '-mt-16'
+            }`}
+            style={{ zIndex: rowIndex * 10 }}
+          >
+            {[0, 1].map((idx) => {
+              // Replicate the 50/50 and 60/40 row widths
+              const widthClass = rowIndex === 0 ? 'lg:w-[50%]' : (idx === 0 ? 'lg:w-[60%]' : 'lg:w-[40%]');
+              
+              return (
+                <div key={idx} className={`block ${widthClass} flex flex-col h-full relative`}>
+                  {/* Folder Top Tab */}
+                  <div className="h-[50px] flex w-full relative z-10">
+                    <div className={`w-[40%] ${rowIndex % 2 === 1 ? 'w-[50%]' : ''} -mr-px rounded-tl-xl bg-slate-200 flex items-center pl-8 shadow-top-right`}>
+                      <Skeleton width={30} height={20} />
+                    </div>
+                    <SlopeDown className="text-slate-200" />
+                    <div className="grow opacity-0"></div>
+                  </div>
+                  
+                  {/* Folder Body */}
+                  <div className="grow w-full pl-16 flex items-start pt-5 -mt-px relative z-10 bg-slate-200 shadow-top-right">
+                    <div className="w-1/2 mt-2">
+                      <Skeleton height={48} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))
+      )}
+    </div>
+  </SkeletonTheme>
+);
+
+/* ============================================================
+   MAIN COMPONENT
+   ============================================================ */
 const Products = () => {
   const container = useRef(null);
   const [brands, setBrands] = useState([]);
@@ -257,7 +335,6 @@ const Products = () => {
 
           {/* Title */}
           <h1 className="products-hero-title text-4xl sm:text-6xl lg:text-8xl font-black leading-[0.95] tracking-tighter mb-8">
-            
             <span className="block text-[#EEBA2B] italic font-serif">Brands</span>
           </h1>
 
@@ -267,9 +344,7 @@ const Products = () => {
         </section>
       
       {loading ? (
-        <div className="flex items-center justify-center h-[60vh]">
-          <Loader2 className="w-10 h-10 animate-spin text-amber-500" />
-        </div>
+        <BrandsSkeleton isMobileView={isMobileView} />
       ) : brands.length === 0 ? (
         <div className="flex items-center justify-center h-[60vh]">
           <p className="text-xl text-neutral-500">No brands found.</p>
