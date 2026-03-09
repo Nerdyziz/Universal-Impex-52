@@ -48,27 +48,28 @@ const CardSwapMob = ({
   verticalDistance = 70,
   onCardClick,
   skewAmount = 6,
-  easing = "elastic",
+  easing = "fast", // Changed default to 'fast'
   containerClassName,
   children,
 }) => {
+  // 1. MASSIVELY REDUCED ANIMATION TIMES FOR SNAPPY FEEL
   const config =
     easing === "elastic"
       ? {
-          ease: "elastic.out(0.6,0.9)",
-          durDrop: 2,
-          durMove: 2,
-          durReturn: 2,
-          promoteOverlap: 0.9,
+          ease: "back.out(1.2)",
+          durDrop: 0.3,
+          durMove: 0.35,
+          durReturn: 0.35,
+          promoteOverlap: 0.8,
           returnDelay: 0.05,
         }
       : {
-          ease: "power1.inOut",
-          durDrop: 0.8,
-          durMove: 0.8,
-          durReturn: 0.8,
-          promoteOverlap: 0.45,
-          returnDelay: 0.2,
+          ease: "power3.out", // Snappier ease than power1.inOut
+          durDrop: 0.2,       // Drop down almost instantly
+          durMove: 0.25,      // Background cards slide up immediately
+          durReturn: 0.25,    // Dropped card snaps to back
+          promoteOverlap: 0.7,// Start moving back cards while front is still dropping
+          returnDelay: 0.0,
         };
 
   const childArr = useMemo(() => Children.toArray(children), [children]);
@@ -128,11 +129,10 @@ const CardSwapMob = ({
             duration: config.durMove,
             ease: config.ease,
           },
-          `promote+=${i * 0.15}`,
+          `promote+=${i * 0.05}`, // Reduced stagger from 0.15 to 0.05 for speed
         );
       });
 
-      // Calculate where the back slot is for the dropped card to return to
       const backSlot = makeSlot(
         refs.length - 1,
         cardDistance,
@@ -168,22 +168,22 @@ const CardSwapMob = ({
       });
     };
 
-    // --- NEW DRAG/SWIPE LOGIC ---
+    // --- NEW VELOCITY-BASED DRAG LOGIC ---
     let isDragging = false;
     let startY = 0;
+    let startTime = 0; // Added to track swipe speed
     let elFront = null;
     let originalY = 0;
 
     const handlePointerDown = (e) => {
-      // Prevent drag if an animation is actively playing
       if (tlRef.current?.isActive() || order.current.length < 2) return;
       
       isDragging = true;
       startY = e.clientY;
+      startTime = Date.now(); // Record when the touch started
       const frontIdx = order.current[0];
       elFront = refs[frontIdx].current;
       
-      // Store the exact Y position so we can snap back to it if swipe fails
       originalY = makeSlot(0, cardDistance, verticalDistance, total).y;
     };
 
@@ -203,15 +203,20 @@ const CardSwapMob = ({
       isDragging = false;
       
       const deltaY = e.clientY - startY;
+      const timeElapsed = Date.now() - startTime;
+      
+      // Calculate how fast the user swiped (pixels per millisecond)
+      const velocity = deltaY / timeElapsed;
 
-      // If user dragged more than 80px down, trigger the swap!
-      if (deltaY > 80) {
+      // 2. TRIGGER SWAP ON DISTANCE *OR* FAST FLICK
+      // If dragged 80px down, OR if dragged at least 30px but very quickly (velocity > 0.4)
+      if (deltaY > 80 || (deltaY > 30 && velocity > 0.4)) {
         swap();
       } else {
-        // Otherwise, visually snap the card back into place
+        // Snap back much faster
         gsap.to(elFront, { 
           y: originalY, 
-          duration: 0.4, 
+          duration: 0.25, 
           ease: "back.out(1.5)" 
         });
       }
@@ -221,9 +226,7 @@ const CardSwapMob = ({
 
     const node = container.current;
     
-    // Attach event listeners
     node.addEventListener("pointerdown", handlePointerDown);
-    // Attaching move/up to window prevents dropping the drag if the user swipes fast off the card
     window.addEventListener("pointermove", handlePointerMove);
     window.addEventListener("pointerup", handlePointerUp);
 
@@ -250,7 +253,6 @@ const CardSwapMob = ({
       : child,
   );
 
-  // Added touch-none to prevent browser scroll when trying to swipe, and cursor hints
   const defaultContainerClass =
     "absolute bottom-0 right-0 translate-x-[15%] sm:translate-x-[5%] md:-translate-x-[5%] translate-y-[5%] md:translate-y-[20%] scale-[0.8] xl:scale-100 origin-bottom-right perspective-[1000px] overflow-visible touch-none cursor-grab active:cursor-grabbing";
 
