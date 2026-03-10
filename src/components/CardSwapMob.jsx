@@ -106,7 +106,7 @@ const CardSwapMob = ({
 
       // Drop or fly the current card based on direction
       tl.to(elFront, {
-        y: direction > 0 ? "+=500" : "-=500", // Throws up or down
+        y: direction > 0 ? "+=50" : "-=50", // Throws up or down
         duration: config.durDrop,
         ease: config.ease,
       });
