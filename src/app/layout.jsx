@@ -27,7 +27,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://universalimpex52.c
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Supplier, Importer & Exporter of Automobile Parts`,
+    default: `${SITE_NAME} — Supplier, Importer & Exporter of Industrial Equipments`,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
