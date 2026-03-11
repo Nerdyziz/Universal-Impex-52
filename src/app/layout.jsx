@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 
 const SITE_NAME = "Universal Impex 52";
 const SITE_DESCRIPTION =
-  "Universal Impex 52 — Your trusted supplier, importer & exporter of premium automobile parts & industrial components. Browse top brands, request bulk quotes, and streamline your supply chain.";
+  "Universal Impex 52 — Your trusted supplier, importer & exporter of premium industrial components & automobile parts. Browse top brands, request bulk quotes, and streamline your supply chain.";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://universalimpex52.com";
 
 export const metadata = {
@@ -57,20 +57,20 @@ export const metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} — Supplier, Importer & Exporter of Automobile Parts`,
+    title: `${SITE_NAME} — Supplier, Importer & Exporter of Industrial Equipments`,
     description: SITE_DESCRIPTION,
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — Automobile Parts & Industrial Components`,
+        alt: `${SITE_NAME} — Supplier, Importer & Exporter of Industrial Equipments`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — Supplier, Importer & Exporter of Automobile Parts`,
+    title: `${SITE_NAME} — Supplier, Importer & Exporter of Industrial Equipments`,
     description: SITE_DESCRIPTION,
     images: ["/og-image.png"],
   },
