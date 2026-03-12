@@ -67,7 +67,7 @@ const Vid = () => {
     <section className="video relative w-full bg-black overflow-hidden -mt-16 min-h-screen pt-28" aria-label="Automotive parts showcase video">
       {/* Video background */}
       <video
-        src="/vid2.mp4"
+        src="/vid2.MP4"
         autoPlay
         loop
         muted
