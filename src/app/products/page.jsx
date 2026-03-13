@@ -10,6 +10,7 @@ import { ArrowRight, Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css"; // Ensure skeleton styles are loaded
 import { getProductTheme } from "@/lib/theme";
+import { MAIN_CATEGORIES } from "@/lib/categories";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -231,6 +232,7 @@ const Products = () => {
   const searchParams = useSearchParams();
   const brandFromUrl = searchParams.get("brand") || "";
 
+  const [activeMainCategory, setActiveMainCategory] = useState("");
   const [activeBrand, setActiveBrand] = useState(brandFromUrl);
   const [activeCategory, setActiveCategory] = useState("all");
   const [products, setProducts] = useState([]);
@@ -249,7 +251,7 @@ const Products = () => {
   const animationsInitialized = useRef(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  const hasActiveFilter = activeBrand || activeCategory !== "all" || debouncedSearch;
+  const hasActiveFilter = activeMainCategory || activeBrand || activeCategory !== "all" || debouncedSearch;
 
   useEffect(() => {
     const onScroll = () => setShowScrollTop(window.scrollY > 500);
@@ -267,10 +269,11 @@ const Products = () => {
     params.set("page", String(page));
     params.set("limit", String(PRODUCTS_PER_PAGE));
     if (activeBrand) params.set("brand", activeBrand);
+    if (activeMainCategory && !activeBrand) params.set("mainCategory", activeMainCategory);
     if (activeCategory && activeCategory !== "all") params.set("category", activeCategory);
     if (debouncedSearch.trim()) params.set("search", debouncedSearch.trim());
     return `/api/products?${params.toString()}`;
-  }, [activeBrand, activeCategory, debouncedSearch]);
+  }, [activeMainCategory, activeBrand, activeCategory, debouncedSearch]);
 
   useEffect(() => {
     async function fetchInitial() {
@@ -389,6 +392,11 @@ const Products = () => {
 
   const categoryTree = activeBrand ? brandCategoryTree : allCategoryTree;
 
+  // Filter brands by selected main category
+  const filteredBrands = activeMainCategory
+    ? brands.filter((b) => b.mainCategory === activeMainCategory)
+    : brands;
+
   useEffect(() => {
     if (loading) return;
     if (animationsInitialized.current) return;
@@ -477,17 +485,27 @@ const Products = () => {
             Explore our range of professional power tools, industrial hardware and construction equipment supplied through trusted partnerships with industry-leading brands.
           </p>
 
-          {activeBrand && (
-            <div className="products-filters flex items-center gap-2">
+          {(activeBrand || activeMainCategory) && (
+            <div className="products-filters flex items-center gap-2 flex-wrap">
               <span className="text-xs text-gray-600 font-bold">Showing:</span>
-              <span className="inline-flex items-center gap-1.5 bg-[rgba(20,20,20,0.1)] backdrop-blur-md border border-black/10 text-gray-900 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">
-                {activeBrand}
-                {activeCategory !== "all" && <span className="text-black/30 mx-1">/</span>}
-                {activeCategory !== "all" && activeCategory}
-                <button onClick={() => { setActiveBrand(""); setActiveCategory("all"); }} className="ml-1 hover:text-red-500 transition-colors">
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
+              {activeMainCategory && (
+                <span className="inline-flex items-center gap-1.5 bg-[rgba(20,20,20,0.1)] backdrop-blur-md border border-black/10 text-gray-900 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">
+                  {activeMainCategory}
+                  <button onClick={() => { setActiveMainCategory(""); setActiveBrand(""); setActiveCategory("all"); }} className="ml-1 hover:text-red-500 transition-colors">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {activeBrand && (
+                <span className="inline-flex items-center gap-1.5 bg-[rgba(20,20,20,0.1)] backdrop-blur-md border border-black/10 text-gray-900 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">
+                  {activeBrand}
+                  {activeCategory !== "all" && <span className="text-black/30 mx-1">/</span>}
+                  {activeCategory !== "all" && activeCategory}
+                  <button onClick={() => { setActiveBrand(""); setActiveCategory("all"); }} className="ml-1 hover:text-red-500 transition-colors">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -500,7 +518,7 @@ const Products = () => {
       >
         <SlidersHorizontal className="w-4 h-4 text-[#EEBA2B]" />
         Filters
-        {(activeBrand || activeCategory !== "all" || searchQuery) && (
+        {(activeMainCategory || activeBrand || activeCategory !== "all" || searchQuery) && (
           <span className="w-2 h-2 bg-[#EEBA2B] rounded-full" />
         )}
       </button>
@@ -549,6 +567,31 @@ const Products = () => {
           </div>
 
           <div>
+            <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono block mb-3 font-bold">Main Categories</span>
+            <div className="flex flex-wrap gap-2 mb-4">
+              <button
+                onClick={() => { setActiveMainCategory(""); setActiveBrand(""); setActiveCategory("all"); }}
+                className={`text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm ${
+                  !activeMainCategory ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
+                }`}
+              >
+                All
+              </button>
+              {MAIN_CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => { setActiveMainCategory(cat); setActiveBrand(""); setActiveCategory("all"); }}
+                  className={`text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm ${
+                    activeMainCategory === cat ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
             <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono block mb-3 font-bold">Brands</span>
             <div className="flex flex-wrap gap-2">
               <button
@@ -559,7 +602,7 @@ const Products = () => {
               >
                 All Brands
               </button>
-              {brands.map((b) => (
+              {filteredBrands.map((b) => (
                 <button
                   key={b._id}
                   onClick={() => { setActiveBrand(b.name); setActiveCategory("all"); }}
@@ -594,7 +637,7 @@ const Products = () => {
 
           <div className="flex gap-3 pt-4 border-t border-black/5">
             <button
-              onClick={() => { setActiveBrand(""); setActiveCategory("all"); setSearchQuery(""); }}
+              onClick={() => { setActiveMainCategory(""); setActiveBrand(""); setActiveCategory("all"); setSearchQuery(""); }}
               className="flex-1 py-3 text-xs font-bold uppercase tracking-widest border border-black/10 bg-white text-gray-700 rounded-lg hover:border-red-400 hover:text-red-500 transition-all shadow-sm"
             >
               Clear All
@@ -641,6 +684,33 @@ const Products = () => {
               </div>
 
               <div>
+                <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono block mb-3 font-bold">Main Categories</span>
+                <div className="flex flex-col gap-1.5 mb-4">
+                  <button
+                    onClick={() => { setActiveMainCategory(""); setActiveBrand(""); setActiveCategory("all"); }}
+                    className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
+                      !activeMainCategory ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
+                    }`}
+                  >
+                    All Categories
+                  </button>
+                  {MAIN_CATEGORIES.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => { setActiveMainCategory(cat); setActiveBrand(""); setActiveCategory("all"); }}
+                      className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
+                        activeMainCategory === cat ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="h-px bg-black/10" />
+
+              <div>
                 <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono block mb-3 font-bold">Brands</span>
                 <div className="flex flex-col gap-1.5">
                   <button
@@ -651,7 +721,7 @@ const Products = () => {
                   >
                     All Brands
                   </button>
-                  {brands.map((b) => (
+                  {filteredBrands.map((b) => (
                     <button
                       key={b._id}
                       onClick={() => { setActiveBrand(b.name); setActiveCategory("all"); }}
@@ -688,9 +758,9 @@ const Products = () => {
 
               <div className="h-px bg-black/10" />
 
-              {(activeBrand || activeCategory !== "all" || searchQuery) && (
+              {(activeMainCategory || activeBrand || activeCategory !== "all" || searchQuery) && (
                 <button
-                  onClick={() => { setActiveBrand(""); setActiveCategory("all"); setSearchQuery(""); }}
+                  onClick={() => { setActiveMainCategory(""); setActiveBrand(""); setActiveCategory("all"); setSearchQuery(""); }}
                   className="w-full text-center text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg border border-black/10 bg-[rgba(20,20,20,0.02)] text-gray-600 hover:border-red-400 hover:text-red-500 hover:bg-red-50 transition-all duration-300 shadow-sm"
                 >
                   Clear All Filters

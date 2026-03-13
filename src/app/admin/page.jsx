@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { MAIN_CATEGORIES } from "@/lib/categories";
 import {
   Plus,
   Pencil,
@@ -12,6 +13,7 @@ import {
   X,
   Package,
   Tags,
+  FolderOpen,
   Search,
   ChevronDown,
   ChevronRight,
@@ -233,6 +235,7 @@ export default function AdminPage() {
   const [brandSearch, setBrandSearch] = useState("");
 
   // Product tab filters
+  const [filterMainCategory, setFilterMainCategory] = useState("");
   const [filterBrand, setFilterBrand] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [filterFeatured, setFilterFeatured] = useState(""); // "" | "yes" | "no"
@@ -414,7 +417,12 @@ export default function AdminPage() {
   // Reset page when filters change
   useEffect(() => {
     setAdminPage(1);
-  }, [productSearch, filterBrand, filterCategory, filterFeatured]);
+  }, [productSearch, filterMainCategory, filterBrand, filterCategory, filterFeatured]);
+
+  // Brands filtered by selected main category (for products tab brand dropdown)
+  const brandsForFilter = filterMainCategory
+    ? brands.filter((b) => b.mainCategory === filterMainCategory)
+    : brands;
 
   // Unique categories across all products (path strings)
   const allProductCategories = [...new Set(products.map((p) => p.category).filter(Boolean))];
@@ -662,6 +670,21 @@ export default function AdminPage() {
 
             {/* Filters */}
             <div className="flex flex-wrap items-center gap-3">
+              {/* Main Category filter */}
+              <div className="relative">
+                <select
+                  value={filterMainCategory}
+                  onChange={(e) => { setFilterMainCategory(e.target.value); setFilterBrand(""); setFilterCategory(""); }}
+                  className="appearance-none bg-white/60 border border-amber-900/15 rounded-lg pl-3 pr-8 py-2 text-xs font-bold text-[#1a1a1a] cursor-pointer focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-all"
+                >
+                  <option value="">All Categories</option>
+                  {MAIN_CATEGORIES.map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+              </div>
+
               {/* Brand filter */}
               <div className="relative">
                 <select
@@ -670,7 +693,7 @@ export default function AdminPage() {
                   className="appearance-none bg-white/60 border border-amber-900/15 rounded-lg pl-3 pr-8 py-2 text-xs font-bold text-[#1a1a1a] cursor-pointer focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-all"
                 >
                   <option value="">All Brands</option>
-                  {brands.map((b) => (
+                  {brandsForFilter.map((b) => (
                     <option key={b._id} value={b.name}>{b.name}</option>
                   ))}
                 </select>
@@ -699,9 +722,9 @@ export default function AdminPage() {
               </div>
 
               {/* Active filter count + clear */}
-              {(filterBrand || filterCategory || filterFeatured) && (
+              {(filterMainCategory || filterBrand || filterCategory || filterFeatured) && (
                 <button
-                  onClick={() => { setFilterBrand(""); setFilterCategory(""); setFilterFeatured(""); }}
+                  onClick={() => { setFilterMainCategory(""); setFilterBrand(""); setFilterCategory(""); setFilterFeatured(""); }}
                   className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-700 transition-colors"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -981,61 +1004,120 @@ export default function AdminPage() {
                 <p className="font-medium">No brands found</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredBrands.map((b) => (
-                  <div
-                    key={b._id}
-                    className="admin-card bg-white/60 border border-amber-900/10 rounded-xl p-5 flex items-center justify-between hover:bg-white/80 transition-colors"
-                  >
-                    <div className="flex items-center gap-4 min-w-0">
-                      <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border border-black/5 bg-amber-400/20"
-                      >
-                        <span className="text-xs font-black text-amber-700 uppercase">
-                          {b.name.slice(0, 2)}
+              <div className="space-y-8">
+                {MAIN_CATEGORIES.map((mainCat) => {
+                  const catBrands = filteredBrands.filter((b) => b.mainCategory === mainCat);
+                  if (catBrands.length === 0) return null;
+                  return (
+                    <div key={mainCat} className="admin-card">
+                      <div className="flex items-center gap-3 mb-4">
+                        <FolderOpen className="w-5 h-5 text-amber-600" />
+                        <h3 className="text-sm font-black uppercase tracking-widest text-[#1a1a1a]">
+                          {mainCat}
+                        </h3>
+                        <span className="text-[9px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold">
+                          {catBrands.length}
                         </span>
                       </div>
-                      <div className="min-w-0">
-                        <p className="text-base font-bold text-[#1a1a1a] truncate">
-                          {b.name}
-                        </p>
-                        <p className="text-[10px] text-gray-500 font-mono mt-1">
-                          {b.number || '—'}
-                        </p>
-                        {b.categories?.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-1.5">
-                            {b.categories.map((cat, ci) => (
-                              <span key={ci} className="text-[9px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-mono">
-                                {typeof cat === "string" ? cat : cat.name}
-                                {typeof cat !== "string" && cat.children?.length > 0 && (
-                                  <span className="text-amber-500 ml-0.5">+{cat.children.length}</span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {catBrands.map((b) => (
+                          <div
+                            key={b._id}
+                            className="bg-white/60 border border-amber-900/10 rounded-xl p-5 flex items-center justify-between hover:bg-white/80 transition-colors"
+                          >
+                            <div className="flex items-center gap-4 min-w-0">
+                              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border border-black/5 bg-amber-400/20">
+                                <span className="text-xs font-black text-amber-700 uppercase">
+                                  {b.name.slice(0, 2)}
+                                </span>
+                              </div>
+                              <div className="min-w-0">
+                                <p className="text-base font-bold text-[#1a1a1a] truncate">
+                                  {b.name}
+                                </p>
+                                <p className="text-[10px] text-gray-500 font-mono mt-1">
+                                  {b.number || '—'}
+                                </p>
+                                {b.categories?.length > 0 && (
+                                  <div className="flex flex-wrap gap-1 mt-1.5">
+                                    {b.categories.map((cat, ci) => (
+                                      <span key={ci} className="text-[9px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-mono">
+                                        {typeof cat === "string" ? cat : cat.name}
+                                        {typeof cat !== "string" && cat.children?.length > 0 && (
+                                          <span className="text-amber-500 ml-0.5">+{cat.children.length}</span>
+                                        )}
+                                      </span>
+                                    ))}
+                                  </div>
                                 )}
-                              </span>
-                            ))}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1 shrink-0">
+                              <button
+                                onClick={() => setBrandModal(b)}
+                                className="p-2 rounded-lg text-gray-500 hover:text-amber-600 hover:bg-amber-50 transition-colors"
+                                title="Edit"
+                              >
+                                <Pencil className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => setDeleteModal({ type: "brand", item: b })}
+                                className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
                           </div>
-                        )}
+                        ))}
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 shrink-0">
-                      <button
-                        onClick={() => setBrandModal(b)}
-                        className="p-2 rounded-lg text-gray-500 hover:text-amber-600 hover:bg-amber-50 transition-colors"
-                        title="Edit"
-                      >
-                        <Pencil className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() =>
-                          setDeleteModal({ type: "brand", item: b })
-                        }
-                        className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors"
-                        title="Delete"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                  );
+                })}
+                {/* Brands without mainCategory (legacy) */}
+                {(() => {
+                  const uncategorized = filteredBrands.filter((b) => !b.mainCategory);
+                  if (uncategorized.length === 0) return null;
+                  return (
+                    <div className="admin-card">
+                      <div className="flex items-center gap-3 mb-4">
+                        <FolderOpen className="w-5 h-5 text-gray-400" />
+                        <h3 className="text-sm font-black uppercase tracking-widest text-gray-500">
+                          Uncategorized
+                        </h3>
+                        <span className="text-[9px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-bold">
+                          {uncategorized.length}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {uncategorized.map((b) => (
+                          <div
+                            key={b._id}
+                            className="bg-white/60 border border-amber-900/10 rounded-xl p-5 flex items-center justify-between hover:bg-white/80 transition-colors"
+                          >
+                            <div className="flex items-center gap-4 min-w-0">
+                              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border border-black/5 bg-gray-200">
+                                <span className="text-xs font-black text-gray-500 uppercase">{b.name.slice(0, 2)}</span>
+                              </div>
+                              <div className="min-w-0">
+                                <p className="text-base font-bold text-[#1a1a1a] truncate">{b.name}</p>
+                                <p className="text-[10px] text-gray-500 font-mono mt-1">{b.number || '—'}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1 shrink-0">
+                              <button onClick={() => setBrandModal(b)} className="p-2 rounded-lg text-gray-500 hover:text-amber-600 hover:bg-amber-50 transition-colors" title="Edit">
+                                <Pencil className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => setDeleteModal({ type: "brand", item: b })} className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete">
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })()}
               </div>
             )}
           </div>
@@ -1583,6 +1665,7 @@ function BrandModal({ initial, onSave, onClose }) {
   const [form, setForm] = useState({
     _id: initial?._id || null,
     name: initial?.name || "",
+    mainCategory: initial?.mainCategory || "",
     number: initial?.number || "",
     imgs: initial?.imgs?.join("\n") || "",
     categories: migrateCategories(initial?.categories),
@@ -1693,6 +1776,23 @@ function BrandModal({ initial, onSave, onClose }) {
             />
           </Field>
         </div>
+
+        <Field label="Main Category" required>
+          <div className="relative">
+            <select
+              value={form.mainCategory}
+              onChange={(e) => update("mainCategory", e.target.value)}
+              className="input-field appearance-none cursor-pointer pr-10"
+              required
+            >
+              <option value="">Select Main Category</option>
+              {MAIN_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          </div>
+        </Field>
 
         <Field label="Categories (hierarchical tree)">
           <div className="space-y-2">
@@ -1916,6 +2016,7 @@ function CSVUploadModal({ brands, onClose, onDone }) {
       subtitle: row.subtitle || row.sub || "",
       brand: row.brand || row.brandname || "",
       category: categoryPath,
+      mainCategory: row.maincategory || row.main_category || "",
       sku: row.sku || row.skuno || row.sku_no || row.partnumber || "",
       image: row.image || row.img || row.imageurl || "/fp1.png",
       specs: (row.specs || row.specifications || "")
@@ -1998,17 +2099,20 @@ function CSVUploadModal({ brands, onClose, onDone }) {
     };
 
     // Collect unique brand→category paths from CSV rows
-    const brandCategoryPaths = {}; // { brandName: ["engines > turbos", ...] }
+    const brandCategoryPaths = {}; // { brandName: { paths: Set, mainCategory: "" } }
     for (const row of parsedRows) {
       const bName = (row.brand || "").trim();
       if (!bName) continue;
-      if (!brandCategoryPaths[bName]) brandCategoryPaths[bName] = new Set();
+      if (!brandCategoryPaths[bName]) brandCategoryPaths[bName] = { paths: new Set(), mainCategory: "" };
       const cat = (row.category || "").trim();
-      if (cat) brandCategoryPaths[bName].add(cat);
+      if (cat) brandCategoryPaths[bName].paths.add(cat);
+      const mc = (row.mainCategory || "").trim();
+      if (mc) brandCategoryPaths[bName].mainCategory = mc;
     }
 
     // Create missing brands & update category trees on existing brands
-    for (const [brandName, catPaths] of Object.entries(brandCategoryPaths)) {
+    for (const [brandName, brandInfo] of Object.entries(brandCategoryPaths)) {
+      const catPaths = brandInfo.paths;
       const existing = existingBrands.find(
         (b) => b.name.toLowerCase() === brandName.toLowerCase()
       );
@@ -2024,7 +2128,7 @@ function CSVUploadModal({ brands, onClose, onDone }) {
           const res = await fetch("/api/brands", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: brandName, categories: tree }),
+            body: JSON.stringify({ name: brandName, mainCategory: brandInfo.mainCategory || "SAFETY", categories: tree }),
           });
           const json = await res.json();
           if (json.success) existingBrands.push(json.data);

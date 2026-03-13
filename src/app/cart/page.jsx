@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
@@ -43,6 +43,7 @@ export default function CartPage() {
   const containerRef = useRef(null);
   const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart();
 
+  const [isMounted, setIsMounted] = useState(false);
   const [quoteName, setQuoteName] = useState("");
   const [quoteEmail, setQuoteEmail] = useState("");
   const [quoteNotes, setQuoteNotes] = useState("");
@@ -50,15 +51,24 @@ export default function CartPage() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useGSAP(
     () => {
+      if (!isMounted) return;
       const tl = gsap.timeline();
       tl.from(".cart-hero-label", { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" });
       tl.from(".cart-hero-title span", { y: 80, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" }, "-=0.3");
       tl.from(".cart-hero-line", { scaleX: 0, duration: 0.8, ease: "power2.inOut" }, "-=0.4");
-      tl.from(".cart-item", { y: 30, opacity: 0, stagger: 0.1, duration: 0.5, ease: "power2.out" }, "-=0.3");
+      
+      // Only animate cart items if they exist
+      if (document.querySelectorAll(".cart-item").length > 0) {
+        tl.from(".cart-item", { y: 30, opacity: 0, stagger: 0.1, duration: 0.5, ease: "power2.out" }, "-=0.3");
+      }
     },
-    { scope: containerRef }
+    { scope: containerRef, dependencies: [isMounted, cart.length] }
   );
 
   const handleGetQuote = async (e) => {
@@ -126,7 +136,11 @@ export default function CartPage() {
          ============================================================ */}
       <section className="w-full px-6 sm:px-12 lg:px-24 pb-16">
         <div className="max-w-6xl mx-auto">
-          {cart.length === 0 && !sent ? (
+          {!isMounted ? (
+            <div className="flex justify-center items-center py-24">
+              <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+            </div>
+          ) : cart.length === 0 && !sent ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <ShoppingCart className="w-16 h-16 text-gray-300 mb-6" />
               <h3 className="text-2xl font-black text-[#1a1a1a] mb-3">

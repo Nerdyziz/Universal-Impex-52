@@ -25,6 +25,7 @@ const PillNav = ({
   const resolvedPillTextColor = pillTextColor ?? baseColor;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [pillDarkBg, setPillDarkBg] = useState([]); 
+  const [isMounted, setIsMounted] = useState(false);
   
   // Logo color change states
   const [logoDarkBg, setLogoDarkBg] = useState(false);
@@ -32,6 +33,10 @@ const PillNav = ({
 
   const { cartCount } = useCart();
   const hasPlayedEntrance = useRef(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   
   const circleRefs = useRef([]);
   const pillRefs = useRef([]);
@@ -625,7 +630,7 @@ const PillNav = ({
           aria-label="Cart"
         >
           <ShoppingCart className="w-5 h-5" style={{ color: 'inherit' }} />
-          {cartCount > 0 && (
+          {isMounted && cartCount > 0 && (
             <span className="absolute -top-1 -right-1 bg-amber-500 text-black text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">
               {cartCount}
             </span>
@@ -715,7 +720,7 @@ const PillNav = ({
           aria-label="Cart"
         >
           <ShoppingCart className="w-5 h-5" style={{ color: 'inherit' }} />
-          {cartCount > 0 && (
+          {isMounted && cartCount > 0 && (
             <span className="absolute -top-1 -right-1 bg-amber-500 text-black text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">
               {cartCount}
             </span>

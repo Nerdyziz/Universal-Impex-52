@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Product from "@/models/Product";
+import Brand from "@/models/Brand";
 
 // GET /api/products — fetch products with optional pagination
 export async function GET(request) {
@@ -12,6 +13,7 @@ export async function GET(request) {
     const featured = searchParams.get("featured");
     const search = searchParams.get("search");
     const brand = searchParams.get("brand");
+    const mainCategory = searchParams.get("mainCategory");
     const page = parseInt(searchParams.get("page") || "0", 10);
     const limit = parseInt(searchParams.get("limit") || "0", 10);
 
@@ -24,6 +26,22 @@ export async function GET(request) {
 
     if (brand) {
       filter.brand = { $regex: `^${brand}$`, $options: "i" };
+    }
+
+    // Filter by main category — find all brands in that category, then filter products
+    if (mainCategory && !brand) {
+      const brandsInCategory = await Brand.find({ mainCategory }).select("name");
+      const brandNames = brandsInCategory.map((b) => b.name);
+      if (brandNames.length > 0) {
+        filter.brand = { $in: brandNames };
+      } else {
+        // No brands in this category, return empty
+        return NextResponse.json({
+          success: true,
+          data: [],
+          pagination: page > 0 && limit > 0 ? { page, limit, total: 0, totalPages: 0 } : undefined,
+        }, { status: 200 });
+      }
     }
 
     if (featured === "true") {
