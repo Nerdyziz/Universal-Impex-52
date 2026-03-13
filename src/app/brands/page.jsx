@@ -129,6 +129,7 @@ const CategorySection = ({ category, sectionBrands, isMobileView, handleMouseEnt
   const localBrands = sectionBrands.map((card, i) => ({
     ...card,
     color: baseColors[i % 3],
+    number: i < 9 ? `0${i + 1}` : `${i + 1}`,
   }));
 
   return (
