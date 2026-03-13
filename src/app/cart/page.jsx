@@ -59,16 +59,19 @@ export default function CartPage() {
     () => {
       if (!isMounted) return;
       const tl = gsap.timeline();
+      
+      // Hero animations
       tl.from(".cart-hero-label", { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" });
       tl.from(".cart-hero-title span", { y: 80, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" }, "-=0.3");
       tl.from(".cart-hero-line", { scaleX: 0, duration: 0.8, ease: "power2.inOut" }, "-=0.4");
       
-      // Only animate cart items if they exist
-      if (document.querySelectorAll(".cart-item").length > 0) {
-        tl.from(".cart-item", { y: 30, opacity: 0, stagger: 0.1, duration: 0.5, ease: "power2.out" }, "-=0.3");
+      // Items animation
+      const items = document.querySelectorAll(".cart-item");
+      if (items.length > 0) {
+        tl.from(items, { y: 30, opacity: 0, stagger: 0.1, duration: 0.5, ease: "power2.out", clearProps: "all" }, "-=0.3");
       }
     },
-    { scope: containerRef, dependencies: [isMounted, cart.length] }
+    { scope: containerRef, dependencies: [isMounted, cart] }
   );
 
   const handleGetQuote = async (e) => {

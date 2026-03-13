@@ -8,14 +8,18 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
   const [isInitialized, setIsInitialized] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   // Load cart from localStorage on mount and listen for cross-tab storage events
   useEffect(() => {
     try {
       const saved = localStorage.getItem("b2b_cart");
-      if (saved) setCart(JSON.parse(saved));
+      if (saved) {
+        setCart(JSON.parse(saved));
+      }
     } catch {}
     setIsInitialized(true);
+    setHasLoaded(true); // Cart has been read from storage
 
     const handleStorageChange = (e) => {
       if (e.key === "b2b_cart") {
@@ -31,12 +35,12 @@ export function CartProvider({ children }) {
 
   // Persist to localStorage only after initialization has completed to prevent wiping it on mount SSR
   useEffect(() => {
-    if (isInitialized) {
+    if (isInitialized && hasLoaded) {
       try {
         localStorage.setItem("b2b_cart", JSON.stringify(cart));
       } catch {}
     }
-  }, [cart, isInitialized]);
+  }, [cart, isInitialized, hasLoaded]);
 
   const addToCart = (product, qty = 1) => {
     setCart((prev) => {
