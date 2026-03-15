@@ -116,7 +116,7 @@ const CategorySection = ({ category, sectionBrands, isMobileView, handleMouseEnt
       ease: "power3.out",
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: "top 85%",
+        start: "top 70%",
         once: true,
       },
     });

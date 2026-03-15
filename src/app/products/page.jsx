@@ -115,6 +115,65 @@ function CategoryFilterNode({ node, depth = 0, activeCategory, onSelect, prefix 
   );
 }
 
+function MainCategoryNode({ cat, catBrands, activeMainCategory, activeBrand, setActiveMainCategory, setActiveBrand, setActiveCategory }) {
+  const isCatActive = activeMainCategory === cat && !activeBrand;
+  const isCatParent = activeMainCategory === cat;
+  const hasBrandActive = catBrands.some((b) => b.name === activeBrand);
+  const [catExpanded, setCatExpanded] = useState(isCatParent || hasBrandActive);
+
+  useEffect(() => {
+    if (isCatParent || hasBrandActive) setCatExpanded(true);
+  }, [isCatParent, hasBrandActive]);
+
+  return (
+    <div>
+      <div className="flex items-center gap-1 my-0.5">
+        {catBrands.length > 0 ? (
+          <button
+            onClick={(e) => { e.stopPropagation(); setCatExpanded(!catExpanded); }}
+            className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-amber-600 shrink-0 transition-transform"
+          >
+            <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${catExpanded ? "" : "-rotate-90"}`} />
+          </button>
+        ) : (
+          <span className="w-5 h-5 shrink-0" />
+        )}
+        <button
+          onClick={() => { setActiveMainCategory(cat); setActiveBrand(""); setActiveCategory("all"); }}
+          className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm flex-1 ${
+            isCatActive
+              ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]"
+              : isCatParent || hasBrandActive
+              ? "bg-amber-50 text-amber-700 border-amber-200"
+              : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
+          }`}
+        >
+          {cat}
+        </button>
+      </div>
+      {catExpanded && catBrands.length > 0 && (
+        <div className="mt-1">
+          {catBrands.map((b) => (
+            <div key={b._id} className="flex items-center gap-1 my-0.5" style={{ paddingLeft: 12 }}>
+              <span className="w-5 h-5 shrink-0" />
+              <button
+                onClick={() => { setActiveMainCategory(cat); setActiveBrand(b.name); setActiveCategory("all"); }}
+                className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm flex-1 ${
+                  activeBrand === b.name
+                    ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]"
+                    : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
+                }`}
+              >
+                {b.name}
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ============================================================
    SKELETON COMPONENTS (Using react-loading-skeleton)
    ============================================================ */
@@ -392,11 +451,6 @@ const Products = () => {
 
   const categoryTree = activeBrand ? brandCategoryTree : allCategoryTree;
 
-  // Filter brands by selected main category
-  const filteredBrands = activeMainCategory
-    ? brands.filter((b) => b.mainCategory === activeMainCategory)
-    : brands;
-
   useEffect(() => {
     if (loading) return;
     if (animationsInitialized.current) return;
@@ -567,51 +621,27 @@ const Products = () => {
           </div>
 
           <div>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono block mb-3 font-bold">Main Categories</span>
-            <div className="flex flex-wrap gap-2 mb-4">
+            <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono block mb-3 font-bold">Categories & Brands</span>
+            <div className="space-y-1">
               <button
                 onClick={() => { setActiveMainCategory(""); setActiveBrand(""); setActiveCategory("all"); }}
-                className={`text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm ${
-                  !activeMainCategory ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
+                className={`w-full text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
+                  !activeMainCategory && !activeBrand ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
                 }`}
               >
-                All
+                All Categories
               </button>
               {MAIN_CATEGORIES.map((cat) => (
-                <button
+                <MainCategoryNode
                   key={cat}
-                  onClick={() => { setActiveMainCategory(cat); setActiveBrand(""); setActiveCategory("all"); }}
-                  className={`text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm ${
-                    activeMainCategory === cat ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono block mb-3 font-bold">Brands</span>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => { setActiveBrand(""); setActiveCategory("all"); }}
-                className={`text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm ${
-                  !activeBrand ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
-                }`}
-              >
-                All Brands
-              </button>
-              {filteredBrands.map((b) => (
-                <button
-                  key={b._id}
-                  onClick={() => { setActiveBrand(b.name); setActiveCategory("all"); }}
-                  className={`text-[11px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all duration-300 border shadow-sm ${
-                    activeBrand === b.name ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
-                  }`}
-                >
-                  {b.name}
-                </button>
+                  cat={cat}
+                  catBrands={brands.filter((b) => b.mainCategory === cat)}
+                  activeMainCategory={activeMainCategory}
+                  activeBrand={activeBrand}
+                  setActiveMainCategory={setActiveMainCategory}
+                  setActiveBrand={setActiveBrand}
+                  setActiveCategory={setActiveCategory}
+                />
               ))}
             </div>
           </div>
@@ -684,53 +714,27 @@ const Products = () => {
               </div>
 
               <div>
-                <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono block mb-3 font-bold">Main Categories</span>
-                <div className="flex flex-col gap-1.5 mb-4">
+                <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono block mb-3 font-bold">Categories & Brands</span>
+                <div className="flex flex-col gap-1">
                   <button
                     onClick={() => { setActiveMainCategory(""); setActiveBrand(""); setActiveCategory("all"); }}
                     className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
-                      !activeMainCategory ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
+                      !activeMainCategory && !activeBrand ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
                     }`}
                   >
                     All Categories
                   </button>
                   {MAIN_CATEGORIES.map((cat) => (
-                    <button
+                    <MainCategoryNode
                       key={cat}
-                      onClick={() => { setActiveMainCategory(cat); setActiveBrand(""); setActiveCategory("all"); }}
-                      className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
-                        activeMainCategory === cat ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="h-px bg-black/10" />
-
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono block mb-3 font-bold">Brands</span>
-                <div className="flex flex-col gap-1.5">
-                  <button
-                    onClick={() => { setActiveBrand(""); setActiveCategory("all"); }}
-                    className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
-                      !activeBrand ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
-                    }`}
-                  >
-                    All Brands
-                  </button>
-                  {filteredBrands.map((b) => (
-                    <button
-                      key={b._id}
-                      onClick={() => { setActiveBrand(b.name); setActiveCategory("all"); }}
-                      className={`text-left text-[11px] uppercase tracking-widest font-bold px-4 py-2.5 rounded-lg transition-all duration-300 border shadow-sm ${
-                        activeBrand === b.name ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
-                      }`}
-                    >
-                      {b.name}
-                    </button>
+                      cat={cat}
+                      catBrands={brands.filter((b) => b.mainCategory === cat)}
+                      activeMainCategory={activeMainCategory}
+                      activeBrand={activeBrand}
+                      setActiveMainCategory={setActiveMainCategory}
+                      setActiveBrand={setActiveBrand}
+                      setActiveCategory={setActiveCategory}
+                    />
                   ))}
                 </div>
               </div>
@@ -794,37 +798,40 @@ const Products = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {featuredProducts.map((product, idx) => (
-                    <Link key={product._id} href={`/products/${product.slug}`} className="featured-card group relative block">
-                      <div className="h-[40px] sm:h-[50px] flex w-full relative z-20">
+                    <Link key={product._id} href={`/products/${product.slug}`} className="featured-card group block relative">
+                      <div className="h-[35px] flex w-full relative z-20">
                         <div className="absolute top-0 right-0 w-[50%] h-full border-b border-black/10" />
-                        <div className="tab-shape-feat relative w-[calc(50%+40px)] sm:w-[calc(50%+60px)] bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border-t border-l border-black/10 rounded-tl-2xl flex items-center pl-6">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-gray-900">
-                            0{idx + 1}
+                        <div className="tab-shape-prod relative w-[calc(50%+40px)] bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border-t border-l border-black/10 rounded-tl-xl flex items-center pl-5">
+                          <span className="text-[9px] font-black uppercase tracking-widest text-gray-900">
+                            {String(idx + 1).padStart(2, "0")}
                           </span>
-                          <svg className="absolute right-0 top-0 h-full w-[40px] sm:w-[60px] pointer-events-none" preserveAspectRatio="none">
+                          <svg className="absolute right-0 top-0 h-full w-[40px] pointer-events-none" preserveAspectRatio="none">
                             <line x1="0" y1="0" x2="100%" y2="100%" stroke="rgba(0,0,0,0.1)" strokeWidth="2.5" />
                           </svg>
                         </div>
                       </div>
 
-                      <div className="bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border-b border-x border-black/10 rounded-b-2xl p-6 pr-[140px] sm:p-8 sm:pr-[190px] h-[300px] sm:h-[350px] flex flex-col justify-between transition-all duration-500 relative overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.08)] group-hover:bg-[rgba(20,20,20,0.15)]">
-                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#EEBA2B]/20 rounded-full blur-[50px] pointer-events-none" />
+                      <div className="bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border-b border-x border-black/10 rounded-b-xl p-5 flex flex-col transition-all duration-500 relative overflow-hidden h-[320px] sm:h-[340px] shadow-[0_10px_30px_rgba(0,0,0,0.05)] group-hover:bg-[rgba(20,20,20,0.13)]">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#EEBA2B]/5 rounded-full blur-[60px] pointer-events-none" />
 
-                        <div className="absolute top-6 right-4 w-[110px] h-[110px] sm:w-[150px] sm:h-[150px] opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 drop-shadow-xl">
-                          <Image src={safeImage(product.image)} alt={product.name} fill loading="lazy" unoptimized={isExternal(product.image)} className="object-contain" />
+                        <div className="relative w-full h-[140px] sm:h-[160px] mb-4 overflow-hidden rounded-lg shrink-0">
+                          <Image src={safeImage(product.image)} alt={product.name} fill loading="lazy" unoptimized={isExternal(product.image)} className="object-contain group-hover:scale-110 transition-transform duration-700 drop-shadow-md" />
                         </div>
 
-                        <div className="relative z-10 mt-auto">
-                          <p className="text-[10px] uppercase tracking-[0.2em] font-mono mb-2 text-gray-600 font-bold">
-                            {product.subtitle}
-                          </p>
-                          <h3 className="text-xl sm:text-2xl font-black leading-tight tracking-tight mb-4 text-gray-900 drop-shadow-sm">
-                            {product.name}
-                          </h3>
-                          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gray-900 group-hover:text-[#EEBA2B] group-hover:gap-4 transition-all duration-300">
-                            View Details
-                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
-                          </div>
+                        <span className="text-[9px] uppercase tracking-[0.2em] font-mono mb-1.5 text-gray-600 font-bold relative z-10">
+                          {product.sku ? `SKU: ${product.sku}` : product.brand}
+                        </span>
+
+                        <h3 className="text-base sm:text-lg font-black tracking-tight leading-tight mb-1 line-clamp-2 text-gray-900 drop-shadow-sm relative z-10">
+                          {product.name}
+                        </h3>
+                        <p className="text-xs font-mono mb-4 line-clamp-1 text-gray-600 relative z-10">
+                          {product.subtitle}
+                        </p>
+
+                        <div className="flex items-center gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest mt-auto pt-3 border-t border-black/10 text-gray-900 group-hover:gap-3 group-hover:text-[#EEBA2B] transition-all duration-300 relative z-10">
+                          Details
+                          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" />
                         </div>
                       </div>
                     </Link>

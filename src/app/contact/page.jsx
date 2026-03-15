@@ -50,6 +50,43 @@ const FAQItem = ({ question, answer }) => {
 const Contact = () => {
   const containerRef = useRef(null);
 
+  // Form state
+  const [formData, setFormData] = useState({
+    name: "", company: "", email: "", phone: "", subject: "", message: "",
+  });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [formError, setFormError] = useState("");
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSending(true);
+    setFormError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, source: "contact" }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setSent(true);
+        setFormData({ name: "", company: "", email: "", phone: "", subject: "", message: "" });
+        setTimeout(() => setSent(false), 6000);
+      } else {
+        setFormError(json.error || "Failed to send message.");
+      }
+    } catch {
+      setFormError("Network error. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
+
   useGSAP(
     () => {
       // --- Hero entrance ---
@@ -353,7 +390,7 @@ const Contact = () => {
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
             {/* Form */}
             <div className="form-block w-full lg:w-3/5">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-[11px] uppercase tracking-widest text-gray-700 font-black mb-2">
@@ -361,6 +398,10 @@ const Contact = () => {
                     </label>
                     <input
                       type="text"
+                      name="name"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
                       placeholder="John Doe"
                       className="w-full px-4 py-3 bg-[rgba(20,20,20,0.05)] backdrop-blur-md border border-black/10 rounded-lg text-gray-900 text-sm placeholder:text-gray-500 focus:outline-none focus:border-[#EEBA2B] focus:bg-white shadow-inner transition-all"
                     />
@@ -371,6 +412,9 @@ const Contact = () => {
                     </label>
                     <input
                       type="text"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleChange}
                       placeholder="Your Company"
                       className="w-full px-4 py-3 bg-[rgba(20,20,20,0.05)] backdrop-blur-md border border-black/10 rounded-lg text-gray-900 text-sm placeholder:text-gray-500 focus:outline-none focus:border-[#EEBA2B] focus:bg-white shadow-inner transition-all"
                     />
@@ -384,6 +428,10 @@ const Contact = () => {
                     </label>
                     <input
                       type="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
                       placeholder="john@company.com"
                       className="w-full px-4 py-3 bg-[rgba(20,20,20,0.05)] backdrop-blur-md border border-black/10 rounded-lg text-gray-900 text-sm placeholder:text-gray-500 focus:outline-none focus:border-[#EEBA2B] focus:bg-white shadow-inner transition-all"
                     />
@@ -394,7 +442,10 @@ const Contact = () => {
                     </label>
                     <input
                       type="tel"
-                      placeholder="+1 (555) 000-0000"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+91 98901 53052"
                       className="w-full px-4 py-3 bg-[rgba(20,20,20,0.05)] backdrop-blur-md border border-black/10 rounded-lg text-gray-900 text-sm placeholder:text-gray-500 focus:outline-none focus:border-[#EEBA2B] focus:bg-white shadow-inner transition-all"
                     />
                   </div>
@@ -404,13 +455,18 @@ const Contact = () => {
                   <label className="block text-[11px] uppercase tracking-widest text-gray-700 font-black mb-2">
                     Subject
                   </label>
-                  <select className="w-full px-4 py-3 bg-[rgba(20,20,20,0.05)] backdrop-blur-md border border-black/10 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-[#EEBA2B] focus:bg-white shadow-inner transition-all appearance-none cursor-pointer">
+                  <select
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-[rgba(20,20,20,0.05)] backdrop-blur-md border border-black/10 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-[#EEBA2B] focus:bg-white shadow-inner transition-all appearance-none cursor-pointer"
+                  >
                     <option value="">Select a topic</option>
-                    <option value="quote">Request a Quote</option>
-                    <option value="partnership">Partnership Inquiry</option>
-                    <option value="custom">Custom Manufacturing</option>
-                    <option value="support">Technical Support</option>
-                    <option value="other">Other</option>
+                    <option value="Request a Quote">Request a Quote</option>
+                    <option value="Partnership Inquiry">Partnership Inquiry</option>
+                    <option value="Custom Manufacturing">Custom Manufacturing</option>
+                    <option value="Technical Support">Technical Support</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
 
@@ -419,18 +475,41 @@ const Contact = () => {
                     Message
                   </label>
                   <textarea
+                    name="message"
+                    required
                     rows="5"
+                    value={formData.message}
+                    onChange={handleChange}
                     placeholder="Tell us about your project requirements, expected volumes, timeline..."
                     className="w-full px-4 py-3 bg-[rgba(20,20,20,0.05)] backdrop-blur-md border border-black/10 rounded-lg text-gray-900 text-sm placeholder:text-gray-500 focus:outline-none focus:border-[#EEBA2B] focus:bg-white shadow-inner transition-all resize-none"
                   />
                 </div>
 
+                {formError && (
+                  <p className="text-red-500 text-xs font-mono font-bold">{formError}</p>
+                )}
+
                 <button
                   type="submit"
-                  className="group bg-[#EEBA2B] text-black px-8 py-4 text-xs sm:text-sm font-black uppercase tracking-widest hover:bg-gray-900 hover:text-[#EEBA2B] transition-all duration-300 rounded-lg shadow-[0_4px_15px_rgba(238,186,43,0.3)] hover:shadow-none hover:translate-y-px flex items-center gap-3 w-full sm:w-auto justify-center"
+                  disabled={sending}
+                  className={`group px-8 py-4 text-xs sm:text-sm font-black uppercase tracking-widest transition-all duration-300 rounded-lg flex items-center gap-3 w-full sm:w-auto justify-center ${
+                    sent
+                      ? "bg-green-500 text-white shadow-none"
+                      : sending
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-[#EEBA2B] text-black hover:bg-gray-900 hover:text-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)] hover:shadow-none hover:translate-y-px"
+                  }`}
                 >
-                  Send Message
-                  <Send className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+                  {sent ? (
+                    <>✓ Message Sent!</>
+                  ) : sending ? (
+                    <>Sending...</>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+                    </>
+                  )}
                 </button>
               </form>
             </div>

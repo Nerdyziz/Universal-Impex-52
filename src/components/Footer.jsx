@@ -1,9 +1,45 @@
 "use client";
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
 
 const Footer = () => {
+  const [formData, setFormData] = useState({
+    name: "", email: "", subject: "", message: "",
+  });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [formError, setFormError] = useState("");
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSending(true);
+    setFormError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, source: "footer" }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setSent(true);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setTimeout(() => setSent(false), 6000);
+      } else {
+        setFormError(json.error || "Failed to send message.");
+      }
+    } catch {
+      setFormError("Network error. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <footer className="w-full min-h-screen bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border-t border-black/10 text-gray-900 flex flex-col py-8 sm:py-12 lg:py-16 px-4 sm:px-8 lg:px-16 overflow-hidden relative">
         
@@ -84,12 +120,16 @@ const Footer = () => {
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#EEBA2B]/20 rounded-full blur-[60px] pointer-events-none" />
               
               <h4 className="text-xl sm:text-2xl font-black mb-6 text-gray-900 drop-shadow-sm">Get in Touch</h4>
-              <form className="space-y-4 relative z-10">
+              <form className="space-y-4 relative z-10" onSubmit={handleSubmit}>
                 {/* Name Input */}
                 <div>
                   <label className="block text-gray-700 text-xs sm:text-sm font-mono tracking-wide mb-2">Full Name</label>
                   <input
                     type="text"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
                     placeholder="Your Name"
                     className="w-full px-4 py-2 sm:py-3 bg-white/60 border border-black/10 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:border-[#EEBA2B] focus:bg-white transition-all text-xs sm:text-sm shadow-inner"
                   />
@@ -100,6 +140,10 @@ const Footer = () => {
                   <label className="block text-gray-700 text-xs sm:text-sm font-mono tracking-wide mb-2">Email Address</label>
                   <input
                     type="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
                     placeholder="your@email.com"
                     className="w-full px-4 py-2 sm:py-3 bg-white/60 border border-black/10 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:border-[#EEBA2B] focus:bg-white transition-all text-xs sm:text-sm shadow-inner"
                   />
@@ -110,6 +154,9 @@ const Footer = () => {
                   <label className="block text-gray-700 text-xs sm:text-sm font-mono tracking-wide mb-2">Subject</label>
                   <input
                     type="text"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
                     placeholder="Message Subject"
                     className="w-full px-4 py-2 sm:py-3 bg-white/60 border border-black/10 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:border-[#EEBA2B] focus:bg-white transition-all text-xs sm:text-sm shadow-inner"
                   />
@@ -119,18 +166,33 @@ const Footer = () => {
                 <div>
                   <label className="block text-gray-700 text-xs sm:text-sm font-mono tracking-wide mb-2">Message</label>
                   <textarea
+                    name="message"
+                    required
+                    value={formData.message}
+                    onChange={handleChange}
                     placeholder="Your message here..."
                     rows="4"
                     className="w-full px-4 py-2 sm:py-3 bg-white/60 border border-black/10 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:border-[#EEBA2B] focus:bg-white transition-all resize-none text-xs sm:text-sm shadow-inner"
                   ></textarea>
                 </div>
 
+                {formError && (
+                  <p className="text-red-500 text-xs font-mono font-bold">{formError}</p>
+                )}
+
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-[#EEBA2B] text-black font-black py-3 rounded-lg transition-all duration-300 text-xs sm:text-sm uppercase tracking-widest hover:bg-gray-900 hover:text-[#EEBA2B] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                  disabled={sending}
+                  className={`w-full font-black py-3 rounded-lg transition-all duration-300 text-xs sm:text-sm uppercase tracking-widest ${
+                    sent
+                      ? "bg-green-500 text-white shadow-none"
+                      : sending
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-[#EEBA2B] text-black hover:bg-gray-900 hover:text-[#EEBA2B] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                  }`}
                 >
-                  Send Message
+                  {sent ? "✓ Message Sent!" : sending ? "Sending..." : "Send Message"}
                 </button>
               </form>
             </div>
@@ -144,11 +206,11 @@ const Footer = () => {
         <div className="flex flex-col sm:flex-row justify-between items-center text-gray-600 text-xs sm:text-sm gap-4 w-full max-w-7xl mx-auto relative z-10 font-mono">
           <p>&copy; 2026 Universal Impex 52. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-amber-600 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-amber-600 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="#" className="hover:text-amber-600 transition-colors">
-              Terms of Service
+            <Link href="/terms-and-conditions" className="hover:text-amber-600 transition-colors">
+              Terms & Conditions
             </Link>
           </div>
         </div>
