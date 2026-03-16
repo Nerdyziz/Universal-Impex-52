@@ -297,7 +297,8 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [brands, setBrands] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isFetching, setIsFetching] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -355,8 +356,7 @@ const Products = () => {
   useEffect(() => {
     let cancelled = false;
     async function fetchFirstPage() {
-      setLoading(true);
-      setProducts([]);
+      setIsFetching(true);
       setCurrentPage(1);
       setHasMore(true);
       try {
@@ -374,7 +374,10 @@ const Products = () => {
       } catch (err) {
         console.error("Failed to fetch products:", err);
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setIsFetching(false);
+          setIsInitialLoad(false);
+        }
       }
     }
     fetchFirstPage();
@@ -410,7 +413,7 @@ const Products = () => {
     if (!sentinel) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loadingMore && !loading) {
+        if (entries[0].isIntersecting && hasMore && !loadingMore && !isFetching) {
           loadMore();
         }
       },
@@ -418,7 +421,7 @@ const Products = () => {
     );
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [hasMore, loadingMore, loading, loadMore]);
+  }, [hasMore, loadingMore, isFetching, loadMore]);
 
   useEffect(() => {
     if (brandFromUrl) setActiveBrand(brandFromUrl);
@@ -452,7 +455,7 @@ const Products = () => {
   const categoryTree = activeBrand ? brandCategoryTree : allCategoryTree;
 
   useEffect(() => {
-    if (loading) return;
+    if (isInitialLoad) return;
     if (animationsInitialized.current) return;
 
     ScrollTrigger.getAll().forEach(st => st.kill());
@@ -500,9 +503,9 @@ const Products = () => {
       heroTl.kill();
       ScrollTrigger.getAll().forEach(st => st.kill());
     };
-  }, [loading]);
+  }, [isInitialLoad]);
 
-  if (loading) {
+  if (isInitialLoad) {
     return <ProductsSkeleton />;
   }
 
@@ -629,7 +632,7 @@ const Products = () => {
                   !activeMainCategory && !activeBrand ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B]"
                 }`}
               >
-                All Categories
+                Browse by Brand & Type
               </button>
               {MAIN_CATEGORIES.map((cat) => (
                 <MainCategoryNode
@@ -722,7 +725,7 @@ const Products = () => {
                       !activeMainCategory && !activeBrand ? "bg-[#EEBA2B] text-black border-[#EEBA2B] shadow-[0_4px_15px_rgba(238,186,43,0.3)]" : "bg-gray-50 text-gray-700 border-black/10 hover:border-[#EEBA2B] hover:text-[#EEBA2B] hover:bg-white"
                     }`}
                   >
-                    All Categories
+                    Browse by Brand & Type
                   </button>
                   {MAIN_CATEGORIES.map((cat) => (
                     <MainCategoryNode
@@ -857,7 +860,9 @@ const Products = () => {
                 </div>
 
                 <div className="products-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  {products.map((product, idx) => (
+                  {isFetching ? (
+                    [...Array(6)].map((_, i) => <ProductCardSkeleton key={`skeleton-${i}`} />)
+                  ) : products.map((product, idx) => (
                     <Link key={product._id} href={`/products/${product.slug}`} className="product-card group block relative">
                       <div className="h-[35px] flex w-full relative z-20">
                         <div className="absolute top-0 right-0 w-[50%] h-full border-b border-black/10" />
@@ -916,7 +921,7 @@ const Products = () => {
                 )}
 
                 {/* Empty state */}
-                {!loading && products.length === 0 && (
+                {!isFetching && products.length === 0 && (
                   <div className="flex flex-col items-center justify-center py-20 text-center bg-[rgba(20,20,20,0.05)] backdrop-blur-xl border border-black/10 rounded-2xl mt-6">
                     <Search className="w-12 h-12 text-gray-400 mb-4" />
                     <h3 className="text-xl font-bold text-gray-900 mb-2">No products found</h3>

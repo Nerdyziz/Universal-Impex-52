@@ -20,7 +20,7 @@ const fmtPrice = (n) =>
 // ── Build PDF buffer using letterhead template ───────────────────
 async function generateQuotePDF({ items, customerName, customerEmail, notes, quoteNumber }) {
   // ── Load letterhead PDF as template ──
-  const letterheadPath = path.join(process.cwd(), "public", "letterhead.pdf");
+  const letterheadPath = path.join(process.cwd(), "public", "letterhead2.pdf");
   const letterheadBytes = fs.readFileSync(letterheadPath);
   const letterheadPdf = await PDFDocument.load(letterheadBytes);
 
@@ -45,8 +45,8 @@ async function generateQuotePDF({ items, customerName, customerEmail, notes, quo
   const black = rgb(0, 0, 0);
   const gray = hexToRgb("#666666");
   const white = rgb(1, 1, 1);
-  const yellow = hexToRgb("#FFFF00");
-  const lightYellow = hexToRgb("#FFFFF0");
+  const yellow = hexToRgb("#ffff00");
+  const lightYellow = hexToRgb("#fffff0");
 
   const margin = 40;
   const rightEdge = pageW - margin;
@@ -120,7 +120,11 @@ async function generateQuotePDF({ items, customerName, customerEmail, notes, quo
 
   // Reusable: draw table header on any page
   const drawTableHeader = (pg, yPos) => {
-    pg.drawRectangle({ x: tableX, y: yPos - headerH, width: tableW, height: headerH, color: yellow, borderColor: black, borderWidth: 0.5 });
+    // Fill transparent background
+    pg.drawRectangle({ x: tableX, y: yPos - headerH, width: tableW, height: headerH, color: yellow, opacity: 0.8 });
+    // Draw borders
+    pg.drawRectangle({ x: tableX, y: yPos - headerH, width: tableW, height: headerH, borderColor: black, borderWidth: 0.5 });
+    
     let cx = tableX;
     for (let i = 0; i < colLabels.length; i++) {
       if (i > 0) {
@@ -175,7 +179,12 @@ async function generateQuotePDF({ items, customerName, customerEmail, notes, quo
     }
 
     const rowBg = idx % 2 === 0 ? white : lightYellow;
-    page.drawRectangle({ x: tableX, y: y - rowH, width: tableW, height: rowH, color: rowBg, borderColor: black, borderWidth: 0.5 });
+    // Draw background with transparency
+    if (idx % 2 !== 0) {
+      page.drawRectangle({ x: tableX, y: y - rowH, width: tableW, height: rowH, color: rowBg, opacity: 0.6 });
+    }
+    // Draw border
+    page.drawRectangle({ x: tableX, y: y - rowH, width: tableW, height: rowH, borderColor: black, borderWidth: 0.5 });
 
     let cx = tableX;
     const cellValues = [
@@ -212,7 +221,8 @@ async function generateQuotePDF({ items, customerName, customerEmail, notes, quo
   const emptyRows = Math.max(2, 8 - items.length);
   for (let i = 0; i < emptyRows; i++) {
     if (y - rowH < minY) break;
-    page.drawRectangle({ x: tableX, y: y - rowH, width: tableW, height: rowH, color: white, borderColor: black, borderWidth: 0.5 });
+    // Transparent empty rows: no fill needed, just border
+    page.drawRectangle({ x: tableX, y: y - rowH, width: tableW, height: rowH, borderColor: black, borderWidth: 0.5 });
     let cx = tableX;
     for (let j = 0; j < colWidths.length; j++) {
       if (j > 0) {
@@ -230,7 +240,10 @@ async function generateQuotePDF({ items, customerName, customerEmail, notes, quo
     y = np.y;
   }
   const totalRowH = 24;
-  page.drawRectangle({ x: tableX, y: y - totalRowH, width: tableW, height: totalRowH, color: yellow, borderColor: black, borderWidth: 0.5 });
+  // Fill transparent background
+  page.drawRectangle({ x: tableX, y: y - totalRowH, width: tableW, height: totalRowH, color: yellow, opacity: 0.8 });
+  // Draw border
+  page.drawRectangle({ x: tableX, y: y - totalRowH, width: tableW, height: totalRowH, borderColor: black, borderWidth: 0.5 });
   page.drawText("GRAND TOTAL", { x: tableX + 10, y: y - totalRowH + 8, size: 9, font: fontBold, color: black });
   const grandTotalStr = fmtPrice(grandTotal);
   const gtW = fontBold.widthOfTextAtSize(grandTotalStr, 9);
@@ -246,7 +259,10 @@ async function generateQuotePDF({ items, customerName, customerEmail, notes, quo
   }
   y -= 20;
   const tcHeaderH = 20;
-  page.drawRectangle({ x: tableX, y: y - tcHeaderH, width: tableW, height: tcHeaderH, color: yellow, borderColor: black, borderWidth: 0.5 });
+  // Fill transparent background
+  page.drawRectangle({ x: tableX, y: y - tcHeaderH, width: tableW, height: tcHeaderH, color: yellow, opacity: 0.8 });
+  // Draw border
+  page.drawRectangle({ x: tableX, y: y - tcHeaderH, width: tableW, height: tcHeaderH, borderColor: black, borderWidth: 0.5 });
   const tcTitle = "TERMS & CONDITIONS";
   const tcTW = fontBold.widthOfTextAtSize(tcTitle, 9);
   page.drawText(tcTitle, { x: tableX + (tableW - tcTW) / 2, y: y - tcHeaderH + 6, size: 9, font: fontBold, color: black });
@@ -266,7 +282,8 @@ async function generateQuotePDF({ items, customerName, customerEmail, notes, quo
   ];
   const tcRowH = 16;
   for (const [label, val] of tcItems) {
-    page.drawRectangle({ x: tableX, y: y - tcRowH, width: tableW, height: tcRowH, borderColor: black, borderWidth: 0.3, color: white });
+    // Just the border for white/transparent rows
+    page.drawRectangle({ x: tableX, y: y - tcRowH, width: tableW, height: tcRowH, borderColor: black, borderWidth: 0.3 });
     page.drawLine({ start: { x: tableX + tableW / 2, y }, end: { x: tableX + tableW / 2, y: y - tcRowH }, thickness: 0.3, color: black });
     const lW = fontBold.widthOfTextAtSize(label, 7);
     page.drawText(label, { x: tableX + (tableW / 2 - lW) / 2, y: y - tcRowH + 5, size: 7, font: fontBold, color: black });
@@ -275,9 +292,9 @@ async function generateQuotePDF({ items, customerName, customerEmail, notes, quo
   }
 
   y -= 6;
-  page.drawText("GST Number: 27AALFU5481L1ZO", { x: tableX, y, size: 7, font: fontRegular, color: black });
+  page.drawText("GST Number:  27ALZPL5665L1Z0", { x: tableX, y, size: 7, font: fontRegular, color: black });
   y -= 12;
-  page.drawText("Pan Number: AALFU5481L", { x: tableX, y, size: 7, font: fontRegular, color: black });
+  page.drawText("Pan Number: ALZPL5665L", { x: tableX, y, size: 7, font: fontRegular, color: black });
 
   // ══════════════════════════════════════════════════════════════
   // NOTES

@@ -74,6 +74,7 @@
 }
 *{
   box-sizing: border-box;
+  
 }
 
 /* ============================================
@@ -83,6 +84,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 
 /* Force GPU compositing for animated elements in Safari */
@@ -109,6 +111,7 @@ body {
   background-color: #fefcf7;
   background-attachment: fixed;
   min-height: 100vh;
+  overflow-x: clip;
 }
 
 /* ============================================
