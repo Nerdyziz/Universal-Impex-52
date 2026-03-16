@@ -7,8 +7,23 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { ArrowRight, Target, Shield, Zap, Globe, Users, Award } from "lucide-react";
 import Link from "next/link";
+import LogoLoop from "@/components/LogoLoop";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const imageLogos = [
+  { src: "/b1b.svg", alt: "Company 1"},
+  { src: "/b2b.svg", alt: "Company 2"},
+  { src: "/b3b.svg", alt: "Company 3"},
+  { src: "/b4b.svg", alt: "Company 4"},
+  { src: "/b5b.svg", alt: "Company 5"},
+  { src: "/b6b.svg", alt: "Company 6"},
+  { src: "/b8b.svg", alt: "Company 8"},
+  { src: "/b9b.svg", alt: "Company 9"},
+  { src: "/b10b.svg", alt: "Company 10"},
+  { src: "/b11b.svg", alt: "Company 11"},
+];
+
 
 const SlopeDown = ({ colorClass }) => (
   <div className="h-full w-[40px] md:w-[60px] relative z-20">
@@ -247,18 +262,12 @@ const About = () => {
             </h2>
             <div className="space-y-4 text-gray-600 text-sm sm:text-base leading-relaxed">
               <p>
-                Founded in 2015, Universal Impex 52 was established with a clear vision — to simplify global trade and connect businesses with reliable industrial products and trusted suppliers across international markets.
-
-Our primary focus lies in the hardware and construction sector, supplying a wide range of power tools, industrial tools and construction equipment that support modern infrastructure, manufacturing and development projects. Through strong sourcing capabilities and industry knowledge, we ensure that businesses receive dependable products suited for demanding environments.
-              </p>
+                Universal Impex 52, established in 2015, has built strong expertise in the retail and wholesale trading of industrial tools and equipment. We specialize in supplying a wide range of products including power tools, hand tools, precision tools, hydraulic tools, material handling equipment and other industrial hardware solutions. </p>
               <p>
-                Over the years, we have built authorized partnerships and official dealerships with leading brands, enabling us to deliver genuine products with consistent quality and reliability. Our growing supplier network allows us to efficiently support distributors, contractors and businesses looking for trusted hardware and tool solutions.
-
-Today, Universal Impex 52 works with partners across multiple regions, helping businesses access reliable tools, hardware and industrial supplies through seamless international trade. While our core strength lies in power tools and construction hardware, our global sourcing capabilities also allow us to assist clients with a wide range of industrial requirements.
-              </p>
+               With a strong focus on the hardware and construction sector, we source reliable products from trusted manufacturers to support infrastructure, manufacturing and industrial operations. Over the years, we have developed authorized partnerships and official dealerships with leading brands, ensuring genuine products and consistent quality for our clients.</p>
               <p>
-              At Universal Impex 52, we don’t just supply products — we build long-term partnerships that keep industries and construction moving forward.
-              </p>
+              Our experience in sourcing and supply allows us to deliver dependable products at competitive prices with effective and timely delivery. With a growing network of suppliers and partners, we efficiently supports distributors, contractors and businesses across multiple markets.</p>
+              <p>At UI52, our goal is simple — to provide reliable industrial solutions while building long-term partnerships based on trust, quality, and service.</p>
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <div className="flex items-center gap-2 liquid-glass text-[#1a1a1a] text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full">
@@ -275,7 +284,7 @@ Today, Universal Impex 52 works with partners across multiple regions, helping b
       <section className="vision-section w-full ">
         <div className="max-w-6xl mx-auto h-full ">
 
-          <div className="flex items-center gap-3 mb-4 px-6 sm:px-12 lg:px-24">
+          <div className="flex items-center gap-3 mb-4 px-6 sm:px-12 lg:px-0">
               <div className="h-[2px] w-8 bg-amber-400 " />
               <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-amber-600 font-mono">
                 Vision
@@ -451,6 +460,35 @@ Today, Universal Impex 52 works with partners across multiple regions, helping b
           </div>
         </div>
       </section>
+
+       <section className="vision-section w-full ">
+        <div className="max-w-6xl mx-auto h-full ">
+
+          <div className="flex items-center gap-3 mb-4 px-6 sm:px-12 lg:px-0">
+              <div className="h-[2px] w-8 bg-amber-400 " />
+              <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-amber-600 font-mono">
+                Authorized Dealerships
+              </span>
+            </div>
+            <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full rounded-2xl overflow-hidden">
+              <Image
+                src="/certificate.PNG"
+                alt="certificate"
+                fill
+                className="object-contain"
+              />
+              {/* <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white text-center tracking-tight leading-tight px-4">
+                  FALL <span className="italic font-serif text-amber-400">2030</span>
+                </h2>
+              </div> */}
+            </div>
+            
+        </div>
+        <div className="relative z-30 w-full overflow-hidden pt-4">
+              <LogoLoop logos={imageLogos} speed={50} direction="left" logoHeight={20} gap={40} hoverSpeed={0} scaleOnHover fadeOut fadeOutColor="rgba(0,0,0,0)" />
+            </div>
+        </section>
 
       {/* ============================================================
           CTA SECTION
