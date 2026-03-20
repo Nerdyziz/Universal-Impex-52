@@ -247,6 +247,14 @@ export default function AdminPage() {
   const [brandModal, setBrandModal] = useState(null);
   const [deleteModal, setDeleteModal] = useState(null);
   const [csvModal, setCsvModal] = useState(false);
+  const [selectedProducts, setSelectedProducts] = useState(new Set());
+
+  const toggleProductSelection = (id) => {
+    const newSet = new Set(selectedProducts);
+    if (newSet.has(id)) newSet.delete(id);
+    else newSet.add(id);
+    setSelectedProducts(newSet);
+  };
 
   // ─── FETCH DATA FROM API ─────────────────
   const fetchProducts = useCallback(async () => {
@@ -344,8 +352,31 @@ export default function AdminPage() {
       if (!json.success) throw new Error(json.error);
       setProducts((prev) => prev.filter((p) => p._id !== id));
       setDeleteModal(null);
+      
+      const newSelected = new Set(selectedProducts);
+      if (newSelected.has(id)) {
+        newSelected.delete(id);
+        setSelectedProducts(newSelected);
+      }
     } catch (err) {
       alert("Error deleting product: " + err.message);
+    }
+  };
+
+  const deleteBulkProducts = async (ids) => {
+    try {
+      const res = await fetch(`/api/products/bulk`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids }),
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error);
+      setProducts((prev) => prev.filter((p) => !ids.includes(p._id)));
+      setSelectedProducts(new Set());
+      setDeleteModal(null);
+    } catch (err) {
+      alert("Error deleting products: " + err.message);
     }
   };
 
@@ -418,7 +449,16 @@ export default function AdminPage() {
   // Reset page when filters change
   useEffect(() => {
     setAdminPage(1);
+    setSelectedProducts(new Set());
   }, [productSearch, filterMainCategory, filterBrand, filterCategory, filterFeatured]);
+
+  const toggleAllProducts = () => {
+    if (selectedProducts.size === paginatedAdminProducts.length && paginatedAdminProducts.length > 0) {
+      setSelectedProducts(new Set());
+    } else {
+      setSelectedProducts(new Set(paginatedAdminProducts.map(p => p._id)));
+    }
+  };
 
   // Brands filtered by selected main category (for products tab brand dropdown)
   const brandsForFilter = filterMainCategory
@@ -661,6 +701,14 @@ export default function AdminPage() {
               >
                 <Plus className="w-4 h-4" /> Add Product
               </button>
+              {selectedProducts.size > 0 && (
+                <button
+                  onClick={() => setDeleteModal({ type: "bulk_products", item: Array.from(selectedProducts) })}
+                  className="flex items-center gap-2 bg-red-500/10 text-red-600 border border-red-500/20 px-5 py-2.5 text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-red-500 hover:text-white transition-all duration-300 shrink-0"
+                >
+                  <Trash2 className="w-4 h-4" /> Delete ({selectedProducts.size})
+                </button>
+              )}
               <button
                 onClick={() => setCsvModal(true)}
                 className="flex items-center gap-2 bg-white/60 border border-amber-900/15 text-[#1a1a1a] px-5 py-2.5 text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-amber-500 hover:text-black hover:border-amber-500 transition-all duration-300 shrink-0"
@@ -751,6 +799,14 @@ export default function AdminPage() {
                   <table className="w-full text-left">
                     <thead>
                       <tr className="border-b border-amber-900/10 bg-white/40">
+                        <th className="px-5 py-3 w-10">
+                          <input 
+                            type="checkbox" 
+                            checked={selectedProducts.size === paginatedAdminProducts.length && paginatedAdminProducts.length > 0} 
+                            onChange={toggleAllProducts}
+                            className="w-4 h-4 rounded border-amber-900/15 text-amber-500 focus:ring-amber-500/30 cursor-pointer"
+                          />
+                        </th>
                         <th className="px-5 py-3 text-[10px] font-black uppercase tracking-widest text-gray-500">
                           Product
                         </th>
@@ -780,6 +836,14 @@ export default function AdminPage() {
                           key={p._id}
                           className="admin-card border-b border-amber-900/5 hover:bg-white/40 transition-colors"
                         >
+                          <td className="px-5 py-4">
+                            <input 
+                              type="checkbox" 
+                              checked={selectedProducts.has(p._id)} 
+                              onChange={() => toggleProductSelection(p._id)}
+                              className="w-4 h-4 rounded border-amber-900/15 text-amber-500 focus:ring-amber-500/30 cursor-pointer"
+                            />
+                          </td>
                           <td className="px-5 py-4">
                             <div className="flex items-center gap-3">
                               <div
@@ -919,6 +983,12 @@ export default function AdminPage() {
                       className="admin-card bg-white/60 border border-amber-900/10 rounded-xl p-4"
                     >
                       <div className="flex items-center gap-3 mb-3">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedProducts.has(p._id)} 
+                          onChange={() => toggleProductSelection(p._id)}
+                          className="w-4 h-4 rounded border-amber-900/15 text-amber-500 focus:ring-amber-500/30 cursor-pointer shrink-0"
+                        />
                         <div
                           className="w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-amber-400/10"
                         >
@@ -1149,11 +1219,11 @@ export default function AdminPage() {
         <DeleteModal
           type={deleteModal.type}
           item={deleteModal.item}
-          onConfirm={() =>
-            deleteModal.type === "product"
-              ? deleteProduct(deleteModal.item._id)
-              : deleteBrand(deleteModal.item._id)
-          }
+          onConfirm={() => {
+            if (deleteModal.type === "product") return deleteProduct(deleteModal.item._id);
+            if (deleteModal.type === "bulk_products") return deleteBulkProducts(deleteModal.item);
+            return deleteBrand(deleteModal.item._id);
+          }}
           onClose={() => setDeleteModal(null)}
         />
       )}
@@ -1894,11 +1964,14 @@ function DeleteModal({ type, item, onConfirm, onClose }) {
           <AlertTriangle className="w-7 h-7 text-red-500" />
         </div>
         <h3 className="text-lg font-black text-[#1a1a1a]">
-          Delete {type === "product" ? "Product" : "Brand"}
+          Delete {type === "product" ? "Product" : type === "brand" ? "Brand" : `${item.length} Products`}
         </h3>
         <p className="text-sm text-gray-600">
-          Are you sure you want to delete <strong>{item.name}</strong>? This
-          action cannot be undone.
+          {type === "bulk_products" ? (
+            <>Are you sure you want to delete <strong>{item.length}</strong> selected products? This action cannot be undone.</>
+          ) : (
+            <>Are you sure you want to delete <strong>{item.name}</strong>? This action cannot be undone.</>
+          )}
         </p>
         <div className="flex justify-center gap-3 pt-2">
           <button

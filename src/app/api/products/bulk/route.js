@@ -117,3 +117,30 @@ export async function POST(request) {
     );
   }
 }
+
+// DELETE /api/products/bulk — delete multiple products
+export async function DELETE(request) {
+  try {
+    await dbConnect();
+    const { ids } = await request.json();
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return NextResponse.json(
+        { success: false, error: "ids array is required" },
+        { status: 400 }
+      );
+    }
+
+    const result = await Product.deleteMany({ _id: { $in: ids } });
+
+    return NextResponse.json(
+      { success: true, deletedCount: result.deletedCount },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    );
+  }
+}
