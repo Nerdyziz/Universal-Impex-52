@@ -51,7 +51,7 @@ export default function SmoothScroll({ children }) {
         touchMultiplier: 1.5,
         infinite: false,
         autoResize: true,
-        syncTouch: false,
+        syncTouch: true,
         prevent: (node) => node.hasAttribute('data-lenis-prevent'),
       }}
     >
