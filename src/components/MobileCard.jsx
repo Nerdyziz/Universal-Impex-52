@@ -56,7 +56,7 @@ const MobileCard = () => {
           cardDistance={18}
           verticalDistance={15}
           skewAmount={0}
-          containerClassName="flex items-center justify-center perspective-[1000px] overflow-visible touch-pan-y cursor-grab active:cursor-grabbing"
+          containerClassName="flex items-center justify-center perspective-[1000px] overflow-visible touch-none cursor-grab active:cursor-grabbing"
         >
           {cardData.map((data) => (
             <Card3 key={`mobile-${data.id}`}>
