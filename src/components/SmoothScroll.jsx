@@ -18,26 +18,46 @@ function LenisScrollTriggerSync() {
 
 export default function SmoothScroll({ children }) {
   const [isSafari, setIsSafari] = useState(false);
+  const [useNativeTouchScroll, setUseNativeTouchScroll] = useState(false);
   const lenisRef = useRef(null);
 
   const pathname = usePathname();
 
   useEffect(() => {
-    const ua = navigator.userAgent;
-    const safari = /^((?!chrome|android).)*safari/i.test(ua);
-    setIsSafari(safari);
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+    const updateTouchScrollMode = () => {
+      setUseNativeTouchScroll(coarsePointerQuery.matches);
+    };
+    const detectScrollMode = () => {
+      const ua = navigator.userAgent;
+      setIsSafari(/^((?!chrome|android).)*safari/i.test(ua));
+      updateTouchScrollMode();
+    };
+
+    const initialTimer = window.setTimeout(detectScrollMode, 0);
+    coarsePointerQuery.addEventListener("change", updateTouchScrollMode);
+    return () => {
+      window.clearTimeout(initialTimer);
+      coarsePointerQuery.removeEventListener("change", updateTouchScrollMode);
+    };
   }, []);
 
   // Refresh ScrollTrigger and reset scroll after route change
   useEffect(() => {
-    if (lenisRef.current?.lenis) {
+    if (useNativeTouchScroll) {
+      window.scrollTo(0, 0);
+    } else if (lenisRef.current?.lenis) {
       lenisRef.current.lenis.scrollTo(0, { immediate: true });
     }
     const timer = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 200);
     return () => clearTimeout(timer);
-  }, [pathname]);
+  }, [pathname, useNativeTouchScroll]);
+
+  if (useNativeTouchScroll) {
+    return <>{children}</>;
+  }
 
   return (
     <ReactLenis
@@ -51,7 +71,7 @@ export default function SmoothScroll({ children }) {
         touchMultiplier: 1.5,
         infinite: false,
         autoResize: true,
-        syncTouch: true,
+        syncTouch: false,
         prevent: (node) => node.hasAttribute('data-lenis-prevent'),
       }}
     >
