@@ -56,6 +56,7 @@ const PillNav = ({
   
   const [cartDarkBg, setCartDarkBg] = useState(false);
   const [mobileDarkBg, setMobileDarkBg] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   const pillDarkBgRef = useRef([]);
   const cartDarkBgRef = useRef(false);
@@ -64,7 +65,41 @@ const PillNav = ({
   const mobileLogoDarkBgRef = useRef(false);
 
   useEffect(() => {
+    const detectTouch = () =>
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia("(pointer: coarse)").matches;
+
+    const syncTouchState = () => setIsTouchDevice(detectTouch());
+    syncTouchState();
+
+    const mq = window.matchMedia("(pointer: coarse)");
+    mq.addEventListener("change", syncTouchState);
+    window.addEventListener("touchstart", syncTouchState, { once: true });
+
+    return () => {
+      mq.removeEventListener("change", syncTouchState);
+      window.removeEventListener("touchstart", syncTouchState);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!glassBase) return;
+    if (isTouchDevice) {
+      // Skip expensive color sampling on touch devices during scroll.
+      const defaultPills = items.map(() => false);
+      pillDarkBgRef.current = defaultPills;
+      setPillDarkBg(defaultPills);
+      cartDarkBgRef.current = false;
+      mobileDarkBgRef.current = false;
+      logoDarkBgRef.current = false;
+      mobileLogoDarkBgRef.current = false;
+      setCartDarkBg(false);
+      setMobileDarkBg(false);
+      setLogoDarkBg(false);
+      setMobileLogoDarkBg(false);
+      return;
+    }
     
 
     let lastDetectTime = 0;
@@ -202,7 +237,7 @@ const PillNav = ({
       window.removeEventListener('scroll', detectBg);
       if (scheduledRaf) cancelAnimationFrame(scheduledRaf);
     };
-  }, [glassBase]);
+  }, [glassBase, isTouchDevice, items]);
 
   const isExternalLink = href =>
     href.startsWith('http://') ||

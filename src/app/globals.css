@@ -114,6 +114,13 @@ body {
   overflow-x: clip;
 }
 
+/* Mobile/touch browsers repaint heavily with fixed-attached backgrounds. */
+@media (hover: none), (pointer: coarse) {
+  body {
+    background-attachment: scroll;
+  }
+}
+
 
 
 /* ============================================
