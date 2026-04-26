@@ -8,7 +8,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Syncs Lenis scroll events with GSAP ScrollTrigger for consistent animations
+// Sync Lenis with GSAP ScrollTrigger
 function LenisScrollTriggerSync() {
   useLenis(() => {
     ScrollTrigger.update();
@@ -18,55 +18,67 @@ function LenisScrollTriggerSync() {
 
 export default function SmoothScroll({ children }) {
   const [isSafari, setIsSafari] = useState(false);
-  const [useNativeTouchScroll, setUseNativeTouchScroll] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const lenisRef = useRef(null);
-
   const pathname = usePathname();
 
-useEffect(() => {
-  const detectTouchDevice = () => {
-    return (
-      'ontouchstart' in window ||
-      navigator.maxTouchPoints > 0 ||
-      window.matchMedia("(pointer: coarse)").matches
-    );
-  };
-
-  const detectScrollMode = () => {
-    const ua = navigator.userAgent;
-    setIsSafari(/^((?!chrome|android).)*safari/i.test(ua));
-    setUseNativeTouchScroll(detectTouchDevice());
-  };
-
-  const initialTimer = window.setTimeout(detectScrollMode, 0);
-
-  // Optional: listen for pointer changes (rare but good practice)
-  const mq = window.matchMedia("(pointer: coarse)");
-  const handler = () => setUseNativeTouchScroll(detectTouchDevice());
-  mq.addEventListener("change", handler);
-
-  return () => {
-    window.clearTimeout(initialTimer);
-    mq.removeEventListener("change", handler);
-  };
-}, []);
-  // Refresh ScrollTrigger and reset scroll after route change
+  // Detect Safari + Touch devices
   useEffect(() => {
-    if (useNativeTouchScroll) {
+    const detectTouch = () => {
+      return (
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.matchMedia("(pointer: coarse)").matches
+      );
+    };
+
+    const ua = navigator.userAgent;
+
+    setIsSafari(/^((?!chrome|android).)*safari/i.test(ua));
+    setIsTouchDevice(detectTouch());
+
+    // Handle dynamic pointer changes (rare but useful)
+    const mq = window.matchMedia("(pointer: coarse)");
+    const handler = () => {
+      const touch = detectTouch();
+      setIsTouchDevice((prev) => (prev !== touch ? touch : prev));
+    };
+
+    mq.addEventListener("change", handler);
+
+    // Detect real touch interaction (best UX for hybrid devices)
+    const onTouch = () => setIsTouchDevice(true);
+    window.addEventListener("touchstart", onTouch, { once: true });
+
+    return () => {
+      mq.removeEventListener("change", handler);
+      window.removeEventListener("touchstart", onTouch);
+    };
+  }, []);
+
+  // Handle route change scroll reset
+  useEffect(() => {
+    if (isTouchDevice) {
+      // Native scroll
       window.scrollTo(0, 0);
     } else if (lenisRef.current?.lenis) {
+      // Lenis scroll
       lenisRef.current.lenis.scrollTo(0, { immediate: true });
     }
+
     const timer = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 200);
-    return () => clearTimeout(timer);
-  }, [pathname, useNativeTouchScroll]);
 
-  if (useNativeTouchScroll) {
+    return () => clearTimeout(timer);
+  }, [pathname, isTouchDevice]);
+
+  // 🚫 Disable Lenis completely on touch devices
+  if (isTouchDevice) {
     return <>{children}</>;
   }
 
+  // ✅ Enable Lenis only on non-touch devices
   return (
     <ReactLenis
       ref={lenisRef}
@@ -76,11 +88,10 @@ useEffect(() => {
         smoothWheel: true,
         smoothTouch: false,
         wheelMultiplier: isSafari ? 0.8 : 1,
-        touchMultiplier: 1.5,
         infinite: false,
         autoResize: true,
         syncTouch: false,
-        prevent: (node) => node.hasAttribute('data-lenis-prevent'),
+        prevent: (node) => node.hasAttribute("data-lenis-prevent"),
       }}
     >
       <LenisScrollTriggerSync />

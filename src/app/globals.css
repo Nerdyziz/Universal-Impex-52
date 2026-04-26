@@ -114,11 +114,7 @@ body {
   overflow-x: clip;
 }
 
-@media (hover: none), (pointer: coarse) {
-  body {
-    background-attachment: scroll;
-  }
-}
+
 
 /* ============================================
    LIQUID GLASS — Single unified style (PillNav)

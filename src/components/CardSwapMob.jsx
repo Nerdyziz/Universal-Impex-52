@@ -253,10 +253,9 @@ const CardSwapMob = ({
         })
       : child,
   );
-
-  const defaultContainerClass =
+ const defaultContainerClass =
     "absolute bottom-0 right-0 translate-x-[15%] sm:translate-x-[5%] md:-translate-x-[5%] translate-y-[5%] md:translate-y-[20%] scale-[0.8] xl:scale-100 origin-bottom-right perspective-[1000px] overflow-visible touch-none cursor-grab active:cursor-grabbing";
-
+  
   return (
     <div
       ref={container}

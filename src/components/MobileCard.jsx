@@ -53,9 +53,10 @@ const MobileCard = () => {
         <CardSwapMob
           width={"90%"}
           height={"100%"}
-          cardDistance={18}
+         cardDistance={18}
           verticalDistance={15}
           skewAmount={0}
+          /* Added touch-none and cursor utilities to your custom class */
           containerClassName="flex items-center justify-center perspective-[1000px] overflow-visible touch-none cursor-grab active:cursor-grabbing"
         >
           {cardData.map((data) => (
