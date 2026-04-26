@@ -42,7 +42,6 @@ const Cards = () => {
         end: "+=120%", 
         scrub: 0.3,
         pin: true,
-        anticipatePin: 1,
         pinSpacing: true,
         refreshPriority: -1,
       },
