@@ -23,25 +23,33 @@ export default function SmoothScroll({ children }) {
 
   const pathname = usePathname();
 
-  useEffect(() => {
-    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
-    const updateTouchScrollMode = () => {
-      setUseNativeTouchScroll(coarsePointerQuery.matches);
-    };
-    const detectScrollMode = () => {
-      const ua = navigator.userAgent;
-      setIsSafari(/^((?!chrome|android).)*safari/i.test(ua));
-      updateTouchScrollMode();
-    };
+useEffect(() => {
+  const detectTouchDevice = () => {
+    return (
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia("(pointer: coarse)").matches
+    );
+  };
 
-    const initialTimer = window.setTimeout(detectScrollMode, 0);
-    coarsePointerQuery.addEventListener("change", updateTouchScrollMode);
-    return () => {
-      window.clearTimeout(initialTimer);
-      coarsePointerQuery.removeEventListener("change", updateTouchScrollMode);
-    };
-  }, []);
+  const detectScrollMode = () => {
+    const ua = navigator.userAgent;
+    setIsSafari(/^((?!chrome|android).)*safari/i.test(ua));
+    setUseNativeTouchScroll(detectTouchDevice());
+  };
 
+  const initialTimer = window.setTimeout(detectScrollMode, 0);
+
+  // Optional: listen for pointer changes (rare but good practice)
+  const mq = window.matchMedia("(pointer: coarse)");
+  const handler = () => setUseNativeTouchScroll(detectTouchDevice());
+  mq.addEventListener("change", handler);
+
+  return () => {
+    window.clearTimeout(initialTimer);
+    mq.removeEventListener("change", handler);
+  };
+}, []);
   // Refresh ScrollTrigger and reset scroll after route change
   useEffect(() => {
     if (useNativeTouchScroll) {
