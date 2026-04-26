@@ -82,22 +82,30 @@ const CardSwapMob = ({
   const order = useRef(Array.from({ length: childArr.length }, (_, i) => i));
   const tlRef = useRef(null);
   const container = useRef(null);
+  // Track whether user is actively dragging so we only intercept
+  // touch events during a drag — not for regular page scrolling
+  const isDraggingRef = useRef(false);
+
   useEffect(() => {
-  const node = container.current;
-  if (!node) return;
+    const node = container.current;
+    if (!node) return;
 
-  const stopTouch = (e) => e.stopPropagation();
+    // Only prevent default/stop propagation during active drags.
+    // The old code blocked ALL touch events, which disabled the
+    // browser's fast-path touch scroller for the entire page.
+    const onTouchMove = (e) => {
+      if (isDraggingRef.current) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
 
-  node.addEventListener("touchstart", stopTouch, { passive: false });
-  node.addEventListener("touchmove", stopTouch, { passive: false });
-  node.addEventListener("touchend", stopTouch, { passive: false });
+    node.addEventListener("touchmove", onTouchMove, { passive: false });
 
-  return () => {
-    node.removeEventListener("touchstart", stopTouch);
-    node.removeEventListener("touchmove", stopTouch);
-    node.removeEventListener("touchend", stopTouch);
-  };
-}, []);
+    return () => {
+      node.removeEventListener("touchmove", onTouchMove);
+    };
+  }, []);
 
   useEffect(() => {
     const total = refs.length;
@@ -195,6 +203,7 @@ const CardSwapMob = ({
       if (tlRef.current?.isActive() || order.current.length < 2) return;
       
       isDragging = true;
+      isDraggingRef.current = true;
       startY = e.clientY;
       startTime = Date.now(); 
       const frontIdx = order.current[0];
@@ -215,6 +224,7 @@ const CardSwapMob = ({
     const handlePointerUp = (e) => {
       if (!isDragging || !elFront) return;
       isDragging = false;
+      isDraggingRef.current = false;
       
       const deltaY = e.clientY - startY;
       const timeElapsed = Date.now() - startTime;

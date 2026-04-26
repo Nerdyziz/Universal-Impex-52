@@ -64,43 +64,38 @@ const Herosection = () => {
     // Fix: Set rotation here so GSAP knows about it and doesn't overwrite it
 
     const isMobile = window.innerWidth < 640;
+    const isTouchDevice =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia("(pointer: coarse)").matches;
     const svgSize = isMobile ? 400 : window.innerWidth < 1024 ? 600 : 800;
     gsap.set(imageRef.current, { rotation: -30, width: svgSize, height: svgSize });
 
-    // Expose the imageRef to the parent via the forwarded ref
+    // Skip mouse-move parallax on touch devices — saves CPU (no mouse anyway)
+    let handleMouseMove = null;
+    if (!isTouchDevice) {
+      const xTo = gsap.quickTo(imageRef.current, "x", {
+        duration: 0.5,
+        ease: "power3.out",
+      });
 
-    // Keep your mouse move logic here, it is independent
+      const yTo = gsap.quickTo(imageRef.current, "y", {
+        duration: 0.5,
+        ease: "power3.out",
+      });
 
-    const xTo = gsap.quickTo(imageRef.current, "x", {
-      duration: 0.5,
-      ease: "power3.out",
-    });
+      handleMouseMove = (e) => {
+        const { clientX, clientY } = e;
+        const { innerWidth, innerHeight } = window;
+        const xFactor = clientX / innerWidth - 0.5;
+        const yFactor = clientY / innerHeight - 0.5;
+        const moveAmount = window.innerWidth < 640 ? 30 : 100;
+        xTo(xFactor * moveAmount);
+        yTo(yFactor * moveAmount);
+      };
 
-    const yTo = gsap.quickTo(imageRef.current, "y", {
-      duration: 0.5,
-      ease: "power3.out",
-    });
-
-    const handleMouseMove = (e) => {
-      const { clientX, clientY } = e;
-
-      const { innerWidth, innerHeight } = window;
-
-      const xFactor = clientX / innerWidth - 0.5;
-
-      const yFactor = clientY / innerHeight - 0.5;
-
-      const moveAmount = window.innerWidth < 640 ? 30 : 100;
-      xTo(xFactor * moveAmount);
-
-      yTo(yFactor * moveAmount);
-    };
-
-    // 2. PREPARE ANIMATIONS (quickTo for performance)
-
-    // 3. MOUSE MOVE HANDLER
-
-    window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mousemove", handleMouseMove);
+    }
 
     // 4. ENTRANCE ANIMATION
 
@@ -172,27 +167,28 @@ const Herosection = () => {
 
     // Cleanup
 
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    return () => {
+      if (handleMouseMove) window.removeEventListener("mousemove", handleMouseMove);
+    };
   });
 
   useGSAP(() => {
     if (!svgLoaded) return; // ⛔ don’t run early
 
+    const isTouchDevice =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia("(pointer: coarse)").matches;
+
     const scrollTl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-
         start: "bottom bottom",
-
         end: "top -400%",
-
         pin: true,
-
         pinSpacing: true,
-
-        scrub: 1,
-
-        
+        scrub: isTouchDevice ? 1.5 : 1,
+        fastScrollEnd: true, // Snaps cleanly at end of fast flick gestures
       },
     });
 

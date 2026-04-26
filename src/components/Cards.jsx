@@ -34,16 +34,23 @@ const Cards = () => {
   useGSAP(() => {
     const boxes = gsap.utils.toArray(".box");
 
+    const isTouchDevice =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia("(pointer: coarse)").matches;
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         // Changed to "top 10%" so the top tabs never get pushed off-screen on short devices
         start: "bottom bottom", 
         end: "+=120%", 
-        scrub: 0.3,
+        scrub: isTouchDevice ? 0.5 : 0.3,
         pin: true,
         pinSpacing: true,
         refreshPriority: -1,
+        fastScrollEnd: true,       // Snaps cleanly at end of fast flick gestures
+        preventOverlaps: true,     // Stops stacked animations from fighting
       },
     });
 

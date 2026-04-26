@@ -472,28 +472,37 @@ const PillNav = ({
     let lastScrollY = window.scrollY;
     let direction = 'up'; 
     const SCROLL_THRESHOLD = 10;
+    let rafId = null;
 
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const delta = currentScrollY - lastScrollY;
+      // Batch DOM reads inside rAF to prevent layout thrashing on mobile
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const currentScrollY = window.scrollY;
+        const delta = currentScrollY - lastScrollY;
 
-      if (Math.abs(delta) < SCROLL_THRESHOLD) return; 
+        if (Math.abs(delta) < SCROLL_THRESHOLD) return; 
 
-      // Animate children instead of container to avoid transform on parent
-      // which breaks backdrop-filter on child elements
-      const targets = Array.from(nav.children);
-      if (delta > 0 && direction !== 'down') {
-        direction = 'down';
-        gsap.to(targets, { y: -100, opacity: 0, duration: 0.3, ease: 'power2.out', overwrite: true });
-      } else if (delta < 0 && direction !== 'up') {
-        direction = 'up';
-        gsap.to(targets, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out', overwrite: true });
-      }
-      lastScrollY = currentScrollY;
+        // Animate children instead of container to avoid transform on parent
+        // which breaks backdrop-filter on child elements
+        const targets = Array.from(nav.children);
+        if (delta > 0 && direction !== 'down') {
+          direction = 'down';
+          gsap.to(targets, { y: -100, opacity: 0, duration: 0.3, ease: 'power2.out', overwrite: true });
+        } else if (delta < 0 && direction !== 'up') {
+          direction = 'up';
+          gsap.to(targets, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out', overwrite: true });
+        }
+        lastScrollY = currentScrollY;
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const cssVars = {

@@ -64,6 +64,11 @@ const Testimonial = () => {
 
       const getDistance = () => track.scrollWidth - window.innerWidth;
 
+      const isTouchDevice =
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.matchMedia("(pointer: coarse)").matches;
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
@@ -71,9 +76,10 @@ const Testimonial = () => {
           end: () => `+=${getDistance()}`,
           pin: true,
           anticipatePin: 1,
-          scrub: 0.3,
+          scrub: isTouchDevice ? 0.5 : 0.3,
           invalidateOnRefresh: true,
           refreshPriority: -1,
+          fastScrollEnd: true,       // Smooth snap at end of fast flick
         },
       });
 
@@ -169,6 +175,7 @@ const Testimonial = () => {
       <div
         ref={sectionRef}
         className="w-full overflow-hidden bg-transparent relative"
+        style={{ touchAction: "pan-y" }}
       >
         <div ref={trackRef} className="flex flex-nowrap items-stretch h-auto">
           {testimonials.map((t, idx) => {
