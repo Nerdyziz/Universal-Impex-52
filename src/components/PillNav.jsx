@@ -26,6 +26,7 @@ const PillNav = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [pillDarkBg, setPillDarkBg] = useState([]); 
   const [isMounted, setIsMounted] = useState(false);
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
   
   // Logo color change states
   const [logoDarkBg, setLogoDarkBg] = useState(false);
@@ -35,7 +36,20 @@ const PillNav = ({
   const hasPlayedEntrance = useRef(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+    const updatePointerMode = () => {
+      setIsCoarsePointer(coarsePointerQuery.matches);
+    };
+    const initialTimer = window.setTimeout(() => {
+      setIsMounted(true);
+      updatePointerMode();
+    }, 0);
+
+    coarsePointerQuery.addEventListener('change', updatePointerMode);
+    return () => {
+      window.clearTimeout(initialTimer);
+      coarsePointerQuery.removeEventListener('change', updatePointerMode);
+    };
   }, []);
   
   const circleRefs = useRef([]);
@@ -65,6 +79,7 @@ const PillNav = ({
 
   useEffect(() => {
     if (!glassBase) return;
+    if (!window.matchMedia('(min-width: 768px)').matches) return;
 
     let lastDetectTime = 0;
     const DETECT_INTERVAL = 250; // Only run detection every 250ms (not every frame)
@@ -215,9 +230,9 @@ const PillNav = ({
 
   const glassStyle = glassBase
     ? {
-        backgroundColor: 'rgba(20, 20, 20, 0.1)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        backgroundColor: isCoarsePointer ? 'rgba(255, 255, 255, 0.82)' : 'rgba(20, 20, 20, 0.1)',
+        backdropFilter: isCoarsePointer ? 'none' : 'blur(16px)',
+        WebkitBackdropFilter: isCoarsePointer ? 'none' : 'blur(16px)',
         boxShadow: `
           0 8px 16px -8px rgba(0, 0, 0, 0.4),
           0 0 0 1px rgba(255, 255, 255, 0.15) inset,
