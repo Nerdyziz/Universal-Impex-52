@@ -67,8 +67,7 @@ const PillNav = ({
     if (!glassBase) return;
     
 
-    let lastDetectTime = 0;
-    const DETECT_INTERVAL = 250; // Only run detection every 250ms (not every frame)
+    const navNode = navContainerRef.current;
     let scheduledRaf = null;
 
     const getBgLuminance = (x, y) => {
@@ -110,7 +109,7 @@ const PillNav = ({
     };
 
     const runDetection = () => {
-      const nav = navContainerRef.current;
+      const nav = navNode;
       if (!nav) return;
 
       // Hide nav so elementFromPoint sees what's behind it
@@ -187,19 +186,12 @@ const PillNav = ({
       });
     };
 
-    const detectBg = () => {
-      const now = performance.now();
-      if (now - lastDetectTime < DETECT_INTERVAL) return;
-      lastDetectTime = now;
-      runDetection();
-    };
-
-    // Initial detection after a short delay for layout to settle
+    // Initial detection after a short delay for layout to settle.
+    // Avoid sampling DOM/background on every scroll frame.
     const initTimer = setTimeout(() => runDetection(), 100);
-    window.addEventListener('scroll', detectBg, { passive: true });
     return () => {
       clearTimeout(initTimer);
-      window.removeEventListener('scroll', detectBg);
+      if (navNode) navNode.style.visibility = '';
       if (scheduledRaf) cancelAnimationFrame(scheduledRaf);
     };
   }, [glassBase]);

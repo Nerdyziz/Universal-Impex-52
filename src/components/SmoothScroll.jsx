@@ -56,13 +56,14 @@ export default function SmoothScroll({ children }) {
     };
   }, []);
 
-  // -- FIX 1: Normalise touch scroll for ScrollTrigger --
+  // Keep mobile touch scrolling native; Lenis is already disabled on touch.
   useEffect(() => {
-    ScrollTrigger.normalizeScroll(isTouchDevice);
-    // Refresh all triggers after the normalisation state changes
-    if (isTouchDevice) {
-      requestAnimationFrame(() => ScrollTrigger.refresh(true));
-    }
+    if (!isTouchDevice) return;
+
+    ScrollTrigger.normalizeScroll(false);
+
+    const raf = requestAnimationFrame(() => ScrollTrigger.refresh(true));
+    return () => cancelAnimationFrame(raf);
   }, [isTouchDevice]);
 
   // Handle route change scroll reset + refresh
