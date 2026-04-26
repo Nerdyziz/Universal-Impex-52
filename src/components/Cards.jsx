@@ -16,7 +16,7 @@ const TabHeader = ({
   plClass = "pl-6 sm:pl-16 lg:pl-24",
   children 
 }) => (
-  <div className={`tab-shape relative bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-t border-l border-white/10 rounded-tl-lg flex items-center pointer-events-auto ${widthClass}`}>
+  <div className={`tab-shape relative bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-t border-l border-white/10 rounded-tl-lg flex items-center pointer-events-auto glass-perf-dark ${widthClass}`}>
     
     <svg className="absolute right-0 top-0 h-full w-[40px] md:w-[60px] pointer-events-none" preserveAspectRatio="none">
       <line x1="0" y1="0" x2="100%" y2="100%" stroke="rgba(255,255,255,0.1)" strokeWidth="2.5" />
@@ -119,7 +119,7 @@ const Cards = () => {
           <div className="flex-grow border-b border-white/10 rounded-tr-lg pointer-events-none"></div>
         </div>
 
-        <div className="bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-b border-x border-white/10 flex-grow w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-4 sm:px-10 md:px-16 lg:px-24 py-8 sm:py-10 md:py-12 gap-6 sm:gap-10 relative z-10 pointer-events-auto rounded-b-lg min-h-[60vh] md:min-h-[70vh]">
+        <div className="glass-perf-dark bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-b border-x border-white/10 flex-grow w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-4 sm:px-10 md:px-16 lg:px-24 py-8 sm:py-10 md:py-12 gap-6 sm:gap-10 relative z-10 pointer-events-auto rounded-b-lg min-h-[60vh] md:min-h-[70vh]">
           
           <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left relative z-10 h-full">
             <div className="flex items-center gap-2 sm:gap-3 mb-2 md:mb-4 mt-auto md:mt-0">
@@ -204,7 +204,7 @@ const Cards = () => {
           <div className="flex-grow border-b border-white/10 rounded-tr-lg pointer-events-none"></div>
         </div>
 
-        <div className="bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-b border-x border-white/10 flex-grow w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-4 sm:px-10 md:px-16 lg:px-24 py-8 sm:py-10 md:py-12 gap-6 sm:gap-10 relative z-10 pointer-events-auto rounded-b-lg overflow-hidden min-h-[60vh] md:min-h-[70vh]">
+        <div className="glass-perf-dark bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-b border-x border-white/10 flex-grow w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-4 sm:px-10 md:px-16 lg:px-24 py-8 sm:py-10 md:py-12 gap-6 sm:gap-10 relative z-10 pointer-events-auto rounded-b-lg overflow-hidden min-h-[60vh] md:min-h-[70vh]">
           <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{backgroundImage:'repeating-linear-gradient(45deg,#fff 0px,#fff 1px,transparent 1px,transparent 14px)'}} />
 
           {/* Scaled decorative shapes & images */}
@@ -275,7 +275,7 @@ const Cards = () => {
           <div className="flex-grow border-b border-white/10 rounded-tr-lg pointer-events-none"></div>
         </div>
 
-        <div className="bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-b border-x border-white/10 flex-grow w-full flex flex-col items-center justify-center px-1 sm:px-10 md:px-16 lg:px-24 py-8 sm:py-10 md:py-12 relative z-10 pointer-events-auto rounded-b-lg overflow-hidden shrink-0 min-h-[60vh] md:min-h-[70vh]">
+        <div className="glass-perf-dark bg-[rgba(20,20,20,0.1)] backdrop-blur-xl border-b border-x border-white/10 flex-grow w-full flex flex-col items-center justify-center px-1 sm:px-10 md:px-16 lg:px-24 py-8 sm:py-10 md:py-12 relative z-10 pointer-events-auto rounded-b-lg overflow-hidden shrink-0 min-h-[60vh] md:min-h-[70vh]">
           
           <div className="absolute top-0 right-0 w-[150px] h-[150px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px] bg-[#EEBA2B]/10 rounded-full blur-[60px] md:blur-[100px] pointer-events-none" />
 

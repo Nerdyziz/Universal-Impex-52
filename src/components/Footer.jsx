@@ -41,7 +41,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="w-full min-h-screen bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border-t border-black/10 text-gray-900 flex flex-col py-8 sm:py-12 lg:py-16 px-4 sm:px-8 lg:px-16 overflow-hidden relative">
+    <footer className="glass-perf-dark w-full min-h-screen bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border-t border-black/10 text-gray-900 flex flex-col py-8 sm:py-12 lg:py-16 px-4 sm:px-8 lg:px-16 overflow-hidden relative">
         
         {/* Subtle background glow to match the cards - boosted opacity slightly for white backgrounds */}
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#EEBA2B]/20 rounded-full blur-[120px] pointer-events-none" />
@@ -115,7 +115,7 @@ const Footer = () => {
             </div>
 
             {/* Right Section - Contact Form */}
-            <div className="bg-[rgba(255,255,255,0.4)] backdrop-blur-xl border border-black/10 rounded-2xl p-6 sm:p-8 h-fit shadow-[0_15px_40px_rgba(0,0,0,0.08)] relative overflow-hidden">
+            <div className="glass-perf-light bg-[rgba(255,255,255,0.4)] backdrop-blur-xl border border-black/10 rounded-2xl p-6 sm:p-8 h-fit shadow-[0_15px_40px_rgba(0,0,0,0.08)] relative overflow-hidden">
               {/* Inner card glow */}
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#EEBA2B]/20 rounded-full blur-[60px] pointer-events-none" />
               

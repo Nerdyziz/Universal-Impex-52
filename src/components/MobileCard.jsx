@@ -15,7 +15,7 @@ const cardData = [
 
 
 const GlassContent = ({ icon: Icon, title, desc, stat, statLabel, badge }) => (
-  <div className="w-full h-full min-h-[180px] md:min-h-[220px] bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border border-white/10 rounded-2xl p-4 md:p-6 shadow-[0_15px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between relative overflow-hidden shrink-0">
+  <div className="glass-perf-dark w-full h-full min-h-[180px] md:min-h-[220px] bg-[rgba(20,20,20,0.1)] backdrop-blur-2xl border border-white/10 rounded-2xl p-4 md:p-6 shadow-[0_15px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between relative overflow-hidden shrink-0">
     <div className="absolute top-0 right-0 w-24 md:w-32 h-24 md:h-32 bg-[#EEBA2B]/10 rounded-full blur-[50px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
     <div className="relative z-10">
       <div className="flex items-center justify-between mb-2 md:mb-4">

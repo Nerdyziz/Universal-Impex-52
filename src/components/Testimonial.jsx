@@ -187,7 +187,7 @@ const Testimonial = () => {
             return (
               <div
                 key={idx}
-                className={`testi-panel w-screen shrink-0 flex relative bg-[rgba(20,20,20,0.03)] backdrop-blur-2xl border-y ${borderCol} ${
+                className={`testi-panel glass-perf-dark w-screen shrink-0 flex relative bg-[rgba(20,20,20,0.03)] backdrop-blur-2xl border-y ${borderCol} ${
                   hasSlope ? "testi-slope pr-[25px] sm:pr-[40px] md:pr-[60px] lg:pr-[80px]" : ""
                 }`}
               >
@@ -284,7 +284,7 @@ const Testimonial = () => {
 
                   {/* Right: Stat Card */}
                   <div className="testi-anim w-full md:w-2/5 lg:w-1/3 flex-shrink-0 relative z-10 mt-3 md:mt-0 flex justify-center md:justify-end">
-                    <div className="relative w-full max-w-[300px] md:max-w-none p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl overflow-hidden bg-[rgba(255,255,255,0.6)] backdrop-blur-xl border border-white/40 shadow-[0_15px_40px_rgba(0,0,0,0.08)]">
+                    <div className="glass-perf-light relative w-full max-w-[300px] md:max-w-none p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl overflow-hidden bg-[rgba(255,255,255,0.6)] backdrop-blur-xl border border-white/40 shadow-[0_15px_40px_rgba(0,0,0,0.08)]">
                       <div
                         className="absolute -top-10 -right-10 w-24 h-24 sm:w-32 sm:h-32 md:w-32 lg:w-40 md:h-32 lg:h-40 rotate-45 opacity-20 blur-xl pointer-events-none"
                         style={{ backgroundColor: t.accent }}

@@ -442,14 +442,12 @@ body {
 /* ============================================
    MOBILE GPU PERFORMANCE — ZERO DESIGN COMPROMISE
    ============================================
-   Only targets real mobile/tablet devices (coarse pointer AND no hover).
-   Touchscreen laptops (which have both a mouse and touchscreen) are
-   NOT affected — they have fine pointers and hover capability.
+   On mobile GPUs, backdrop-filter: blur() re-rasterizes every frame
+   during scroll-triggered transforms. We swap it for an opaque
+   approximation using marker classes added to heavy elements.
+   Desktop is completely unaffected.
    ============================================ */
 @media (hover: none) and (pointer: coarse) {
-  /* Replace backdrop-filter with solid approximation ONLY on elements
-     that already have a designed-in solid background via .liquid-glass.
-     These get a darker opaque fill that reads identically on phones. */
   .liquid-glass,
   .liquid-glass-flat {
     backdrop-filter: none !important;
@@ -457,8 +455,21 @@ body {
     background: rgba(20, 20, 20, 0.35) !important;
   }
 
-  /* Layout containment — tells the browser each section is independent,
-     so animating one section doesn't trigger layout on the entire page. */
+  /* Dark glass panels — Cards, TabHeaders, Testimonial panels, Footer */
+  .glass-perf-dark {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(20, 20, 20, 0.2) !important;
+  }
+
+  /* Light glass panels — stat cards, form cards */
+  .glass-perf-light {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(245, 240, 230, 0.5) !important;
+  }
+
+  /* Layout containment for animated sections */
   .video,
   .bigbox,
   .flip-card,
@@ -466,12 +477,10 @@ body {
     contain: layout style paint;
   }
 
-  /* Kill permanent will-change on mobile to free GPU VRAM.
-     The browser will still promote to a layer when GSAP sets
-     transforms, but won't reserve memory permanently. */
   .flip-inner,
   .will-change-transform {
     will-change: auto !important;
   }
 }
+
 
