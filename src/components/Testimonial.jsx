@@ -6,6 +6,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import { Star, Quote, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
+
 gsap.registerPlugin(ScrollTrigger);
 
 const testimonials = [
@@ -69,6 +70,7 @@ const Testimonial = () => {
           start: "center center", 
           end: () => `+=${getDistance()}`,
           pin: true,
+          anticipatePin: 1,
           scrub: 0.3,
           invalidateOnRefresh: true,
           refreshPriority: -1,
@@ -78,7 +80,7 @@ const Testimonial = () => {
       tl.to(track, {
         x: () => `-${getDistance()}`,
         ease: "none",
-        force3d: true,
+        
       });
 
       // Animate each panel's inner content

@@ -56,21 +56,28 @@ export default function SmoothScroll({ children }) {
     };
   }, []);
 
-  // Handle route change scroll reset
+  // -- FIX 1: Normalise touch scroll for ScrollTrigger --
+  useEffect(() => {
+    ScrollTrigger.normalizeScroll(isTouchDevice);
+    // Refresh all triggers after the normalisation state changes
+    if (isTouchDevice) {
+      requestAnimationFrame(() => ScrollTrigger.refresh(true));
+    }
+  }, [isTouchDevice]);
+
+  // Handle route change scroll reset + refresh
   useEffect(() => {
     if (isTouchDevice) {
-      // Native scroll
       window.scrollTo(0, 0);
     } else if (lenisRef.current?.lenis) {
-      // Lenis scroll
       lenisRef.current.lenis.scrollTo(0, { immediate: true });
     }
 
-    const timer = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 200);
-
-    return () => clearTimeout(timer);
+    // FIX 3: Force a refresh after DOM/layout settles
+    const raf = requestAnimationFrame(() => {
+      ScrollTrigger.refresh(true);
+    });
+    return () => cancelAnimationFrame(raf);
   }, [pathname, isTouchDevice]);
 
   // 🚫 Disable Lenis completely on touch devices
