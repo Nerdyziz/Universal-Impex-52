@@ -82,6 +82,22 @@ const CardSwapMob = ({
   const order = useRef(Array.from({ length: childArr.length }, (_, i) => i));
   const tlRef = useRef(null);
   const container = useRef(null);
+  useEffect(() => {
+  const node = container.current;
+  if (!node) return;
+
+  const stopTouch = (e) => e.stopPropagation();
+
+  node.addEventListener("touchstart", stopTouch, { passive: false });
+  node.addEventListener("touchmove", stopTouch, { passive: false });
+  node.addEventListener("touchend", stopTouch, { passive: false });
+
+  return () => {
+    node.removeEventListener("touchstart", stopTouch);
+    node.removeEventListener("touchmove", stopTouch);
+    node.removeEventListener("touchend", stopTouch);
+  };
+}, []);
 
   useEffect(() => {
     const total = refs.length;
@@ -167,22 +183,7 @@ const CardSwapMob = ({
         order.current = [...rest, front];
       });
     };
-useEffect(() => {
-  const node = container.current;
-  if (!node) return;
 
-  const stopTouch = (e) => e.stopPropagation();
-
-  node.addEventListener("touchstart", stopTouch, { passive: false });
-  node.addEventListener("touchmove", stopTouch, { passive: false });
-  node.addEventListener("touchend", stopTouch, { passive: false });
-
-  return () => {
-    node.removeEventListener("touchstart", stopTouch);
-    node.removeEventListener("touchmove", stopTouch);
-    node.removeEventListener("touchend", stopTouch);
-  };
-}, []);
     // --- BI-DIRECTIONAL VELOCITY DRAG LOGIC ---
     let isDragging = false;
     let startY = 0;
