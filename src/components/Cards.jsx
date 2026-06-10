@@ -39,7 +39,7 @@ const Cards = () => {
       scrollTrigger: {
         trigger: containerRef.current,
         // Changed to "top 10%" so the top tabs never get pushed off-screen on short devices
-        start: window.innerWidth >= 1024 ? "bottom bottom" : "top top", 
+        start:"bottom bottom", 
         end: "+=120%", 
         scrub: 0.3,
         pin: true,
