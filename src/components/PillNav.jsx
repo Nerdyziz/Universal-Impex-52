@@ -216,8 +216,8 @@ const PillNav = ({
   const glassStyle = glassBase
     ? {
         backgroundColor: 'rgba(20, 20, 20, 0.1)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        backdropFilter: 'blur(var(--glass-backdrop-blur, 16px))',
+        WebkitBackdropFilter: 'blur(var(--glass-backdrop-blur, 16px))',
         boxShadow: `
           0 8px 16px -8px rgba(0, 0, 0, 0.4),
           0 0 0 1px rgba(255, 255, 255, 0.15) inset,

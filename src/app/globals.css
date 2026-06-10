@@ -85,6 +85,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
+  --glass-backdrop-blur: 16px;
 }
 
 /* Force GPU compositing for animated elements in Safari */
@@ -112,6 +113,38 @@ body {
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: clip;
+}
+
+/* Touch browsers repaint large backdrop-filter areas while scrolling.
+   Keep the glass look, but cap the blur cost only on touch devices. */
+@media (hover: none) and (pointer: coarse) {
+  html {
+    --glass-backdrop-blur: 6px;
+  }
+
+  body {
+    background-attachment: scroll;
+  }
+
+  .backdrop-blur-3xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-xl {
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+
+  .backdrop-blur-md,
+  .backdrop-blur-sm,
+  .backdrop-blur-xs {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+
+  .liquid-glass,
+  .liquid-glass-flat {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
 }
 
 /* ============================================
