@@ -160,7 +160,7 @@ const Cards = () => {
               </div>
               
               <Image
-                src="https://www.dewalt.com/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-DCF897P2_LF2.jpg?resize=530x530"
+                src="https://in.dewalt.global/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-DCF897P2_LF2.jpg?resize=530x530"
                 alt="20V MAX XR High Torque 3/4 in. Impact Wrench Kit"
                 width={600}
                 height={600}
@@ -207,7 +207,7 @@ const Cards = () => {
 
             <div className="relative z-10 pointer-events-auto mb-4 md:mb-0">
               <Image
-                src="https://www.dewalt.com/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-D25960K_1.jpg?resize=530x530"
+                src="https://in.dewalt.global/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-D25960K_1.jpg?resize=530x530"
                 alt="Adaptive Coilover Suspension"
                 width={600}
                 height={600}
@@ -315,7 +315,7 @@ const Cards = () => {
                 
                 <div className="flex justify-center pointer-events-none pt-2">
                   <Image
-                    src="https://www.dewalt.com/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-D28715_F1.jpg?resize=530x530"
+                    src="https://in.dewalt.global/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-D28715_F1.jpg?resize=530x530"
                     alt="Twin-Scroll Turbocharger GTX-3076R"
                     width={600}
                     height={600}
