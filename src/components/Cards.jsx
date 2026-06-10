@@ -33,12 +33,13 @@ const Cards = () => {
   
   useGSAP(() => {
     const boxes = gsap.utils.toArray(".box");
+  
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         // Changed to "top 10%" so the top tabs never get pushed off-screen on short devices
-        start: "bottom bottom", 
+        start: window.innerWidth >= 1024 ? "bottom bottom" : "top top", 
         end: "+=120%", 
         scrub: 0.3,
         pin: true,
@@ -60,7 +61,7 @@ const Cards = () => {
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="bigbox grid grid-cols-1 grid-rows-1 relative w-full my-4 md:my-8 overflow-hidden font-sans">
+    <div ref={containerRef} className="grid grid-cols-1 grid-rows-1 relative w-full my-2 md:my-8 overflow-hidden font-sans">
       
       {/* Dynamic responsive styles */}
       <style dangerouslySetInnerHTML={{__html: `
