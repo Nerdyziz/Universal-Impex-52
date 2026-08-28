@@ -239,7 +239,7 @@ const About = () => {
               <div className="absolute -top-4 -left-4 w-full h-full border border-amber-500/30 rounded-xl" />
               <div className="relative liquid-glass rounded-xl overflow-hidden">
                 <div className="aspect-[4/3] w-full relative">
-                  <Image src="/owner.jpg" alt="Owner" fill className="object-cover" />
+                  <Image src="/owner.jpg" alt="Owner" fill sizes="(min-width: 1024px) 520px, 90vw" className="object-cover" />
                 </div>
               </div>
               {/* Tag */}
@@ -295,6 +295,7 @@ const About = () => {
                 src="/footerbg.svg"
                 alt="Vision"
                 fill
+                sizes="(min-width: 1024px) 1152px, 100vw"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -475,6 +476,7 @@ const About = () => {
                 src="/certificate.PNG"
                 alt="certificate"
                 fill
+                sizes="(min-width: 1024px) 1152px, 100vw"
                 className="object-contain"
               />
               {/* <div className="absolute inset-0 bg-black/40 flex items-center justify-center">

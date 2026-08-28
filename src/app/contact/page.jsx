@@ -258,7 +258,7 @@ const Contact = () => {
 
           {/* Description */}
           <p className="contact-hero-desc text-gray-700 text-sm sm:text-base lg:text-lg max-w-2xl leading-relaxed font-medium">
-            Whether you're looking for power tools, industrial hardware or construction equipment, our team is ready to help. Reach out to discuss product availability, authorized brand partnerships or long-term supply solutions for your industry.
+            Whether you&apos;re looking for power tools, industrial hardware or construction equipment, our team is ready to help. Reach out to discuss product availability, authorized brand partnerships or long-term supply solutions for your industry.
           </p>
         </div>
       </section>

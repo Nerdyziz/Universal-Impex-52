@@ -3,6 +3,11 @@ import dbConnect from "@/lib/mongodb";
 import Product from "@/models/Product";
 import Brand from "@/models/Brand";
 
+const CARD_FIELDS = "_id name slug subtitle brand category image price moq sku featured createdAt";
+const PUBLIC_CACHE_HEADERS = {
+  "Cache-Control": "public, s-maxage=300, stale-while-revalidate=3600",
+};
+
 // GET /api/products — fetch products with optional pagination
 export async function GET(request) {
   try {
@@ -16,6 +21,7 @@ export async function GET(request) {
     const mainCategory = searchParams.get("mainCategory");
     const page = parseInt(searchParams.get("page") || "0", 10);
     const limit = parseInt(searchParams.get("limit") || "0", 10);
+    const fields = searchParams.get("fields");
 
     let filter = {};
 
@@ -30,7 +36,7 @@ export async function GET(request) {
 
     // Filter by main category — find all brands in that category, then filter products
     if (mainCategory && !brand) {
-      const brandsInCategory = await Brand.find({ mainCategory }).select("name");
+      const brandsInCategory = await Brand.find({ mainCategory }).select("name").lean();
       const brandNames = brandsInCategory.map((b) => b.name);
       if (brandNames.length > 0) {
         filter.brand = { $in: brandNames };
@@ -40,7 +46,7 @@ export async function GET(request) {
           success: true,
           data: [],
           pagination: page > 0 && limit > 0 ? { page, limit, total: 0, totalPages: 0 } : undefined,
-        }, { status: 200 });
+        }, { status: 200, headers: PUBLIC_CACHE_HEADERS });
       }
     }
 
@@ -62,20 +68,24 @@ export async function GET(request) {
     if (page > 0 && limit > 0) {
       const total = await Product.countDocuments(filter);
       const totalPages = Math.ceil(total / limit);
-      const products = await Product.find(filter)
+      let query = Product.find(filter)
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit);
+      if (fields === "card") query = query.select(CARD_FIELDS);
+      const products = await query.lean();
 
       return NextResponse.json({
         success: true,
         data: products,
         pagination: { page, limit, total, totalPages },
-      }, { status: 200 });
+      }, { status: 200, headers: PUBLIC_CACHE_HEADERS });
     }
 
-    const products = await Product.find(filter).sort({ createdAt: -1 });
-    return NextResponse.json({ success: true, data: products }, { status: 200 });
+    let query = Product.find(filter).sort({ createdAt: -1 });
+    if (fields === "card") query = query.select(CARD_FIELDS);
+    const products = await query.lean();
+    return NextResponse.json({ success: true, data: products }, { status: 200, headers: PUBLIC_CACHE_HEADERS });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: error.message },

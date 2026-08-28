@@ -31,14 +31,6 @@ const safeImage = (src) => {
   }
 };
 
-const isExternal = (src) => {
-  try {
-    return src && (src.startsWith("http://") || src.startsWith("https://"));
-  } catch {
-    return false;
-  }
-};
-
 export default function CartPage() {
   const containerRef = useRef(null);
   const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart();
@@ -203,7 +195,7 @@ export default function CartPage() {
                         src={safeImage(item.image)}
                         alt={item.name}
                         fill
-                        unoptimized={isExternal(item.image)}
+                        sizes="96px"
                         className="object-contain p-2"
                       />
                     </div>

@@ -1,5 +1,5 @@
 ﻿"use client";
-import React from 'react'
+import React, { useState } from 'react'
 import CardSwap, { Card } from './CardSwap'
 import CardSwap2, { Card2 } from './CardSwap2'
 import BlurText from "./BlurText";
@@ -63,6 +63,8 @@ const GlassContent = ({ icon: Icon, title, desc, stat, statLabel, badge }) => (
 );
 
 const Vid = () => {
+  const [videoReady, setVideoReady] = useState(false);
+
   return (
     <section className="video relative w-full bg-black overflow-hidden -mt-16 min-h-screen pt-28" aria-label="Automotive parts showcase video">
       {/* Video background */}
@@ -72,8 +74,14 @@ const Vid = () => {
         loop
         muted
         playsInline
+        preload="auto"
         controls={false}
-        className="absolute inset-0 w-full h-full object-cover"
+        disablePictureInPicture
+        onCanPlay={() => setVideoReady(true)}
+        onPlaying={() => setVideoReady(true)}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+          videoReady ? "opacity-100" : "opacity-0"
+        }`}
         aria-hidden="true"
       />
 

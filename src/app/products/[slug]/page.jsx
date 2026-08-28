@@ -23,6 +23,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { cachedJsonFetch } from "@/lib/client-cache";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,14 +46,6 @@ const safeImage = (src) => {
     return src.trim();
   } catch {
     return "/fp1.png";
-  }
-};
-
-const isExternal = (src) => {
-  try {
-    return src && (src.startsWith("http://") || src.startsWith("https://"));
-  } catch {
-    return false;
   }
 };
 
@@ -200,17 +193,16 @@ const ProductPage = () => {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const res = await fetch(`/api/products/${slug}`);
-        const json = await res.json();
+        const json = await cachedJsonFetch(`/api/products/${slug}`, { ttl: 10 * 60 * 1000 });
         if (json.success) {
           const p = json.data;
           setProduct(p);
 
           // Fetch related products in same category
-          const relRes = await fetch(
-            `/api/products?category=${encodeURIComponent(p.category)}`,
+          const relJson = await cachedJsonFetch(
+            `/api/products?category=${encodeURIComponent(p.category)}&page=1&limit=4&fields=card`,
+            { ttl: 10 * 60 * 1000 },
           );
-          const relJson = await relRes.json();
           if (relJson.success) {
             setRelated(relJson.data.filter((r) => r._id !== p._id).slice(0, 3));
           }
@@ -440,7 +432,8 @@ const ProductPage = () => {
                       src={safeImage(product.image)}
                       alt={product.name}
                       fill
-                      unoptimized={isExternal(product.image)}
+                      priority
+                      sizes="(min-width: 1024px) 520px, 90vw"
                       className="object-contain p-8 sm:p-14 drop-shadow-xl hover:scale-105 transition-transform duration-700"
                     />
                   </div>
@@ -748,7 +741,7 @@ const ProductPage = () => {
                         src={safeImage(item.image)}
                         alt={item.name}
                         fill
-                        unoptimized={isExternal(item.image)}
+                        sizes="100px"
                         className="object-contain"
                       />
                     </div>

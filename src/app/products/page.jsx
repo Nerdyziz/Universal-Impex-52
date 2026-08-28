@@ -11,6 +11,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css"; // Ensure skeleton styles are loaded
 import { getProductTheme } from "@/lib/theme";
 import { MAIN_CATEGORIES } from "@/lib/categories";
+import { cachedJsonFetch } from "@/lib/client-cache";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,14 +25,6 @@ const safeImage = (src) => {
     return src.trim();
   } catch {
     return "/fp1.png";
-  }
-};
-
-const isExternal = (src) => {
-  try {
-    return src && (src.startsWith("http://") || src.startsWith("https://"));
-  } catch {
-    return false;
   }
 };
 
@@ -55,7 +48,6 @@ const cleanTree = (arr) =>
   Array.isArray(arr) ? arr.map(normaliseNode).filter(Boolean) : [];
 
 function CategoryFilterNode({ node, depth = 0, activeCategory, onSelect, prefix = "" }) {
-  const [expanded, setExpanded] = useState(false);
   const validChildren = React.useMemo(
     () => (node.children ?? []).map(normaliseNode).filter(Boolean),
     [node.children]
@@ -64,10 +56,8 @@ function CategoryFilterNode({ node, depth = 0, activeCategory, onSelect, prefix 
   const fullPath = prefix ? `${prefix} > ${node.name}` : node.name;
   const isActive = activeCategory.toLowerCase() === fullPath.toLowerCase();
   const isParentOfActive = activeCategory.toLowerCase().startsWith(fullPath.toLowerCase() + " > ");
-
-  useEffect(() => {
-    if (isParentOfActive || isActive) setExpanded(true);
-  }, [isParentOfActive, isActive]);
+  const [manuallyExpanded, setManuallyExpanded] = useState(isParentOfActive || isActive);
+  const expanded = manuallyExpanded || isParentOfActive || isActive;
 
   if (!node.name || !String(node.name).trim()) return null;
 
@@ -76,7 +66,7 @@ function CategoryFilterNode({ node, depth = 0, activeCategory, onSelect, prefix 
       <div className="flex items-center gap-1 my-0.5" style={{ paddingLeft: depth * 12 }}>
         {hasChildren ? (
           <button
-            onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
+            onClick={(e) => { e.stopPropagation(); setManuallyExpanded((prev) => !prev); }}
             className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-amber-600 shrink-0 transition-transform"
           >
             <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${expanded ? "" : "-rotate-90"}`} />
@@ -119,18 +109,15 @@ function MainCategoryNode({ cat, catBrands, activeMainCategory, activeBrand, set
   const isCatActive = activeMainCategory === cat && !activeBrand;
   const isCatParent = activeMainCategory === cat;
   const hasBrandActive = catBrands.some((b) => b.name === activeBrand);
-  const [catExpanded, setCatExpanded] = useState(isCatParent || hasBrandActive);
-
-  useEffect(() => {
-    if (isCatParent || hasBrandActive) setCatExpanded(true);
-  }, [isCatParent, hasBrandActive]);
+  const [manuallyExpanded, setManuallyExpanded] = useState(isCatParent || hasBrandActive);
+  const catExpanded = manuallyExpanded || isCatParent || hasBrandActive;
 
   return (
     <div>
       <div className="flex items-center gap-1 my-0.5">
         {catBrands.length > 0 ? (
           <button
-            onClick={(e) => { e.stopPropagation(); setCatExpanded(!catExpanded); }}
+            onClick={(e) => { e.stopPropagation(); setManuallyExpanded((prev) => !prev); }}
             className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-amber-600 shrink-0 transition-transform"
           >
             <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${catExpanded ? "" : "-rotate-90"}`} />
@@ -332,18 +319,17 @@ const Products = () => {
     if (activeMainCategory && !activeBrand) params.set("mainCategory", activeMainCategory);
     if (activeCategory && activeCategory !== "all") params.set("category", activeCategory);
     if (debouncedSearch.trim()) params.set("search", debouncedSearch.trim());
+    params.set("fields", "card");
     return `/api/products?${params.toString()}`;
   }, [activeMainCategory, activeBrand, activeCategory, debouncedSearch]);
 
   useEffect(() => {
     async function fetchInitial() {
       try {
-        const [brandsRes, featuredRes] = await Promise.all([
-          fetch("/api/brands"),
-          fetch("/api/products?featured=true"),
+        const [brandsJson, featuredJson] = await Promise.all([
+          cachedJsonFetch("/api/brands", { ttl: 10 * 60 * 1000 }),
+          cachedJsonFetch("/api/products?featured=true&fields=card", { ttl: 10 * 60 * 1000 }),
         ]);
-        const brandsJson = await brandsRes.json();
-        const featuredJson = await featuredRes.json();
         if (brandsJson.success) setBrands(brandsJson.data);
         if (featuredJson.success) setFeaturedProducts(featuredJson.data);
       } catch (err) {
@@ -360,8 +346,7 @@ const Products = () => {
       setCurrentPage(1);
       setHasMore(true);
       try {
-        const res = await fetch(buildApiUrl(1));
-        const json = await res.json();
+        const json = await cachedJsonFetch(buildApiUrl(1));
         if (!cancelled && json.success) {
           setProducts(json.data);
           if (json.pagination) {
@@ -389,8 +374,7 @@ const Products = () => {
     const nextPage = currentPage + 1;
     setLoadingMore(true);
     try {
-      const res = await fetch(buildApiUrl(nextPage));
-      const json = await res.json();
+      const json = await cachedJsonFetch(buildApiUrl(nextPage));
       if (json.success) {
         setProducts((prev) => [...prev, ...json.data]);
         setCurrentPage(nextPage);
@@ -818,7 +802,7 @@ const Products = () => {
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#EEBA2B]/5 rounded-full blur-[60px] pointer-events-none" />
 
                         <div className="relative w-full h-[140px] sm:h-[160px] mb-4 overflow-hidden rounded-lg shrink-0">
-                          <Image src={safeImage(product.image)} alt={product.name} fill loading="lazy" unoptimized={isExternal(product.image)} className="object-contain group-hover:scale-110 transition-transform duration-700 drop-shadow-md" />
+                          <Image src={safeImage(product.image)} alt={product.name} fill loading="lazy" sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 90vw" className="object-contain group-hover:scale-110 transition-transform duration-700 drop-shadow-md" />
                         </div>
 
                         <span className="text-[9px] uppercase tracking-[0.2em] font-mono mb-1.5 text-gray-600 font-bold relative z-10">
@@ -880,7 +864,7 @@ const Products = () => {
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#EEBA2B]/5 rounded-full blur-[60px] pointer-events-none" />
 
                         <div className="relative w-full h-[140px] sm:h-[160px] mb-4 overflow-hidden rounded-lg shrink-0">
-                          <Image src={safeImage(product.image)} alt={product.name} fill loading="lazy" unoptimized={isExternal(product.image)} className="object-contain group-hover:scale-110 transition-transform duration-700 drop-shadow-md" />
+                          <Image src={safeImage(product.image)} alt={product.name} fill loading="lazy" sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 90vw" className="object-contain group-hover:scale-110 transition-transform duration-700 drop-shadow-md" />
                         </div>
 
                         <span className="text-[9px] uppercase tracking-[0.2em] font-mono mb-1.5 text-gray-600 font-bold relative z-10">

@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Product from "@/models/Product";
 
+const PUBLIC_CACHE_HEADERS = {
+  "Cache-Control": "public, s-maxage=300, stale-while-revalidate=3600",
+};
+
 // GET /api/products/[id] — fetch a single product by id or slug
 export async function GET(request, { params }) {
   try {
@@ -12,10 +16,10 @@ export async function GET(request, { params }) {
     // Try finding by MongoDB _id first, then by slug
     let product;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      product = await Product.findById(id);
+      product = await Product.findById(id).lean();
     }
     if (!product) {
-      product = await Product.findOne({ slug: id });
+      product = await Product.findOne({ slug: id }).lean();
     }
 
     if (!product) {
@@ -25,7 +29,7 @@ export async function GET(request, { params }) {
       );
     }
 
-    return NextResponse.json({ success: true, data: product }, { status: 200 });
+    return NextResponse.json({ success: true, data: product }, { status: 200, headers: PUBLIC_CACHE_HEADERS });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: error.message },

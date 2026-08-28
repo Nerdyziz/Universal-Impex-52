@@ -1,55 +1,71 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
 
+const CART_KEY = "b2b_cart";
+const EMPTY_CART = "[]";
 const CartContext = createContext();
+const cartListeners = new Set();
+
+function readCartSnapshot() {
+  if (typeof window === "undefined") return EMPTY_CART;
+  return localStorage.getItem(CART_KEY) || EMPTY_CART;
+}
+
+function parseCart(snapshot) {
+  try {
+    const parsed = JSON.parse(snapshot);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function subscribeCart(listener) {
+  if (typeof window === "undefined") return () => {};
+
+  const handleStorageChange = (event) => {
+    if (event.key === CART_KEY) listener();
+  };
+
+  cartListeners.add(listener);
+  window.addEventListener("storage", handleStorageChange);
+
+  return () => {
+    cartListeners.delete(listener);
+    window.removeEventListener("storage", handleStorageChange);
+  };
+}
+
+function writeCart(updater) {
+  if (typeof window === "undefined") return;
+
+  const current = parseCart(readCartSnapshot());
+  const next = typeof updater === "function" ? updater(current) : updater;
+
+  try {
+    localStorage.setItem(CART_KEY, JSON.stringify(next));
+  } catch {}
+
+  cartListeners.forEach((listener) => listener());
+}
 
 export function CartProvider({ children }) {
-  const [cart, setCart] = useState([]);
-
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [hasLoaded, setHasLoaded] = useState(false);
-
-  // Load cart from localStorage on mount and listen for cross-tab storage events
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("b2b_cart");
-      if (saved) {
-        setCart(JSON.parse(saved));
-      }
-    } catch {}
-    setIsInitialized(true);
-    setHasLoaded(true); // Cart has been read from storage
-
-    const handleStorageChange = (e) => {
-      if (e.key === "b2b_cart") {
-        try {
-          const newVal = e.newValue ? JSON.parse(e.newValue) : [];
-          setCart(newVal);
-        } catch {}
-      }
-    };
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
-  // Persist to localStorage only after initialization has completed to prevent wiping it on mount SSR
-  useEffect(() => {
-    if (isInitialized && hasLoaded) {
-      try {
-        localStorage.setItem("b2b_cart", JSON.stringify(cart));
-      } catch {}
-    }
-  }, [cart, isInitialized, hasLoaded]);
+  const cartSnapshot = useSyncExternalStore(
+    subscribeCart,
+    readCartSnapshot,
+    () => EMPTY_CART,
+  );
+  const cart = useMemo(() => parseCart(cartSnapshot), [cartSnapshot]);
 
   const addToCart = (product, qty = 1) => {
-    setCart((prev) => {
+    writeCart((prev) => {
       const existing = prev.find((item) => item._id === product._id);
       if (existing) {
         return prev.map((item) =>
           item._id === product._id
             ? { ...item, quantity: item.quantity + qty }
-            : item
+            : item,
         );
       }
       return [
@@ -71,21 +87,26 @@ export function CartProvider({ children }) {
   };
 
   const removeFromCart = (productId) => {
-    setCart((prev) => prev.filter((item) => item._id !== productId));
+    writeCart((prev) => prev.filter((item) => item._id !== productId));
   };
 
   const updateQuantity = (productId, quantity) => {
-    setCart((prev) =>
+    writeCart((prev) =>
       prev.map((item) =>
-        item._id === productId ? { ...item, quantity: Math.max(1, quantity) } : item
-      )
+        item._id === productId
+          ? { ...item, quantity: Math.max(1, quantity) }
+          : item,
+      ),
     );
   };
 
-  const clearCart = () => setCart([]);
+  const clearCart = () => writeCart([]);
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const cartTotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
 
   return (
     <CartContext.Provider

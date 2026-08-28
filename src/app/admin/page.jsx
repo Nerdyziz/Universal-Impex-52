@@ -109,16 +109,12 @@ function buildTreeFromPaths(paths) {
 
 // ─── CATEGORY FILTER TREE NODE (recursive, expand/collapse) ────
 function CategoryFilterNode({ node, path, selectedCategory, onSelect, depth = 0 }) {
-  const [expanded, setExpanded] = useState(false);
   const fullPath = path ? `${path} > ${node.name}` : node.name;
   const hasChildren = node.children?.length > 0;
   const isSelected = selectedCategory?.toLowerCase() === fullPath.toLowerCase();
   const isAncestor = selectedCategory?.toLowerCase().startsWith(fullPath.toLowerCase() + " > ");
-
-  // Auto-expand if this node is an ancestor of the selected category
-  useEffect(() => {
-    if (isAncestor) setExpanded(true);
-  }, [isAncestor]);
+  const [manuallyExpanded, setManuallyExpanded] = useState(isAncestor);
+  const expanded = manuallyExpanded || isAncestor;
 
   return (
     <div>
@@ -133,7 +129,7 @@ function CategoryFilterNode({ node, path, selectedCategory, onSelect, depth = 0 
           <button
             type="button"
             className="p-0 m-0 bg-transparent border-none cursor-pointer flex items-center text-gray-400 hover:text-amber-600 transition-colors"
-            onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }}
+            onClick={(e) => { e.stopPropagation(); setManuallyExpanded((v) => !v); }}
           >
             {expanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
           </button>

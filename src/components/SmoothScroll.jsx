@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactLenis, useLenis } from "lenis/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -17,16 +17,12 @@ function LenisScrollTriggerSync() {
 }
 
 export default function SmoothScroll({ children }) {
-  const [isSafari, setIsSafari] = useState(false);
   const lenisRef = useRef(null);
 
   const pathname = usePathname();
-
-  useEffect(() => {
-    const ua = navigator.userAgent;
-    const safari = /^((?!chrome|android).)*safari/i.test(ua);
-    setIsSafari(safari);
-  }, []);
+  const isSafari =
+    typeof navigator !== "undefined" &&
+    /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   // Refresh ScrollTrigger and reset scroll after route change
   useEffect(() => {

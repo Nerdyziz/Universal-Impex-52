@@ -1,11 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { gsap } from 'gsap';
 import { useCart } from '@/context/CartContext';
 
 import { ShoppingCart } from 'lucide-react';
+
+const subscribeMounted = () => () => {};
+const getMountedSnapshot = () => true;
+const getServerMountedSnapshot = () => false;
 
 const PillNav = ({
   logo, 
@@ -25,7 +29,11 @@ const PillNav = ({
   const resolvedPillTextColor = pillTextColor ?? baseColor;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [pillDarkBg, setPillDarkBg] = useState([]); 
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useSyncExternalStore(
+    subscribeMounted,
+    getMountedSnapshot,
+    getServerMountedSnapshot,
+  );
   
   // Logo color change states
   const [logoDarkBg, setLogoDarkBg] = useState(false);
@@ -34,10 +42,6 @@ const PillNav = ({
   const { cartCount } = useCart();
   const hasPlayedEntrance = useRef(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-  
   const circleRefs = useRef([]);
   const pillRefs = useRef([]);
   const tlRefs = useRef([]);

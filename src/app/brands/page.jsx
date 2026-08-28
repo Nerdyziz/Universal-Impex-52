@@ -9,6 +9,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getBrandTheme } from '@/lib/theme';
 import { MAIN_CATEGORIES } from '@/lib/categories';
+import { cachedJsonFetch } from '@/lib/client-cache';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -168,6 +169,8 @@ const CategorySection = ({ category, sectionBrands, isMobileView, handleMouseEnt
                     key={i}
                     src={imgUrl} 
                     alt="work sample"
+                    loading="lazy"
+                    decoding="async"
                     className="card-img absolute top-8 left-[15%] w-[200px] h-[140px] object-cover rounded-md shadow-xl border-4 border-white pointer-events-none opacity-0 z-0"
                     style={{ transformOrigin: "bottom center" }}
                   />
@@ -238,6 +241,8 @@ const CategorySection = ({ category, sectionBrands, isMobileView, handleMouseEnt
                         key={i}
                         src={imgUrl} 
                         alt="work sample"
+                        loading="lazy"
+                        decoding="async"
                         className="card-img absolute top-8 left-[25%] w-[200px] h-[140px] object-cover rounded-md shadow-xl border-4 border-white pointer-events-none opacity-0 z-0"
                         style={{ transformOrigin: "bottom center" }}
                       />
@@ -294,8 +299,7 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
-    fetch('/api/brands')
-      .then(res => res.json())
+    cachedJsonFetch('/api/brands', { ttl: 10 * 60 * 1000 })
       .then(json => {
         const data = json.success ? json.data : json;
         const mapped = data.map((b, i) => ({

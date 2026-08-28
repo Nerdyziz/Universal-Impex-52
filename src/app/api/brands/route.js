@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Brand from "@/models/Brand";
 
+const PUBLIC_CACHE_HEADERS = {
+  "Cache-Control": "public, s-maxage=300, stale-while-revalidate=3600",
+};
+
 // GET /api/brands — fetch all brands (optionally filter by mainCategory or search)
 export async function GET(request) {
   try {
@@ -21,9 +25,9 @@ export async function GET(request) {
       filter.mainCategory = mainCategory;
     }
 
-    const brands = await Brand.find(filter).sort({ createdAt: 1 });
+    const brands = await Brand.find(filter).sort({ createdAt: 1 }).lean();
 
-    return NextResponse.json({ success: true, data: brands }, { status: 200 });
+    return NextResponse.json({ success: true, data: brands }, { status: 200, headers: PUBLIC_CACHE_HEADERS });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: error.message },
