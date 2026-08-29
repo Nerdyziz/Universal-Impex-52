@@ -105,8 +105,8 @@ const Cards = () => {
         <div className="md:h-[50px] h-[35px] flex w-full relative z-20 pointer-events-none shrink-0">
           
           <TabHeader>
-            <p className="uppercase text-[9px] sm:text-sm tracking-widest text-black/80 font-mono font-bold pointer-events-auto">
-              01 // WRENCH KIT
+            <p className="uppercase text-[9px] sm:text-sm tracking-widest text-black font-mono font-black pointer-events-auto">
+              01//IMPACT WRENCH KIT
             </p>
           </TabHeader>
 
@@ -121,18 +121,18 @@ const Cards = () => {
               <span className="text-[12px] sm:text-[14px] lg:text-[16px] uppercase tracking-[0.3em] text-black font-mono font-bold">Flagship Series</span>
             </div>
             
-            <h1 className="text-[1.4rem] sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-3 leading-tight md:leading-[1.1] tracking-tight drop-shadow-sm">
-              20V MAX XR High Torque<br className="hidden md:block" /> 3/4 in. Impact Wrench Kit
+            <h1 className="text-[1.4rem] sm:text-3xl md:text-4xl lg:text-5xl font-black text-stone-600 mb-3 leading-tight md:leading-[1.1] tracking-tight drop-shadow-sm">
+              20V MAX* 1/2-IN. CORDLESS IMPACT WRENCH<br className="hidden md:block" /> WITH HOG RING ANVIL KIT
             </h1>
             
-            <div className="grid grid-cols-2 gap-x-3 gap-y-2 sm:gap-y-3 my-2 md:my-4 text-[12px] sm:text-[14px] lg:text-sm text-white font-mono border-t border-white/20 pt-3 md:pt-4 w-full max-w-[280px] sm:max-w-sm">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-2 sm:gap-y-3 my-2 md:my-4 text-[12px] sm:text-[14px] lg:text-sm text-stone-600 font-mono border-t border-white/20 pt-3 md:pt-4 w-full max-w-[280px] sm:max-w-sm">
               <div>
-                <span className="block text-black text-[10px] sm:text-[12px] uppercase tracking-wider mb-0.5">Material</span>
-                <span className="font-bold">Industrial Composite</span>
+                <span className="block text-black text-[10px] sm:text-[12px] uppercase tracking-wider mb-0.5">MOTOR</span>
+                <span className="font-bold">Brushless</span>
               </div>
               <div>
-                <span className="block text-black text-[10px] sm:text-[12px] uppercase tracking-wider mb-0.5">MAX TORQUE</span>
-                <span className="font-bold">1,200 Nm</span>
+                <span className="block text-black text-[10px] sm:text-[12px] uppercase tracking-wider mb-0.5">MAX FASTENING TORQUE</span>
+                <span className="font-bold">250 ft-lbs</span>
               </div>
               <div>
                 <span className="block text-black text-[10px] sm:text-[12px] uppercase tracking-wider mb-0.5">Warranty</span>
@@ -145,7 +145,7 @@ const Cards = () => {
             </div>
 
             <Link
-              href="/products/20v-max-xr-high-torque-3-4-in-impact-wrench-w-hog-ring-anvil-5-0ah"
+              href="/products/20v-max-1-2-in-cordless-impact-wrench-with-hog-ring-anvil-kit"
               className="group flex items-center gap-2 sm:gap-3 bg-[#EEBA2B] text-black px-4 sm:px-6 py-2.5 sm:py-3 text-[9px] sm:text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors mt-3 mb-auto md:mb-0 shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] pointer-events-auto cursor-pointer"
             >
               View Specifications
@@ -161,7 +161,7 @@ const Cards = () => {
               </div>
               
               <Image
-                src="https://in.dewalt.global/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-DCF897P2_LF2.jpg?resize=530x530"
+                src="https://assets.dewalt.com/NAG/PRODUCT/IMAGES/HIRES/WHITEBG/DCF911P2_K1_1680.webp"
                 alt="20V MAX XR High Torque 3/4 in. Impact Wrench Kit"
                 width={600}
                 height={600}
@@ -169,12 +169,12 @@ const Cards = () => {
               />
               <div className="mt-2 sm:mt-3 flex justify-between items-center border-t border-white/20 pt-2 sm:pt-3">
                 <div>
-                  <p className="text-[7px] sm:text-[9px] text-black uppercase tracking-wider font-mono">Weight</p>
-                  <p className="text-[11px] sm:text-sm lg:text-lg font-black text-white">3.5 kg</p>
+                  <p className="text-[7px] sm:text-[9px] text-black uppercase tracking-wider font-mono">BADGE</p>
+                  <p className="text-[11px] sm:text-sm lg:text-lg font-black text-stone-600">COMPACT</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[7px] sm:text-[9px] text-black uppercase tracking-wider font-mono">Drive Size</p>
-                  <p className="text-[11px] sm:text-sm lg:text-lg font-black text-white">3/4 in.</p>
+                  <p className="text-[7px] sm:text-[9px] text-black uppercase tracking-wider font-mono">ANVIL</p>
+                  <p className="text-[11px] sm:text-sm lg:text-lg font-black text-stone-600">1/2-in. Hog Ring</p>
                 </div>
               </div>
             </div>
@@ -208,7 +208,7 @@ const Cards = () => {
 
             <div className="relative z-10 pointer-events-auto mb-4 md:mb-0">
               <Image
-                src="https://in.dewalt.global/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-D25960K_1.jpg?resize=530x530"
+                src="https://assets.dewalt.com/NAG/PRODUCT/IMAGES/HIRES/WHITEBG/D25911K_1_1680.webp"
                 alt="Adaptive Coilover Suspension"
                 width={600}
                 height={600}
@@ -216,7 +216,7 @@ const Cards = () => {
               />
               <div className="absolute -bottom-2 -right-2 sm:-bottom-4 sm:-right-4 bg-black/90 backdrop-blur-md text-[#EEBA2B] px-2.5 py-1.5 sm:px-4 sm:py-3 shadow-xl">
                 <p className="text-[6px] sm:text-[8px] md:text-[9px] uppercase tracking-wider font-mono opacity-80">Impact Energy</p>
-                <p className="text-[11px] sm:text-base md:text-xl font-black leading-none mt-0.5">41 joules</p>
+                <p className="text-[11px] sm:text-base md:text-xl font-black leading-none mt-0.5">27 joules</p>
               </div>
             </div>
           </div>
@@ -228,11 +228,11 @@ const Cards = () => {
             </div>
 
             <h1 className="text-[26px] sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-2 sm:mb-4 leading-[1] md:leading-[1.1] tracking-tighter drop-shadow-sm pointer-events-none">
-              INDUSTRIAL<br />DEMOLITION HAMMER
+              11 KG BRUSHLESS<br />SDS MAX DEMOLITION HAMMER
             </h1>
             <p className="text-black text-[14px] sm:text-xs md:text-sm max-w-[280px] sm:max-w-sm mx-auto md:mx-0 mb-3 sm:mb-6 leading-relaxed font-mono font-medium pointer-events-none">
-              High-performance 40 lb demolition hammer built for heavy concrete and masonry work. Its powerful motor delivers maximum impact energy. 
-            </p>
+             High-performance demolition hammer engineered for demanding concrete and masonry applications. Its brushless motor delivers 27 joules of impact energy for powerful chipping and demolition performance, while the SDS MAX system allows quick and efficient bit changes.
+             </p>
 
             <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 mb-4 sm:mb-8 pointer-events-none">
               <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[12px] md:text-xs font-bold border border-white/20 px-2 sm:px-3 py-1.5 sm:py-2 uppercase tracking-wider text-white">
@@ -244,7 +244,7 @@ const Cards = () => {
             </div>
 
             <Link
-              href="/products/40-lb-1-1-8-in-hex-in-line-demolition-hammer-kit"
+              href="/products/sds-max-corded-brushless-11-kg-rotary-hammer-drill-kit"
               className="bg-[#EEBA2B] text-black px-5 sm:px-8 py-2.5 sm:py-3.5 text-[9px] sm:text-xs font-black uppercase tracking-widest hover:bg-white transition-colors border-2 border-transparent w-fit shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] pointer-events-auto cursor-pointer mb-auto md:mb-0"
             >
               GET QUOTE
@@ -311,12 +311,12 @@ const Cards = () => {
 
               <div className="relative bg-white/5 backdrop-blur-md border border-white/20 p-3 sm:p-5 lg:p-6 w-full max-w-[220px] sm:max-w-[280px] lg:max-w-sm shadow-2xl pointer-events-auto">
                 <div className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-[#EEBA2B] text-black px-2 py-1 text-[7px] sm:text-[9px] font-black uppercase tracking-wider shadow-md z-10 pointer-events-none">
-                  GTX-3076R
+                  D28715
                 </div>
                 
                 <div className="flex justify-center pointer-events-none pt-2">
                   <Image
-                    src="https://in.dewalt.global/NAG/PRODUCT/IMAGES/HIRES/Ecomm_Large-D28715_F1.jpg?resize=530x530"
+                    src="https://assets.dewalt.com/NAG/PRODUCT/IMAGES/HIRES/WHITEBG/D28715_1_1680.webp"
                     alt="Twin-Scroll Turbocharger GTX-3076R"
                     width={600}
                     height={600}
